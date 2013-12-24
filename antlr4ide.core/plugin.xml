@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+
+  <extension point="org.eclipse.emf.ecore.generated_package">
+    <package 
+       uri = "http://www.github.com/jknack/Antlr4" 
+       class = "com.github.jknack.antlr4.Antlr4Package"
+       genModel = "model/generated/Antlr4.genmodel" />
+  </extension>
+
+  <extension
+        point="org.eclipse.debug.core.launchConfigurationTypes">
+    <launchConfigurationType
+       id="com.github.jknack.antlr4.antlrTool"
+       name="ANTLR"
+       delegate="com.github.jknack.launching.AntlrToolLaunchConfigurationDelegate"
+       modes= "run">
+   </launchConfigurationType>
+  </extension>
+
+
+
+</plugin>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="antlr4ide.sdk"
+      label="ANTLR 4 SDK Feature"
+      version="0.1.0.qualifier"
+      provider-name="Edgar Espina">
+
+   <plugin
+         id="antlr4ide.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="antlr4ide.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

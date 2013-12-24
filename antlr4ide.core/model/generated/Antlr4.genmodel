@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/antlr4ide.core/src-gen" editDirectory="/antlr4ide.core.edit/src"
+    editorDirectory="/antlr4ide.core.editor/src" modelPluginID="antlr4ide.core" forceOverwrite="true"
+    modelName="Antlr4" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    complianceLevel="5.0" copyrightFields="false" editPluginID="antlr4ide.core.edit"
+    editorPluginID="antlr4ide.core.editor" runtimeVersion="2.9">
+  <genPackages prefix="Antlr4" basePackage="com.github.jknack" disposableProviderFactory="true"
+      fileExtensions="g4" ecorePackage="Antlr4.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Antlr4.ecore#//GrammarType">
+      <genEnumLiterals ecoreEnumLiteral="Antlr4.ecore#//GrammarType/LEXER"/>
+      <genEnumLiterals ecoreEnumLiteral="Antlr4.ecore#//GrammarType/PARSER"/>
+      <genEnumLiterals ecoreEnumLiteral="Antlr4.ecore#//GrammarType/TREE"/>
+    </genEnums>
+    <genClasses ecoreClass="Antlr4.ecore#//Grammar">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Grammar/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Grammar/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Grammar/prequels"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Grammar/rules"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Grammar/modes"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//PrequelConstruct"/>
+    <genClasses ecoreClass="Antlr4.ecore#//Options">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Options/options"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//Option">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Option/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Option/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//TokenVocab">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Antlr4.ecore#//TokenVocab/importURI"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//OptionValue"/>
+    <genClasses ecoreClass="Antlr4.ecore#//QualifiedOption">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//QualifiedOption/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//StringOption">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//StringOption/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//ActionOption">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//ActionOption/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//IntOption">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//IntOption/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//StartOption">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//StartOption/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//Imports">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Imports/imports"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//Import">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Import/alias"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Import/importURI"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//Tokens"/>
+    <genClasses ecoreClass="Antlr4.ecore#//V4Tokens">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//V4Tokens/tokens"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//V4Token">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//V4Token/name"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//EmptyTokens"/>
+    <genClasses ecoreClass="Antlr4.ecore#//V3Tokens">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//V3Tokens/tokens"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//V3Token">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//V3Token/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//V3Token/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//Action">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Action/atSymbol"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Action/scope"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Action/colonSymbol"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Action/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Action/action"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//Modes">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Modes/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Modes/rules"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//Rule">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Rule/name"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//ParserRule">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//ParserRule/args"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//ParserRule/return"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//ParserRule/throws"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//ParserRule/locals"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//ParserRule/prequels"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//ParserRule/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//ParserRule/caught"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//ExceptionGroup">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//ExceptionGroup/handlers"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//ExceptionGroup/finally"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//ExceptionHandler">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//ExceptionHandler/exception"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//ExceptionHandler/body"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//FinallyClause">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//FinallyClause/body"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//Exceptions">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Exceptions/exceptions"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//LocalVars">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//LocalVars/body"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//RulePrequel"/>
+    <genClasses ecoreClass="Antlr4.ecore#//RuleAction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//RuleAction/atSymbol"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//RuleAction/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//RuleAction/body"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//RuleBlock">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//RuleBlock/body"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//RuleAltList">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//RuleAltList/alternatives"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//LabeledAlt">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//LabeledAlt/body"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//LabeledAlt/poundSymbol"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//LabeledAlt/label"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//Alternative">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Alternative/options"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Alternative/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//Element">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Element/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Element/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//Ebnf"/>
+    <genClasses ecoreClass="Antlr4.ecore#//BlockSuffix">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//BlockSuffix/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//ActionElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//ActionElement/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//ActionElement/options"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//LabeledElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//LabeledElement/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//LabeledElement/body"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//EbnfSuffix">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//EbnfSuffix/operator"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//EbnfSuffix/nongreedy"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//Block">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Block/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Block/options"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Block/actions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Block/body"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//AltList">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//AltList/alternatives"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//Atom">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Atom/body"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//RuleRef">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Antlr4.ecore#//RuleRef/reference"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//RuleRef/args"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//RuleRef/options"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//ElementOptions">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//ElementOptions/options"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//Range">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Range/from"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Range/to"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//Terminal">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Terminal/reference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Terminal/options"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Terminal/literal"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//TokenRef"/>
+    <genClasses ecoreClass="Antlr4.ecore#//NotSet">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//NotSet/body"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//BlockSet">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//BlockSet/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//SetElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//SetElement/tokenRef"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//SetElement/stringLiteral"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//SetElement/range"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//SetElement/charSet"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//Wildcard">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Wildcard/options"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//ElementOption"/>
+    <genClasses ecoreClass="Antlr4.ecore#//LexerRule">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//LexerRule/fragment"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//LexerRule/body"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//LexerRuleBlock">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//LexerRuleBlock/body"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//LexerAltList">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//LexerAltList/alternatives"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//LexerAlt">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//LexerAlt/element"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//LexerAlt/commands"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//LexerElements">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//LexerElements/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//LexerElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//LexerElement/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//LexerElement/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//LabeledLexerElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//LabeledLexerElement/label"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//LabeledLexerElement/body"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//LexerAtom">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//LexerAtom/body"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//LexerCharSet">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//LexerCharSet/body"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//LexerBlock">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//LexerBlock/options"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//LexerBlock/body"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//LexerCommands">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//LexerCommands/commands"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//LexerCommand">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//LexerCommand/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//LexerCommand/args"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//LexerCommandExpr">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//LexerCommandExpr/ref"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//LexerCommandExpr/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Antlr4.ecore#//QualifiedId">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//QualifiedId/name"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

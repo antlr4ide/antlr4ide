@@ -1,0 +1,21 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+target
+bin
+dependency-reduced-pom.xml
+
+# OSX
+*.DS_Store
+
+# IntelliJ IDE Project Files #
+*.iml
+*.idea
+
+src-gen
+xtend-gen
+.antlr-generator-3.2.0.jar
+plugin.xml_gen
