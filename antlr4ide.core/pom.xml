@@ -58,7 +58,7 @@
           </execution>
         </executions>
         <configuration>
-          <includeProjectDependencies>true</includeProjectDependencies>
+          <includeProjectDependencies>false</includeProjectDependencies>
           <includePluginDependencies>true</includePluginDependencies>
           <mainClass>org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher</mainClass>
           <arguments>

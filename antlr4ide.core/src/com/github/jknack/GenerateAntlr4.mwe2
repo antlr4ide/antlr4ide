@@ -4,14 +4,17 @@ import org.eclipse.emf.mwe.utils.*
 import org.eclipse.xtext.generator.*
 import org.eclipse.xtext.ui.generator.*
 
-var grammarURI = "classpath:/com/github/jknack/Antlr4.xtext"
-var fileExtensions = "g4"
 var projectName = "antlr4ide.core"
+var grammarURI = "platform:/resource/${projectName}/src/com/github/jknack/Antlr4.xtext"
+var fileExtensions = "g4"
 var generateXtendStub = true
 var encoding = "UTF-8"
 
 Workflow {
     bean = StandaloneSetup {
+      // use an XtextResourceset throughout the process, which is able to resolve classpath:/ URIs.
+      resourceSet = org.eclipse.xtext.resource.XtextResourceSet:theResourceSet {}
+
       // add mappings from platform:/resource to classpath:/
       uriMap = {
               from = "platform:/resource/org.eclipse.xtext.xbase/"
@@ -49,6 +52,9 @@ Workflow {
     	projectNameUi = "antlr4ide.ui"
     	encoding = encoding
     	language = auto-inject {
+    	  // make sure we use the resourceSet created during standalone setup.
+        forcedResourceSet = theResourceSet
+
     		uri = grammarURI
     
     		// Java API to access grammar elements (required by several other fragments)
