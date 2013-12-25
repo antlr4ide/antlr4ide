@@ -23,6 +23,7 @@ import {{lexer}};
 
 
 
+KEYWORD_33 : '___default_hack_';
 
 KEYWORD_32 : 'fragment';
 

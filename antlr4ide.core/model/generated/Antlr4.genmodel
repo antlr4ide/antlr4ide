@@ -8,6 +8,7 @@
   <genPackages prefix="Antlr4" basePackage="com.github.jknack" disposableProviderFactory="true"
       fileExtensions="g4" ecorePackage="Antlr4.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Antlr4.ecore#//GrammarType">
+      <genEnumLiterals ecoreEnumLiteral="Antlr4.ecore#//GrammarType/DEFAULT"/>
       <genEnumLiterals ecoreEnumLiteral="Antlr4.ecore#//GrammarType/LEXER"/>
       <genEnumLiterals ecoreEnumLiteral="Antlr4.ecore#//GrammarType/PARSER"/>
       <genEnumLiterals ecoreEnumLiteral="Antlr4.ecore#//GrammarType/TREE"/>
@@ -21,6 +22,7 @@
     </genClasses>
     <genClasses ecoreClass="Antlr4.ecore#//PrequelConstruct"/>
     <genClasses ecoreClass="Antlr4.ecore#//Options">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Options/keyword"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Options/options"/>
     </genClasses>
     <genClasses ecoreClass="Antlr4.ecore#//Option">
@@ -43,9 +45,6 @@
     <genClasses ecoreClass="Antlr4.ecore#//IntOption">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//IntOption/value"/>
     </genClasses>
-    <genClasses ecoreClass="Antlr4.ecore#//StartOption">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//StartOption/value"/>
-    </genClasses>
     <genClasses ecoreClass="Antlr4.ecore#//Imports">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Imports/imports"/>
     </genClasses>
@@ -53,7 +52,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Import/alias"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Import/importURI"/>
     </genClasses>
-    <genClasses ecoreClass="Antlr4.ecore#//Tokens"/>
+    <genClasses ecoreClass="Antlr4.ecore#//Tokens">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Tokens/keyword"/>
+    </genClasses>
     <genClasses ecoreClass="Antlr4.ecore#//V4Tokens">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//V4Tokens/tokens"/>
     </genClasses>
@@ -75,9 +76,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Action/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Action/action"/>
     </genClasses>
-    <genClasses ecoreClass="Antlr4.ecore#//Modes">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Modes/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Modes/rules"/>
+    <genClasses ecoreClass="Antlr4.ecore#//Mode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Mode/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Antlr4.ecore#//Mode/rules"/>
     </genClasses>
     <genClasses ecoreClass="Antlr4.ecore#//Rule">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Antlr4.ecore#//Rule/name"/>

@@ -9,15 +9,17 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="rules" upperBound="-1"
         eType="#//Rule" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="modes" upperBound="-1"
-        eType="#//Modes" containment="true"/>
+        eType="#//Mode" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="GrammarType">
-    <eLiterals name="LEXER" literal="lexer"/>
-    <eLiterals name="PARSER" value="1" literal="parser"/>
-    <eLiterals name="TREE" value="2" literal="tree"/>
+    <eLiterals name="DEFAULT" literal="___default_hack_"/>
+    <eLiterals name="LEXER" value="1" literal="lexer"/>
+    <eLiterals name="PARSER" value="2" literal="parser"/>
+    <eLiterals name="TREE" value="3" literal="tree"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PrequelConstruct"/>
   <eClassifiers xsi:type="ecore:EClass" name="Options" eSuperTypes="#//PrequelConstruct #//RulePrequel">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="keyword" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="options" upperBound="-1"
         eType="#//Option" containment="true"/>
   </eClassifiers>
@@ -44,9 +46,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="IntOption" eSuperTypes="#//OptionValue">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="StartOption" eSuperTypes="#//OptionValue">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Imports" eSuperTypes="#//PrequelConstruct">
     <eStructuralFeatures xsi:type="ecore:EReference" name="imports" upperBound="-1"
         eType="#//Import" containment="true"/>
@@ -55,7 +54,9 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="alias" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="importURI" eType="#//Grammar"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Tokens" eSuperTypes="#//PrequelConstruct"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Tokens" eSuperTypes="#//PrequelConstruct">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="keyword" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="V4Tokens" eSuperTypes="#//Tokens">
     <eStructuralFeatures xsi:type="ecore:EReference" name="tokens" upperBound="-1"
         eType="#//V4Token" containment="true"/>
@@ -79,7 +80,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="action" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Modes">
+  <eClassifiers xsi:type="ecore:EClass" name="Mode">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rules" upperBound="-1"
         eType="#//LexerRule" containment="true"/>

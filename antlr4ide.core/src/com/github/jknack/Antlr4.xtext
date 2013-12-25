@@ -13,14 +13,15 @@ Grammar
 
     rules+=Rule*
 
-    modes+=Modes*
+    modes+=Mode*
   ;
 
 enum GrammarType
   :
-    LEXER='lexer'
-  | PARSER='parser'
-  | TREE='tree'
+     DEFAULT='___default_hack_'
+  |  LEXER='lexer'
+  |  PARSER='parser'
+  |  TREE='tree'
   ;
 
 // This is the list of all constructs that can be declared before
@@ -52,7 +53,7 @@ PrequelConstruct
 Options
   :
     {Options}
-    OPTIONS_SPEC (options+=Option ';')* '}'
+    keyword=OPTIONS_SPEC (options+=Option ';')* '}'
   ;
 
 Option
@@ -72,7 +73,6 @@ OptionValue
   | StringOption
   | ActionOption
   | IntOption
-  | StartOption
   ;
 
 QualifiedOption
@@ -95,10 +95,6 @@ IntOption
     value=INT
   ;
 
-StartOption
-  :
-    value='*'
-  ;
 
 /** Imports */
 Imports:
@@ -121,7 +117,7 @@ Tokens
 
 V4Tokens
   :
-    TOKENS_SPEC tokens+=V4Token (',' tokens+=V4Token)* '}'
+    keyword=TOKENS_SPEC tokens+=V4Token (',' tokens+=V4Token)* '}'
   ;
 
 V4Token
@@ -131,11 +127,12 @@ V4Token
 
 EmptyTokens
   :
-    {EmptyTokens} TOKENS_SPEC '}'
+    {EmptyTokens} keyword=TOKENS_SPEC '}'
   ;
+
 V3Tokens
   :
-    TOKENS_SPEC tokens+=V3Token+ '}'
+    keyword=TOKENS_SPEC tokens+=V3Token+ '}'
   ;
 
 V3Token
@@ -157,7 +154,7 @@ ActionScope
   | Id
   ;
 
-Modes
+Mode
   :
     'mode' name=Id ';'
     rules+=LexerRule*

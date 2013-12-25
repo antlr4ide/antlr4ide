@@ -5,8 +5,9 @@ package com.github.jknack.formatting
 
 import org.eclipse.xtext.formatting.impl.AbstractDeclarativeFormatter
 import org.eclipse.xtext.formatting.impl.FormattingConfig
-// import com.google.inject.Inject;
-// import com.github.jknack.services.Antlr4GrammarAccess
+
+import com.google.inject.Inject;
+import com.github.jknack.services.Antlr4GrammarAccess
 
 /**
  * This class contains custom formatting description.
@@ -18,13 +19,16 @@ import org.eclipse.xtext.formatting.impl.FormattingConfig
  */
 class Antlr4Formatter extends AbstractDeclarativeFormatter {
 
-//	@Inject extension Antlr4GrammarAccess
-	
-	override protected void configureFormatting(FormattingConfig c) {
-// It's usually a good idea to activate the following three statements.
-// They will add and preserve newlines around comments
-//		c.setLinewrap(0, 1, 2).before(SL_COMMENTRule)
-//		c.setLinewrap(0, 1, 2).before(ML_COMMENTRule)
-//		c.setLinewrap(0, 1, 1).after(ML_COMMENTRule)
-	}
+  @Inject extension Antlr4GrammarAccess
+
+  override protected void configureFormatting(FormattingConfig config) {
+    // It's usually a good idea to activate the following three statements.
+    // They will add and preserve newlines around comments
+    config.setSpace("\n\n").before(optionsRule)
+    config.setSpace("\n\n").after(optionsRule)
+
+    config.setLinewrap(0, 1, 2).before(SL_COMMENTRule)
+    config.setLinewrap(0, 1, 2).before(ML_COMMENTRule)
+    config.setLinewrap(0, 1, 1).after(ML_COMMENTRule)
+  }
 }

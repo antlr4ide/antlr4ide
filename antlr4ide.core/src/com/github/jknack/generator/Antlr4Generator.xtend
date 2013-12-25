@@ -13,8 +13,6 @@ import org.eclipse.core.resources.IWorkspaceRoot
 import com.github.jknack.event.ConsoleListener
 import org.eclipse.core.runtime.NullProgressMonitor
 import org.eclipse.core.resources.IResource
-import org.eclipse.xtext.IGrammarAccess
-import org.eclipse.xtext.GrammarUtil
 
 /**
  * Generates code from your model files on save.
@@ -34,16 +32,11 @@ class Antlr4Generator implements IGenerator {
   @Inject
   private IWorkspaceRoot workspaceRoot
 
-  @Inject
-  private IGrammarAccess grammarAccess
-
   override void doGenerate(Resource resource, IFileSystemAccess fsa) {
     val file = workspaceRoot.getFile(new Path(resource.getURI().toPlatformString(true)))
     val project = file.project
     val config = optionsProvider.options(project)
     val monitor = new NullProgressMonitor()
-    val commentText = commentText(grammarAccess)
-    System.out.println(commentText)
     // call ANTLR
     new ToolRunner(bundle).run(file, config, console)
 
@@ -61,12 +54,12 @@ class Antlr4Generator implements IGenerator {
     }
   }
 
-  private def commentText(IGrammarAccess access) {
-    val rules = GrammarUtil.allRules(access.grammar)
-    return rules
-        .filter[it.name.equals("ML_COMMENT") || it.name.equals("SL_COMMENT")]
-        .map[it.toString]
-        .join(" ")
-  }
+//  private def commentText(IGrammarAccess access) {
+//    val rules = GrammarUtil.allRules(access.grammar)
+//    return rules
+//        .filter[it.name.equals("ML_COMMENT") || it.name.equals("SL_COMMENT")]
+//        .map[it.toString]
+//        .join(" ")
+//  }
 
 }

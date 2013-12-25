@@ -25,6 +25,7 @@ import com.github.jknack.antlr4.LexerRuleBlock
 import com.github.jknack.antlr4.ExceptionGroup
 import com.github.jknack.antlr4.TokenVocab
 import com.github.jknack.antlr4.LocalVars
+import com.github.jknack.antlr4.Mode
 
 /**
  * Provides labels for a EObjects.
@@ -68,6 +69,10 @@ class Antlr4LabelProvider extends org.eclipse.xtext.ui.label.DefaultEObjectLabel
 
   def text(LocalVars locals) {
     indent("locals " + locals.body)
+  }
+
+  def text(Mode mode) {
+    indent("mode " + mode.name)
   }
 
   def text(Action action) {
@@ -115,6 +120,10 @@ class Antlr4LabelProvider extends org.eclipse.xtext.ui.label.DefaultEObjectLabel
 
   def text(ExceptionGroup empty) {
     null
+  }
+
+  def image(Mode mode) {
+    return "mode.png"
   }
 
   def image(ParserRule rule) {

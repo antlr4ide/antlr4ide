@@ -29,15 +29,15 @@ Workflow {
     }
     
     component = DirectoryCleaner {
-    	directory = "antlr4ide.core/src-gen"
+    	directory = "../antlr4ide.core/src-gen"
     }
     
     component = DirectoryCleaner {
-    	directory = "antlr4ide.core/model"
+    	directory = "../antlr4ide.core/model"
     }
     
     component = DirectoryCleaner {
-    	directory = "$../antlr4ide.ui/src-gen"
+    	directory = "../antlr4ide.ui/src-gen"
     }
     
     component = DirectoryCleaner {

@@ -19,6 +19,7 @@ import com.github.jknack.antlr4.V3Tokens
 import com.github.jknack.antlr4.V4Tokens
 import com.github.jknack.antlr4.Options
 import com.github.jknack.antlr4.TokenVocab
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 /**
  * This class contains custom scoping description.
@@ -95,7 +96,7 @@ class Antlr4ScopeProvider extends AbstractDeclarativeScopeProvider {
 
   def dispatch IScope scopeFor(LexerRule rule) {
     val scopes = Lists.<EObject>newArrayList()
-    val grammar = root(rule);
+    val grammar = EcoreUtil.getRootContainer(rule) as Grammar
 
     lexerRules(grammar, scopes);
 
@@ -127,13 +128,4 @@ class Antlr4ScopeProvider extends AbstractDeclarativeScopeProvider {
     return root;
   }
 
-  def Grammar root(EObject object) {
-    var root = object
-    var current = object
-    while (root != null) {
-      current = root
-      root = current.eContainer
-    }
-    return current as Grammar;
-  }
 }

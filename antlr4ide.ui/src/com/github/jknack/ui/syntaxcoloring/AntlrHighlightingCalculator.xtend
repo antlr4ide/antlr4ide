@@ -21,6 +21,8 @@ import com.github.jknack.antlr4.V3Tokens
 import com.github.jknack.antlr4.V3Token
 import com.github.jknack.antlr4.LabeledAlt
 import com.github.jknack.antlr4.LabeledElement
+import com.github.jknack.antlr4.EmptyTokens
+import org.eclipse.xtext.ui.editor.syntaxcoloring.DefaultHighlightingConfiguration
 
 class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
 
@@ -59,9 +61,24 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
   }
 
   def dispatch void highlight(IHighlightedPositionAcceptor acceptor, Options object) {
+    val keyword = object.eClass.getEStructuralFeature("keyword")
+    highlightObjectAtFeature(acceptor, object, keyword,
+      DefaultHighlightingConfiguration.KEYWORD_ID, "options".length
+    )
+  }
+
+  def dispatch void highlight(IHighlightedPositionAcceptor acceptor, EmptyTokens object) {
+    val keyword = object.eClass.getEStructuralFeature("keyword")
+    highlightObjectAtFeature(acceptor, object, keyword,
+      DefaultHighlightingConfiguration.KEYWORD_ID, "tokens".length
+    )
   }
 
   def dispatch void highlight(IHighlightedPositionAcceptor acceptor, V4Tokens object) {
+    val keyword = object.eClass.getEStructuralFeature("keyword")
+    highlightObjectAtFeature(acceptor, object, keyword,
+      DefaultHighlightingConfiguration.KEYWORD_ID, "tokens".length
+    )
     for(token : object.tokens) {
       highlight(acceptor, token)
     }
@@ -73,6 +90,10 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
   }
 
   def dispatch void highlight(IHighlightedPositionAcceptor acceptor, V3Tokens object) {
+    val keyword = object.eClass.getEStructuralFeature("keyword")
+    highlightObjectAtFeature(acceptor, object, keyword,
+      DefaultHighlightingConfiguration.KEYWORD_ID, "tokens".length
+    )
     for(token : object.tokens) {
       highlight(acceptor, token)
     }
@@ -133,27 +154,37 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
    */
   def highlightObjectAtFeature(IHighlightedPositionAcceptor acceptor, EObject object,
     EStructuralFeature feature, String id) {
+    highlightObjectAtFeature(acceptor, object, feature, id, -1)
+  }
+
+  /**
+   * Highlights an object at the position of the given {@link EStructuralFeature}
+   */
+  def highlightObjectAtFeature(IHighlightedPositionAcceptor acceptor, EObject object,
+    EStructuralFeature feature, String id, int len) {
     val children = NodeModelUtils.findNodesForFeature(object, feature)
     if (children.size() > 0) {
-      highlightNode(children.get(0), id, acceptor)
+      highlightNode(children.get(0), id, acceptor, len)
     }
   }
 
   /**
    * Highlights the non-hidden parts of {@code node} with the style that is associated with {@code id}.
    */
-  def highlightNode(INode node, String id, IHighlightedPositionAcceptor acceptor) {
+  def highlightNode(INode node, String id, IHighlightedPositionAcceptor acceptor, int len) {
     if (node == null) {
       return
     }
     if (node instanceof ILeafNode) {
       val textRegion = node.textRegion
-      acceptor.addPosition(textRegion.offset, textRegion.length, id)
+      val length = if (len == -1) textRegion.length else len
+      acceptor.addPosition(textRegion.offset, length, id)
     } else {
       for (ILeafNode leaf : node.leafNodes) {
         if (!leaf.hidden) {
           val leafRegion = leaf.textRegion
-          acceptor.addPosition(leafRegion.offset, leafRegion.length, id)
+          val length = if (len == -1) leafRegion.length else len
+          acceptor.addPosition(leafRegion.offset, length, id)
         }
       }
     }

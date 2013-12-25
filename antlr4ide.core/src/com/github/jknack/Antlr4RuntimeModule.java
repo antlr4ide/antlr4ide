@@ -3,6 +3,8 @@
  */
 package com.github.jknack;
 
+import org.eclipse.xtext.formatting.IFormatter;
+import org.eclipse.xtext.formatting.impl.BaseFormatter;
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.osgi.framework.Bundle;
@@ -29,5 +31,11 @@ public class Antlr4RuntimeModule extends com.github.jknack.AbstractAntlr4Runtime
 
   public Class<? extends IOutputConfigurationProvider> bindIOutputConfigurationProvider() {
     return BuildConfigurationProvider.class;
+  }
+
+  @Override
+  public Class<? extends IFormatter> bindIFormatter() {
+    // TODO: implement a decent formatter
+    return BaseFormatter.class;
   }
 }
