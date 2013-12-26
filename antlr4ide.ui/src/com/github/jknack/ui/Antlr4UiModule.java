@@ -9,7 +9,7 @@ import org.eclipse.xtext.ui.editor.syntaxcoloring.AbstractAntlrTokenToAttributeI
 import org.eclipse.xtext.ui.editor.syntaxcoloring.IHighlightingConfiguration;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.ISemanticHighlightingCalculator;
 
-import com.github.jknack.event.ConsoleListener;
+import com.github.jknack.console.ConsoleListener;
 import com.github.jknack.generator.ToolOptionsProvider;
 import com.github.jknack.ui.console.AntlrConsoleFactory;
 import com.github.jknack.ui.console.DefaultConsoleListener;

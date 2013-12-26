@@ -6,7 +6,7 @@ import org.eclipse.xtext.util.SimpleAttributeResolver
 import com.google.common.base.Function
 import org.eclipse.xtext.naming.QualifiedName
 
-class AntlrNameProvider extends IQualifiedNameProvider.AbstractImpl {
+class Antlr4NameProvider extends IQualifiedNameProvider.AbstractImpl {
 
   public final static SimpleAttributeResolver<EObject, String> ID_RESOLVER = SimpleAttributeResolver.
     newResolver(String, "id");

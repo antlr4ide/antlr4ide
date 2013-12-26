@@ -44,6 +44,7 @@ class Antlr4ScopeProvider extends AbstractDeclarativeScopeProvider {
     val grammar = rule.eContainer as Grammar;
     val scopes = Lists.<EObject>newArrayList()
     scopes.addAll(grammar.rules)
+    // traverse prequels
     for (prequel : grammar.prequels) {
       try {
         scopeFor(prequel, scopes, Rule)
@@ -51,7 +52,7 @@ class Antlr4ScopeProvider extends AbstractDeclarativeScopeProvider {
         // not all the prequel define rules
       }
     }
-    return Scopes.scopeFor(scopes, AntlrNameProvider.nameFn, IScope.NULLSCOPE)
+    return Scopes.scopeFor(scopes, Antlr4NameProvider.nameFn, IScope.NULLSCOPE)
   }
 
   def dispatch void scopeFor(Imports imports, List<EObject> scopes, Class<? extends Rule> filter) {
@@ -100,6 +101,7 @@ class Antlr4ScopeProvider extends AbstractDeclarativeScopeProvider {
 
     lexerRules(grammar, scopes);
 
+    // traverse prequels
     for (prequel : grammar.prequels) {
       try {
         scopeFor(prequel, scopes, LexerRule)
@@ -107,7 +109,8 @@ class Antlr4ScopeProvider extends AbstractDeclarativeScopeProvider {
         // not all the prequel define rules
       }
     }
-    return Scopes.scopeFor(scopes)
+
+    return Scopes.scopeFor(scopes, Antlr4NameProvider.nameFn, IScope.NULLSCOPE)
   }
 
   def lexerRules(Grammar grammar, List<EObject> scopes) {
@@ -115,6 +118,7 @@ class Antlr4ScopeProvider extends AbstractDeclarativeScopeProvider {
 
     if (grammar.modes != null) {
       for(mode : grammar.modes) {
+        scopes.add(mode)
         scopes.addAll(mode.rules.filter(LexerRule))
       }
     }

@@ -1,4 +1,4 @@
-package com.github.jknack.event
+package com.github.jknack.console
 
 interface ConsoleListener {
   def void info(String message, Object...args)

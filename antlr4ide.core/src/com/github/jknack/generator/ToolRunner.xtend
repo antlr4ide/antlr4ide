@@ -7,52 +7,53 @@ import java.io.BufferedOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 import java.io.FileOutputStream
-import com.github.jknack.event.ConsoleListener
+import com.github.jknack.console.ConsoleListener
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.concurrent.TimeUnit
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
+import org.eclipse.core.runtime.QualifiedName
+import java.util.Set
 
 class ToolRunner {
+
   private Bundle bundle
 
-  new (Bundle bundle) {
+  private static val GENERATED_FILES = new QualifiedName("antlr4ide", "generatedFiles")
+
+  private static val TOOL = "org.antlr.v4.Tool"
+
+  new(Bundle bundle) {
     this.bundle = bundle
   }
 
   def run(IFile file, ToolOptions options, ConsoleListener console) {
     val startBuild = System.currentTimeMillis();
 
-    val project = file.project
     val parentPath = file.parent + File.separator
-    val jar = copy(options.antlrTool, "antlr-4.1-complete.jar")
-    val cp = #[jar.absolutePath, jar.parentFile.absolutePath].join(File.pathSeparator)
-    val tool = "org.antlr.v4.Tool"
-    val String[] args = #["java", "-cp", cp, tool, file.name] + options.get(project)
+    val cp = classpath(options.antlrTool, "antlr-4.1-complete.jar").join(File.pathSeparator)
+    val bootArgs = #["java", "-cp", cp, TOOL]
+    val localOptions = options.get(file)
+    val String[] command = bootArgs + localOptions
 
-    console.info(args.join(" "))
-    val builder = new ProcessBuilder(args)
-    builder.directory(file.parent.location.toFile)
+    console.info(localOptions.join(" "))
+    cleanupResources(file)
+    val process = new ProcessBuilder(command).directory(file.parent.location.toFile).start
 
-    var process = builder.start
-    val in = new BufferedReader(new InputStreamReader(process.errorStream))
-    var line = ""
-    var errors = 0
-    var warnings = 0
+    /**
+     * generate code
+     */
+    val stats = processOutput(parentPath, process.errorStream,
+      [ message |
+        console.info(message)
+      ],
+      [ message |
+        console.error(message)
+      ])
+    val errors = stats.key
+    val warnings = stats.value
 
-    while ((line = in.readLine()) != null) {
-      line = line.replace(parentPath, "")
-      if (line.startsWith("error")) {
-        errors = errors + 1
-        console.error(line)
-      } else {
-        if (line.startsWith("warning")) {
-          warnings = warnings + 1
-        }
-        console.info(line)
-      }
-    }
     process.waitFor
-    in.close
     process.destroy
 
     val endBuild = System.currentTimeMillis();
@@ -75,19 +76,94 @@ class ToolRunner {
       timeunit = "millisecond"
     }
     console.info("Total time: %s %s(s)\n", time, timeunit)
+
+    // find out dependencies
+    findOutDependencies(file, bootArgs + #["-depend"] + localOptions, console)
   }
 
-  private def copy(String path, String name) {
+  /**
+   * Ask ANTLR for dependencies and save them in the file persistence storage.
+   * TODO: Ask Terence to generate -depend at the code generation phase.
+   */
+  private def findOutDependencies(IFile file, String[] command, ConsoleListener console) {
+    val process = new ProcessBuilder(command).directory(file.parent.location.toFile).start
+
+    val Set<String> generatedFiles = newHashSet()
+
+    /** Capture output of -depend */
+    processOutput("", process.inputStream,
+      [ message |
+        val parts = message.split(":")
+        if (parts.length == 2) {
+          val generatedFile = new File(parts.get(0).trim)
+          if(generatedFile.exists) generatedFiles.add(generatedFile.absolutePath)
+        }
+      ],
+      [ message |
+        console.error(message)
+      ])
+
+    process.waitFor
+    process.destroy
+
+    // save generated files
+    file.setPersistentProperty(GENERATED_FILES, generatedFiles.join(File.pathSeparator))
+  }
+
+  private def cleanupResources(IFile file) {
+    val stored = file.getPersistentProperty(GENERATED_FILES)
+    if (stored == null) return
+
+    val generatedFiles = stored.split(File.pathSeparator)
+    var File parentFolder = null
+    for(generatedFile : generatedFiles) {
+      val candidate = new File(generatedFile)
+      parentFolder = candidate.parentFile
+      candidate.delete
+    }
+    if (parentFolder != null) {
+      val children = parentFolder.listFiles
+      if (children == null || children.length == 0) {
+        // delete parent folder if empty
+        parentFolder.delete
+      }
+    }
+  }
+
+  private def processOutput(String parentPath, InputStream stream, Procedure1<String> info,
+    Procedure1<String> error) {
+    val in = new BufferedReader(new InputStreamReader(stream))
+    var line = ""
+    var warnings = 0
+    var errors = 0
+
+    while ((line = in.readLine()) != null) {
+      line = line.replace(parentPath, "")
+      if (line.startsWith("error")) {
+        errors = errors + 1
+        error.apply(line)
+      } else {
+        if (line.startsWith("warning")) {
+          warnings = warnings + 1
+        }
+        info.apply(line)
+      }
+    }
+    in.close
+    return errors -> warnings
+  }
+
+  private def classpath(String path, String name) {
+    val tmpdir = new File(System.properties.getProperty("java.io.tmpdir"))
     var jar = new File(path)
-    if (jar.exists) {
-      return jar
-    }
-    jar = new File(System.properties.getProperty("java.io.tmpdir"), name);
     if (!jar.exists) {
-      val url = bundle.getResource("lib/" + name);
-      copy(url.openStream, new BufferedOutputStream(new FileOutputStream(jar)))
+      jar = new File(tmpdir, name);
+      if (!jar.exists) {
+        val url = bundle.getResource("lib/" + name);
+        copy(url.openStream, new BufferedOutputStream(new FileOutputStream(jar)))
+      }
     }
-    return jar
+    return #[jar.absolutePath] + if(jar.parentFile == tmpdir) #[] else #[jar.parentFile.absolutePath]
   }
 
   private def copy(InputStream in, OutputStream out) {

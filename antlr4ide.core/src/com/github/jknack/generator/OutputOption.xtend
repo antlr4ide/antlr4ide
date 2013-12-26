@@ -7,4 +7,6 @@ class OutputOption {
   IPath absolute
 
   IPath relative
+
+  String packageName
 }

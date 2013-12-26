@@ -10,7 +10,7 @@ import org.eclipse.core.runtime.Path
 import com.google.inject.Inject
 import org.osgi.framework.Bundle
 import org.eclipse.core.resources.IWorkspaceRoot
-import com.github.jknack.event.ConsoleListener
+import com.github.jknack.console.ConsoleListener
 import org.eclipse.core.runtime.NullProgressMonitor
 import org.eclipse.core.resources.IResource
 
@@ -37,11 +37,11 @@ class Antlr4Generator implements IGenerator {
     val project = file.project
     val config = optionsProvider.options(project)
     val monitor = new NullProgressMonitor()
-    // call ANTLR
+
     new ToolRunner(bundle).run(file, config, console)
 
     project.refreshLocal(IResource.DEPTH_INFINITE, monitor)
-    val output = config.output(project)
+    val output = config.output(file)
     if (project.exists(output.relative)) { 
       val folder = project.getFolder(output.relative)
       /**

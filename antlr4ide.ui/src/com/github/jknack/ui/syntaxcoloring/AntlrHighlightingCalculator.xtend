@@ -23,9 +23,21 @@ import com.github.jknack.antlr4.LabeledAlt
 import com.github.jknack.antlr4.LabeledElement
 import com.github.jknack.antlr4.EmptyTokens
 import org.eclipse.xtext.ui.editor.syntaxcoloring.DefaultHighlightingConfiguration
+import com.github.jknack.antlr4.LexerCommand
+import com.github.jknack.antlr4.LexerCommands
+import com.github.jknack.antlr4.Mode
+import com.github.jknack.antlr4.ModeOrLexerRule
+import com.github.jknack.antlr4.LexerCharSet
+import org.eclipse.xtext.util.ITextRegion
+import com.google.common.base.Function
+import org.eclipse.xtext.util.TextRegion
+import com.github.jknack.antlr4.RuleRef
+import com.github.jknack.antlr4.TokenRef
+import com.github.jknack.antlr4.Terminal
 
 class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
 
+  
   override provideHighlightingFor(XtextResource resource, IHighlightedPositionAcceptor acceptor) {
     if (resource == null) {
       return
@@ -34,15 +46,20 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
     if (parseResult == null || parseResult.getRootASTElement() == null) {
       return
     }
+
     // iterate over elements and calculate highlighting
     val grammar = resource.contents.get(0) as Grammar;
+
+    for (rule : grammar.rules) {
+      highlight(acceptor, rule)
+    }
 
     for (prequel : grammar.prequels) {
       highlight(acceptor, prequel)
     }
 
-    for (rule : grammar.rules) {
-      highlight(acceptor, rule)
+    for (mode : grammar.modes) {
+      highlight(acceptor, mode)
     }
   }
 
@@ -62,24 +79,36 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
 
   def dispatch void highlight(IHighlightedPositionAcceptor acceptor, Options object) {
     val keyword = object.eClass.getEStructuralFeature("keyword")
-    highlightObjectAtFeature(acceptor, object, keyword,
-      DefaultHighlightingConfiguration.KEYWORD_ID, "options".length
+    highlightObjectAtFeature(
+      acceptor,
+      object,
+      keyword,
+      DefaultHighlightingConfiguration.KEYWORD_ID,
+      keyword("options")
     )
   }
 
   def dispatch void highlight(IHighlightedPositionAcceptor acceptor, EmptyTokens object) {
     val keyword = object.eClass.getEStructuralFeature("keyword")
-    highlightObjectAtFeature(acceptor, object, keyword,
-      DefaultHighlightingConfiguration.KEYWORD_ID, "tokens".length
+    highlightObjectAtFeature(
+      acceptor,
+      object,
+      keyword,
+      DefaultHighlightingConfiguration.KEYWORD_ID,
+      keyword("tokens")
     )
   }
 
   def dispatch void highlight(IHighlightedPositionAcceptor acceptor, V4Tokens object) {
     val keyword = object.eClass.getEStructuralFeature("keyword")
-    highlightObjectAtFeature(acceptor, object, keyword,
-      DefaultHighlightingConfiguration.KEYWORD_ID, "tokens".length
+    highlightObjectAtFeature(
+      acceptor,
+      object,
+      keyword,
+      DefaultHighlightingConfiguration.KEYWORD_ID,
+      keyword("tokens")
     )
-    for(token : object.tokens) {
+    for (token : object.tokens) {
       highlight(acceptor, token)
     }
   }
@@ -91,10 +120,14 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
 
   def dispatch void highlight(IHighlightedPositionAcceptor acceptor, V3Tokens object) {
     val keyword = object.eClass.getEStructuralFeature("keyword")
-    highlightObjectAtFeature(acceptor, object, keyword,
-      DefaultHighlightingConfiguration.KEYWORD_ID, "tokens".length
+    highlightObjectAtFeature(
+      acceptor,
+      object,
+      keyword,
+      DefaultHighlightingConfiguration.KEYWORD_ID,
+      keyword("tokens")
     )
-    for(token : object.tokens) {
+    for (token : object.tokens) {
       highlight(acceptor, token)
     }
   }
@@ -104,11 +137,20 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
     highlightObjectAtFeature(acceptor, object, name, AntlrHighlightingConfiguration.TOKEN)
   }
 
+  def dispatch void highlight(IHighlightedPositionAcceptor acceptor, Mode mode) {
+    val id = mode.eClass.getEStructuralFeature("id")
+    highlightObjectAtFeature(acceptor, mode, id, AntlrHighlightingConfiguration.MODE)
+
+    for (rule : mode.rules) {
+      highlight(acceptor, rule)
+    }
+  }
+
   def dispatch void highlight(IHighlightedPositionAcceptor acceptor, ParserRule rule) {
     val name = rule.eClass.getEStructuralFeature("name")
     highlightObjectAtFeature(acceptor, rule, name, AntlrHighlightingConfiguration.RULE)
 
-    for(prequel: rule.prequels) {
+    for (prequel : rule.prequels) {
       highlight(acceptor, prequel)
     }
 
@@ -116,10 +158,10 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
       return
     }
     val children = rule.body.eAllContents
-    while(children.hasNext) {
+    while (children.hasNext) {
       try {
         highlight(acceptor, children.next)
-      } catch(IllegalArgumentException ex) {
+      } catch (IllegalArgumentException ex) {
         // not all the rule elements have highlighting
       }
     }
@@ -144,49 +186,117 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
     highlightObjectAtFeature(acceptor, object, name, AntlrHighlightingConfiguration.ACTION)
   }
 
-  def dispatch void highlight(IHighlightedPositionAcceptor acceptor, LexerRule object) {
+  def dispatch void highlight(IHighlightedPositionAcceptor acceptor, LexerRule rule) {
+    val name = rule.eClass.getEStructuralFeature("name")
+    highlightObjectAtFeature(acceptor, rule, name, AntlrHighlightingConfiguration.TOKEN)
+
+    if (rule.body == null) {
+      return
+    }
+    val children = rule.body.eAllContents
+    while (children.hasNext) {
+      try {
+        highlight(acceptor, children.next)
+      } catch (IllegalArgumentException ex) {
+        // not all the rule elements have highlighting
+      }
+    }
+  }
+
+  def dispatch void highlight(IHighlightedPositionAcceptor acceptor, LexerCommands object) {
+    val keyword = object.eClass.getEStructuralFeature("keyword")
+    highlightObjectAtFeature(acceptor, object, keyword, AntlrHighlightingConfiguration.MODE_OPERATOR)
+  }
+
+  def dispatch void highlight(IHighlightedPositionAcceptor acceptor, RuleRef object) {
+    val name = object.eClass.getEStructuralFeature("reference")
+    highlightObjectAtFeature(acceptor, object, name, AntlrHighlightingConfiguration.RULE_REF)
+  }
+
+  def dispatch void highlight(IHighlightedPositionAcceptor acceptor, Terminal object) {
+    val name = object.eClass.getEStructuralFeature("reference")
+    if (name != null) {
+      highlightObjectAtFeature(acceptor, object, name, AntlrHighlightingConfiguration.TOKEN_REF)
+    }
+  }
+
+  def dispatch void highlight(IHighlightedPositionAcceptor acceptor, LexerCommand object) {
     val name = object.eClass.getEStructuralFeature("name")
-    highlightObjectAtFeature(acceptor, object, name, AntlrHighlightingConfiguration.TOKEN)
+    highlightObjectAtFeature(acceptor, object, name, AntlrHighlightingConfiguration.LEXER_COMMAND)
+    val expr = object.args
+    if (expr != null) {
+      val ref = expr.ref
+      if (ref instanceof Mode || ref instanceof ModeOrLexerRule) {
+        highlightObjectAtFeature(acceptor, expr, expr.eClass.getEStructuralFeature("ref"),
+          AntlrHighlightingConfiguration.MODE)
+      } else if (ref instanceof LexerRule) {
+        highlightObjectAtFeature(acceptor, expr, expr.eClass.getEStructuralFeature("ref"),
+          AntlrHighlightingConfiguration.TOKEN)
+      } else {
+
+        // int reference
+        highlightObjectAtFeature(acceptor, expr, expr.eClass.getEStructuralFeature("value"),
+          DefaultHighlightingConfiguration.NUMBER_ID)
+      }
+    }
+  }
+
+  def dispatch void highlight(IHighlightedPositionAcceptor acceptor, LexerCharSet object) {
+    val body = object.eClass.getEStructuralFeature("body")
+    highlightObjectAtFeature(acceptor, object, body, AntlrHighlightingConfiguration.CHARSET,
+      [region|
+        new TextRegion(region.offset + 1, region.length - 2)
+      ]
+    )
   }
 
   /**
    * Highlights an object at the position of the given {@link EStructuralFeature}
    */
-  def highlightObjectAtFeature(IHighlightedPositionAcceptor acceptor, EObject object,
-    EStructuralFeature feature, String id) {
-    highlightObjectAtFeature(acceptor, object, feature, id, -1)
+  def highlightObjectAtFeature(IHighlightedPositionAcceptor acceptor, EObject object, EStructuralFeature feature,
+    String id) {
+    highlightObjectAtFeature(acceptor, object, feature, id, [
+      region|region as TextRegion
+    ])
   }
 
   /**
    * Highlights an object at the position of the given {@link EStructuralFeature}
    */
-  def highlightObjectAtFeature(IHighlightedPositionAcceptor acceptor, EObject object,
-    EStructuralFeature feature, String id, int len) {
+  def highlightObjectAtFeature(IHighlightedPositionAcceptor acceptor, EObject object, EStructuralFeature feature,
+    String id, Function<ITextRegion, TextRegion> fn) {
     val children = NodeModelUtils.findNodesForFeature(object, feature)
     if (children.size() > 0) {
-      highlightNode(children.get(0), id, acceptor, len)
+      highlightNode(children.get(0), id, acceptor, fn)
     }
   }
 
   /**
    * Highlights the non-hidden parts of {@code node} with the style that is associated with {@code id}.
    */
-  def highlightNode(INode node, String id, IHighlightedPositionAcceptor acceptor, int len) {
+  def highlightNode(INode node, String id, IHighlightedPositionAcceptor acceptor, Function<ITextRegion, TextRegion> fn) {
     if (node == null) {
       return
     }
+    var ITextRegion region = null
     if (node instanceof ILeafNode) {
-      val textRegion = node.textRegion
-      val length = if (len == -1) textRegion.length else len
-      acceptor.addPosition(textRegion.offset, length, id)
+      region = node.textRegion
     } else {
       for (ILeafNode leaf : node.leafNodes) {
         if (!leaf.hidden) {
-          val leafRegion = leaf.textRegion
-          val length = if (len == -1) leafRegion.length else len
-          acceptor.addPosition(leafRegion.offset, length, id)
+          region = leaf.textRegion
         }
       }
     }
+    if (region != null) {
+      val result = fn.apply(region)
+      acceptor.addPosition(result.offset, result.length, id)
+    }
+  }
+
+  private def Function<ITextRegion, TextRegion> keyword(String keyword) {
+    [region|
+      new TextRegion(region.offset, keyword.length)
+    ]
   }
 }

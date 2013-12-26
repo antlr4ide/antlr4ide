@@ -156,7 +156,7 @@ ActionScope
 
 Mode
   :
-    'mode' name=Id ';'
+    'mode' id=Id ';'
     rules+=LexerRule*
   ;
 
@@ -280,7 +280,7 @@ Ebnf
 // The standard EBNF suffixes with additional components that make
 // sense only to ANTLR, in the context of a grammar block.
 BlockSuffix
-    : operator= EbnfSuffix // Standard EBNF
+    : operator=EbnfSuffix // Standard EBNF
     ;
 
 ActionElement
@@ -469,19 +469,31 @@ LexerBlock
 // channel=HIDDEN, skip, more, mode(INSIDE), push(INSIDE), pop
 LexerCommands
   :
-    RARROW commands+=LexerCommand (',' commands+=LexerCommand)*
+    keyword=RARROW commands+=LexerCommand (',' commands+=LexerCommand)*
   ;
 
 LexerCommand
   :
-    name=Id '(' args=LexerCommandExpr ')'
-  | name=Id
+    name=LexerCommandName '(' args=LexerCommandExpr ')'
+  | name=LexerCommandName
+  ;
+
+LexerCommandName
+  :
+    'mode'
+  | Id
   ;
 
 LexerCommandExpr
   :
-    ref=Id
+    ref=[ModeOrLexerRule|Id]
   | value=INT
+  ;
+
+ModeOrLexerRule
+  :
+    Mode
+  | LexerRule
   ;
 
 /** ID */

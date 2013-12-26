@@ -5,9 +5,8 @@ package com.github.jknack.formatting
 
 import org.eclipse.xtext.formatting.impl.AbstractDeclarativeFormatter
 import org.eclipse.xtext.formatting.impl.FormattingConfig
-
-import com.google.inject.Inject;
 import com.github.jknack.services.Antlr4GrammarAccess
+import com.google.inject.Inject
 
 /**
  * This class contains custom formatting description.
@@ -19,16 +18,183 @@ import com.github.jknack.services.Antlr4GrammarAccess
  */
 class Antlr4Formatter extends AbstractDeclarativeFormatter {
 
-  @Inject extension Antlr4GrammarAccess
+  @Inject extension Antlr4GrammarAccess g
 
-  override protected void configureFormatting(FormattingConfig config) {
-    // It's usually a good idea to activate the following three statements.
-    // They will add and preserve newlines around comments
-    config.setSpace("\n\n").before(optionsRule)
-    config.setSpace("\n\n").after(optionsRule)
+  override protected configureFormatting(FormattingConfig c) {
 
-    config.setLinewrap(0, 1, 2).before(SL_COMMENTRule)
-    config.setLinewrap(0, 1, 2).before(ML_COMMENTRule)
-    config.setLinewrap(0, 1, 1).after(ML_COMMENTRule)
+    /**
+     * Grammar
+     */
+    c.setNoSpace.before(g.grammarAccess.semicolonKeyword_3)
+    c.setLinewrap(2).after(g.grammarAccess.semicolonKeyword_3)
+
+    /**
+     * Options
+     */
+    // options
+    c.setLinewrap.before(g.optionsAccess.keywordOPTIONS_SPECTerminalRuleCall_1_0)
+    c.setLinewrap.after(g.optionsAccess.keywordOPTIONS_SPECTerminalRuleCall_1_0)
+
+    // name = value ';'
+    c.setLinewrap.after(g.optionsAccess.semicolonKeyword_2_1)
+    c.setNoSpace.before(g.optionsAccess.semicolonKeyword_2_1)
+    c.setIndentation(g.optionsAccess.keywordOPTIONS_SPECTerminalRuleCall_1_0,
+      g.optionsAccess.rightCurlyBracketKeyword_3)
+
+    // }
+    c.setLinewrap(2).after(g.optionsAccess.rightCurlyBracketKeyword_3)
+
+    /**
+     * Tokens
+     */
+    // tokens {
+    c.setLinewrap.before(g.v3TokensAccess.keywordTOKENS_SPECTerminalRuleCall_0_0)
+    c.setLinewrap.after(g.v3TokensAccess.keywordTOKENS_SPECTerminalRuleCall_0_0)
+
+    // tokens {}
+    c.setIndentation(g.v3TokensAccess.keywordTOKENS_SPECTerminalRuleCall_0_0,
+      g.v3TokensAccess.rightCurlyBracketKeyword_2)
+
+    // ';'
+    c.setLinewrap.after(g.v3TokenAccess.semicolonKeyword_2)
+
+    // tokens {
+    c.setLinewrap.before(g.v4TokensAccess.keywordTOKENS_SPECTerminalRuleCall_0_0)
+    c.setLinewrap.after(g.v4TokensAccess.keywordTOKENS_SPECTerminalRuleCall_0_0)
+
+    // tokens {}
+    c.setIndentation(g.v4TokensAccess.keywordTOKENS_SPECTerminalRuleCall_0_0,
+      g.v4TokensAccess.rightCurlyBracketKeyword_3)
+
+    // ','
+    c.setLinewrap.after(g.v4TokensAccess.commaKeyword_2_0)
+    c.setNoSpace.before(g.v4TokensAccess.commaKeyword_2_0)
+
+    // }
+    c.setLinewrap.before(g.v4TokensAccess.rightCurlyBracketKeyword_3)
+    c.setLinewrap(2).after(g.v4TokensAccess.rightCurlyBracketKeyword_3)
+
+    /**
+     * Actions
+     */
+    // @
+    c.setLinewrap.before(g.actionAccess.atSymbolCommercialAtKeyword_0_0)
+    c.setNoSpace.after(g.actionAccess.atSymbolCommercialAtKeyword_0_0)
+
+    // [@]scope
+    c.setNoSpace.after(g.actionAccess.scopeActionScopeParserRuleCall_1_0_0)
+
+    // [@scope]::
+    c.setNoSpace.after(g.actionAccess.colonSymbolColonColonKeyword_1_1_0)
+
+    // [@scope::]name
+    c.setSpace(" ").after(g.actionAccess.nameIdParserRuleCall_2_0)
+
+    // {}
+    c.setLinewrap(2).after(g.actionAccess.actionLANG_ACTIONTerminalRuleCall_3_0)
+
+    /**
+     * Imports
+     */
+    // import
+    c.setLinewrap.before(g.importsAccess.importKeyword_0)
+
+    // ','
+    c.setNoSpace.before(g.importsAccess.commaKeyword_2_0)
+    c.setSpace(" ").after(g.importsAccess.commaKeyword_2_0)
+
+    // ';'
+    c.setNoSpace.before(g.importsAccess.semicolonKeyword_3)
+    c.setLinewrap(2).after(g.importsAccess.semicolonKeyword_3)
+
+    /**
+     * Parser Rule
+     */
+    c.setLinewrap.before(g.parserRuleAccess.nameRULE_REFTerminalRuleCall_0_0)
+    c.setLinewrap.before(g.parserRuleAccess.COLONTerminalRuleCall_6)
+    c.setLinewrap.after(g.parserRuleAccess.COLONTerminalRuleCall_6)
+
+    // Indent rule body -> ':' body ';'
+    c.setIndentation(g.parserRuleAccess.COLONTerminalRuleCall_6, g.parserRuleAccess.semicolonKeyword_9)
+
+    // locals
+    c.setLinewrap.before(g.localVarsAccess.localsKeyword_0)
+
+    // actions
+    c.setLinewrap(0, 1, 1).after(g.ruleActionAccess.atSymbolCommercialAtKeyword_0_0)
+    c.setNoSpace.after(g.ruleActionAccess.atSymbolCommercialAtKeyword_0_0)
+    c.setSpace(" ").after(g.ruleActionAccess.nameIdParserRuleCall_1_0)
+    c.setLinewrap.after(g.ruleActionAccess.bodyLANG_ACTIONTerminalRuleCall_2_0)
+
+    // ebnf
+    c.setNoSpace.before(g.ebnfSuffixAccess.operatorQuestionMarkKeyword_0_0_0)
+    c.setNoSpace.before(g.ebnfSuffixAccess.operatorAsteriskKeyword_1_0_0)
+    c.setNoSpace.before(g.ebnfSuffixAccess.operatorPlusSignKeyword_2_0_0)
+    c.setNoSpace.before(g.ebnfSuffixAccess.nongreedyQuestionMarkKeyword_0_1_0)
+    c.setNoSpace.before(g.ebnfSuffixAccess.nongreedyQuestionMarkKeyword_1_1_0)
+    c.setNoSpace.before(g.ebnfSuffixAccess.nongreedyQuestionMarkKeyword_2_1_0)
+
+    // alternatives
+    c.setSpace(" ").before(g.labeledAltAccess.poundSymbolNumberSignKeyword_1_0_0)
+    c.setLinewrap.before(g.ruleAltListAccess.verticalLineKeyword_1_0)
+    c.setLinewrap.before(g.altListAccess.verticalLineKeyword_1_0)
+
+    // '(' block ')'
+    c.setLinewrap.before(g.blockAccess.leftParenthesisKeyword_0)
+    c.setLinewrap.after(g.blockAccess.leftParenthesisKeyword_0)
+    c.setIndentation(g.blockAccess.leftParenthesisKeyword_0, g.blockAccess.rightParenthesisKeyword_3)
+    c.setLinewrap.before(g.blockAccess.rightParenthesisKeyword_3)
+
+    // ';'
+    c.setLinewrap.before(g.parserRuleAccess.semicolonKeyword_9)
+    c.setLinewrap(2).after(g.parserRuleAccess.semicolonKeyword_9)
+
+    /**
+     * Lexer Rule
+     */
+    c.setLinewrap.before(g.lexerRuleAccess.fragmentFragmentKeyword_0_0)
+    c.setLinewrap.before(g.lexerRuleAccess.nameTOKEN_REFTerminalRuleCall_1_0)
+    c.setLinewrap.before(g.lexerRuleAccess.COLONTerminalRuleCall_2)
+    c.setLinewrap.after(g.lexerRuleAccess.COLONTerminalRuleCall_2)
+
+    // Indent rule body -> ':' body ';'
+    c.setIndentation(g.lexerRuleAccess.COLONTerminalRuleCall_2, g.lexerRuleAccess.semicolonKeyword_4)
+
+    // alternatives
+    c.setLinewrap.before(g.lexerAltListAccess.verticalLineKeyword_1_0)
+
+    // '(' block ')'
+    c.setLinewrap.before(g.lexerBlockAccess.leftParenthesisKeyword_0)
+    c.setLinewrap.after(g.lexerBlockAccess.leftParenthesisKeyword_0)
+    c.setIndentation(g.lexerBlockAccess.leftParenthesisKeyword_0, g.lexerBlockAccess.rightParenthesisKeyword_3)
+    c.setLinewrap.before(g.lexerBlockAccess.rightParenthesisKeyword_3)
+
+    // ';'
+    c.setLinewrap.before(g.lexerRuleAccess.semicolonKeyword_4)
+    c.setLinewrap(2).after(g.lexerRuleAccess.semicolonKeyword_4)
+
+    // '~'
+    c.setNoSpace.after(g.notSetAccess.tildeKeyword_0_0)
+    c.setNoSpace.after(g.notSetAccess.tildeKeyword_1_0)
+
+    /**
+     * Action inside rules
+     */
+     c.setLinewrap.before(g.actionElementAccess.rule)
+     c.setLinewrap(2).after(g.actionElementAccess.rule)
+
+    /**
+     * Mode
+     */
+     c.setNoSpace.before(g.modeAccess.semicolonKeyword_2)
+     c.setLinewrap(2).after(g.modeAccess.semicolonKeyword_2)
+
+    /**
+     * Comments
+     */
+    c.setLinewrap(0, 1, 2).before(SL_COMMENTRule)
+    c.setLinewrap(0, 1, 2).before(ML_COMMENTRule)
+    c.setLinewrap(0, 1, 1).after(ML_COMMENTRule)
   }
+
 }

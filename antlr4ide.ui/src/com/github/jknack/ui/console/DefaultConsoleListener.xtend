@@ -1,6 +1,6 @@
 package com.github.jknack.ui.console
 
-import com.github.jknack.event.ConsoleListener
+import com.github.jknack.console.ConsoleListener
 import org.eclipse.debug.ui.console.ConsoleColorProvider
 import org.eclipse.debug.ui.IDebugUIConstants
 import org.eclipse.swt.widgets.Display

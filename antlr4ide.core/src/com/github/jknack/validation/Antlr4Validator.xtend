@@ -13,6 +13,7 @@ import com.github.jknack.antlr4.LabeledAlt
 import org.eclipse.emf.ecore.util.EcoreUtil
 import com.github.jknack.antlr4.V3Token
 import com.github.jknack.antlr4.EmptyTokens
+import com.github.jknack.antlr4.Antlr4Package
 
 /**
  * Custom validation rules. 
@@ -23,6 +24,8 @@ class Antlr4Validator extends AbstractAntlr4Validator {
 
   private Set<String> keywords = newHashSet("rule")
 
+  public static val GRAMMAR_NAME_DIFFER = "grammarNameDiffer"
+
   @Check
   def checkGrammarName(Grammar grammar) {
     val resource = grammar.eResource.URI
@@ -31,8 +34,7 @@ class Antlr4Validator extends AbstractAntlr4Validator {
     if (filename != name) {
       error(
         "grammar name '" + name + "' and file name '" + resource.lastSegment + "' differ",
-        grammar,
-        grammar.eClass.getEStructuralFeature("name")
+        Antlr4Package.Literals.GRAMMAR__NAME, GRAMMAR_NAME_DIFFER, name, filename
       )
     }
   }

@@ -3,24 +3,72 @@
 */
 package com.github.jknack.ui.quickfix
 
-//import org.eclipse.xtext.ui.editor.quickfix.Fix
-//import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor
-//import org.eclipse.xtext.validation.Issue
+import org.eclipse.xtext.ui.editor.quickfix.Fix
+import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor
+import org.eclipse.xtext.validation.Issue
+import com.github.jknack.validation.Antlr4Validator
+
+import static extension org.eclipse.xtext.EcoreUtil2.*
+import com.github.jknack.antlr4.Grammar
+import com.github.jknack.antlr4.Antlr4Factory
+import com.github.jknack.antlr4.ParserRule
+import com.github.jknack.antlr4.Rule
+import com.google.inject.Inject
 
 /**
- * Custom quickfixes.
- *
  * see http://www.eclipse.org/Xtext/documentation.html#quickfixes
  */
+@SuppressWarnings("restriction")
 class Antlr4QuickfixProvider extends org.eclipse.xtext.ui.editor.quickfix.DefaultQuickfixProvider {
 
-//	@Fix(MyDslValidator::INVALID_NAME)
-//	def capitalizeName(Issue issue, IssueResolutionAcceptor acceptor) {
-//		acceptor.accept(issue, 'Capitalize name', 'Capitalize the name.', 'upcase.png') [
-//			context |
-//			val xtextDocument = context.xtextDocument
-//			val firstLetter = xtextDocument.get(issue.offset, 1)
-//			xtextDocument.replace(issue.offset, 1, firstLetter.toUpperCase)
-//		]
-//	}
+  @Inject
+  private Antlr4Factory factory
+
+  @Fix(Antlr4Validator::GRAMMAR_NAME_DIFFER)
+  def capitalizeName(Issue issue, IssueResolutionAcceptor acceptor) {
+    val name = issue.data.get(0)
+    val fname = issue.data.get(1)
+    val label = "Rename grammar to '" + fname + "'"
+
+    acceptor.accept(issue, label, label, "rename.png") [ source, context |
+      val xtextDocument = context.xtextDocument
+      xtextDocument.replace(issue.offset, name.length, fname)
+    ]
+  }
+
+  // TODO: do it later! @Fix(Diagnostic::LINKING_DIAGNOSTIC)
+  def void createMissingEntity(Issue issue, IssueResolutionAcceptor acceptor) {
+    val label = "Create rule"
+    acceptor.accept(issue, label, label, "rule.png") [ source, context |
+      try {
+        val rule = source.getContainerOfType(Rule)
+        val grammar = rule.getRootContainer() as Grammar
+        val rname = context.xtextDocument.get(issue.offset, issue.length)
+
+        val newRule = if (rule instanceof ParserRule) {
+            factory.createParserRule => [
+              name = rname
+              body = factory.createRuleBlock => [
+                body = factory.createRuleAltList => [
+                  alternatives += factory.createLabeledAlt => [
+                    body = factory.createAlternative => [
+                      elements
+                    ]
+                  ]
+                ]
+              ]
+              caught = factory.createExceptionGroup
+            ]
+          } else {
+            factory.createLexerRule => [
+              name = rname
+            ]
+          }
+        grammar.rules.add(grammar.rules.indexOf(rule) + 1, newRule)
+      } catch (Exception ex) {
+        ex.printStackTrace
+      }
+    ]
+
+  }
 }

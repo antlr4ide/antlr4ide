@@ -71,10 +71,6 @@ class Antlr4LabelProvider extends org.eclipse.xtext.ui.label.DefaultEObjectLabel
     indent("locals " + locals.body)
   }
 
-  def text(Mode mode) {
-    indent("mode " + mode.name)
-  }
-
   def text(Action action) {
     if (action.scope == null) {
       indent(action.name)
