@@ -22,8 +22,6 @@ import com.github.jknack.antlr4.Antlr4Package
  */
 class Antlr4Validator extends AbstractAntlr4Validator {
 
-  private Set<String> keywords = newHashSet("rule")
-
   public static val GRAMMAR_NAME_DIFFER = "grammarNameDiffer"
 
   @Check
@@ -34,7 +32,10 @@ class Antlr4Validator extends AbstractAntlr4Validator {
     if (filename != name) {
       error(
         "grammar name '" + name + "' and file name '" + resource.lastSegment + "' differ",
-        Antlr4Package.Literals.GRAMMAR__NAME, GRAMMAR_NAME_DIFFER, name, filename
+        Antlr4Package.Literals.GRAMMAR__NAME,
+        GRAMMAR_NAME_DIFFER,
+        name,
+        filename
       )
     }
   }
@@ -121,4 +122,62 @@ class Antlr4Validator extends AbstractAntlr4Validator {
       )
     }
   }
+
+  // Java conflicts
+  private static final Set<String> keywords = newHashSet(
+    "rule",
+    "parserRule",
+    "abstract",
+    "assert",
+    "boolean",
+    "break",
+    "byte",
+    "case",
+    "catch",
+    "char",
+    "class",
+    "const",
+    "continue",
+    "default",
+    "do",
+    "double",
+    "else",
+    "enum",
+    "extends",
+    "false",
+    "final",
+    "finally",
+    "float",
+    "for",
+    "if",
+    "implements",
+    "import",
+    "instanceof",
+    "int",
+    "interface",
+    "long",
+    "native",
+    "new",
+    "null",
+    "package",
+    "private",
+    "protected",
+    "public",
+    "return",
+    "short",
+    "static",
+    "strictfp",
+    "super",
+    "switch",
+    "synchronized",
+    "this",
+    "throw",
+    "throws",
+    "transient",
+    "true",
+    "try",
+    "void",
+    "volatile",
+    "while"
+  )
 }

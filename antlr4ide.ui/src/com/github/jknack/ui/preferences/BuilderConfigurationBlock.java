@@ -79,7 +79,7 @@ public class BuilderConfigurationBlock extends OptionsConfigurationBlock {
     addCheckBox(othersComposite, "Tool is activated",
         BuilderPreferenceAccess.PREF_AUTO_BUILDING, trueFalseValues, 0);
 
-    addTextField(othersComposite, "Path", BuildConfigurationProvider.BUILD_ANTLR_TOOL, 0, 300);
+    addTextField(othersComposite, "JAR", BuildConfigurationProvider.BUILD_ANTLR_TOOL, 0, 300);
 
     Set<OutputConfiguration> outputConfigurations = configurationProvider
         .getOutputConfigurations(getProject());

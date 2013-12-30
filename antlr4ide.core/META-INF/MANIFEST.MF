@@ -20,7 +20,7 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  org.eclipse.equinox.common,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,
- org.eclipse.ui.console
+ org.eclipse.debug.core
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.xbase.lib
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
@@ -31,6 +31,7 @@ Export-Package: com.github.jknack,
  com.github.jknack.console,
  com.github.jknack.formatting,
  com.github.jknack.generator,
+ com.github.jknack.launch,
  com.github.jknack.parser.antlr,
  com.github.jknack.parser.antlr.internal,
  com.github.jknack.parser.antlr.lexer,

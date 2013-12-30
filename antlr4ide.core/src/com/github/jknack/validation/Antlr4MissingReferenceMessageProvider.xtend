@@ -22,15 +22,15 @@ class Antlr4MissingReferenceMessageProvider extends LinkingDiagnosticMessageProv
     } catch (IllegalNodeException ex) {
       linkText = ex.getNode().getText
     }
-
     val command = EcoreUtil2.getContainerOfType(context.context, LexerCommands) != null
     if (command) {
       if (modes.contains(linkText)) {
+
         // default modes are OK
         return null
       }
       return new DiagnosticMessage("reference to undefined mode '" + linkText + "'", Severity.ERROR,
-        Diagnostic.LINKING_DIAGNOSTIC, linkText)
+        Diagnostic.LINKING_DIAGNOSTIC, linkText, "mode")
     }
 
     val rule = EcoreUtil2.getContainerOfType(context.context, Rule)
@@ -39,7 +39,7 @@ class Antlr4MissingReferenceMessageProvider extends LinkingDiagnosticMessageProv
       // it must be an import
       val fname = EcoreUtil2.getRootContainer(context.context).eResource.URI.lastSegment
       return new DiagnosticMessage("can't find or load grammar '" + linkText + "' from '" + fname + "'",
-        Severity.ERROR, Diagnostic.LINKING_DIAGNOSTIC, linkText)
+        Severity.ERROR, Diagnostic.LINKING_DIAGNOSTIC, linkText, "import")
     }
 
     val token = Character.isUpperCase(linkText.charAt(0))
@@ -51,7 +51,8 @@ class Antlr4MissingReferenceMessageProvider extends LinkingDiagnosticMessageProv
         severity = Severity.WARNING
       }
     }
-    return new DiagnosticMessage(msg, severity, Diagnostic.LINKING_DIAGNOSTIC, linkText)
+    return new DiagnosticMessage(msg, severity, Diagnostic.LINKING_DIAGNOSTIC, linkText,
+      if(token) "token" else "rule")
   }
 
 }

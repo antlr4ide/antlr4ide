@@ -10,16 +10,14 @@
        genModel = "model/generated/Antlr4.genmodel" />
   </extension>
 
-  <extension
-        point="org.eclipse.debug.core.launchConfigurationTypes">
+  <extension point="org.eclipse.debug.core.launchConfigurationTypes">
     <launchConfigurationType
-       id="com.github.jknack.antlr4.antlrTool"
+       id="com.github.jknack.Antlr4.tool"
        name="ANTLR"
-       delegate="com.github.jknack.launching.AntlrToolLaunchConfigurationDelegate"
+       delegate="com.github.jknack.launch.AntlrToolLaunchConfigurationDelegate"
+       category="org.eclipse.ui.externaltools"
        modes= "run">
    </launchConfigurationType>
   </extension>
-
-
 
 </plugin>

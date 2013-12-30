@@ -1,4 +1,4 @@
-package com.github.jknack.ui.syntaxcoloring
+package com.github.jknack.ui.highlighting
 
 import org.eclipse.xtext.ui.editor.syntaxcoloring.DefaultHighlightingConfiguration
 import org.eclipse.xtext.ui.editor.syntaxcoloring.IHighlightingConfigurationAcceptor
@@ -29,6 +29,8 @@ class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
 
   public static final String TOKEN_REF = "antlr4.tokenRef"
 
+  public static final String EBNF = "antlr4.ebnf"
+
   override configure(IHighlightingConfigurationAcceptor acceptor) {
     super.configure(acceptor);
 
@@ -42,22 +44,26 @@ class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
     acceptor.acceptDefaultHighlighting(LEXER_COMMAND, "Lexer Command", lexerCommandStyle)
     acceptor.acceptDefaultHighlighting(MODE_OPERATOR, "Mode Operator", modeOperatorStyle)
     acceptor.acceptDefaultHighlighting(MODE, "Mode", modeStyle)
-    acceptor.acceptDefaultHighlighting(CHARSET, "CharSet", charSet)
+    acceptor.acceptDefaultHighlighting(CHARSET, "Char set", charSetStyle)
+    acceptor.acceptDefaultHighlighting(EBNF, "Ebnf Opertator", ebnfStyle)
   }
 
   def ruleStyle() {
     val style = defaultTextStyle.copy
     style.color = new RGB(0, 64, 128)
-    return style;
+    style
+  }
+
+  def ebnfStyle() {
+    defaultTextStyle.copy
   }
 
   def ruleRefStyle() {
-    return ruleStyle.copy;
+    ruleStyle.copy
   }
 
-  def charSet() {
-    val style = stringTextStyle.copy
-    return style;
+  def charSetStyle() {
+    stringTextStyle.copy
   }
 
   def localVarStyle() {
@@ -68,38 +74,36 @@ class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
   def tokenStyle() {
     val style = defaultTextStyle.copy
     style.style = SWT.ITALIC
-    return style;
+    style
   }
 
   def tokenRefStyle() {
-    return tokenStyle.copy;
+    tokenStyle.copy
   }
 
   def modeStyle() {
-    val style = tokenStyle.copy
-    return style;
+    tokenStyle.copy
   }
 
   def labelStyle() {
-    val style = numberTextStyle.copy
-    return style;
+    numberTextStyle.copy
   }
 
   def lexerCommandStyle() {
     val style = numberTextStyle.copy
     style.color = new RGB(100, 70, 50)
-    return style;
+    style
   }
 
   def modeOperatorStyle() {
     val style = defaultTextStyle.copy
     style.style = SWT.BOLD
-    return style;
+    style
   }
 
   def actionStyle() {
     val style = keywordTextStyle.copy
     style.style = SWT.NORMAL;
-    return style;
+    style
   }
 }

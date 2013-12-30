@@ -1,4 +1,4 @@
-package com.github.jknack.ui.syntaxcoloring
+package com.github.jknack.ui.highlighting
 
 import org.eclipse.xtext.ui.editor.syntaxcoloring.DefaultAntlrTokenToAttributeIdMapper
 import org.eclipse.xtext.ui.editor.syntaxcoloring.DefaultHighlightingConfiguration

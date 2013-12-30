@@ -39,43 +39,43 @@ class Antlr4LabelProvider extends org.eclipse.xtext.ui.label.DefaultEObjectLabel
     super(delegate);
   }
 
-  def indent(Object text) {
-    "  " + text
-  }
-
   def text(EObject object) {
     var label = labelFeature(object.eClass, "name")
     if(label == null) {
       label = labelFeature(object.eClass, "id")
     }
     if (label != null) {
-      indent(object.eGet(label))
+      object.eGet(label)
     } else {
-      indent(object.eClass.name.toLowerCase)
+      object.eClass.name.toLowerCase
     }
   }
 
   def text(Import delegate) {
-    indent(" " + delegate.importURI.name)
+    delegate.importURI.name
+  }
+
+  def text(Options options) {
+    "options"
   }
 
   def text(TokenVocab tokenVocab) {
-    indent(" " + tokenVocab.importURI.name)
+    tokenVocab.importURI.name
   }
 
   def text(Tokens tokens) {
-    indent("tokens")
+    "tokens"
   }
 
   def text(LocalVars locals) {
-    indent("locals " + locals.body)
+    "locals " + locals.body
   }
 
   def text(Action action) {
     if (action.scope == null) {
-      indent(action.name)
+      action.name
     } else {
-      indent(action.scope + "::" + action.name)
+      action.scope + "::" + action.name
     }
   }
 
@@ -99,7 +99,7 @@ class Antlr4LabelProvider extends org.eclipse.xtext.ui.label.DefaultEObjectLabel
         text = text + values.get(0)
       }
     }
-    indent(text)
+    text
   }
 
   def text(RuleBlock empty) {

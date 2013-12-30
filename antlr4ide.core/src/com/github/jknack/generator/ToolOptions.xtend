@@ -4,23 +4,49 @@ import java.io.File
 import org.eclipse.core.runtime.Path
 import org.eclipse.core.resources.IFile
 import org.eclipse.core.runtime.IPath
+import java.util.Set
+import java.util.List
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
 
 /**
  * ANTLR Tool options.
  */
-@Data
 class ToolOptions {
+  @Property
   String antlrTool
 
+  @Property
   String outputDirectory
 
-  boolean listener
+  @Property
+  boolean listener = true
 
+  @Property
   boolean visitor
 
-  boolean derived
+  @Property
+  boolean derived = true
 
-  String encoding
+  @Property
+  String encoding = "UTF-8"
+
+  @Property
+  String messageFormat
+
+  @Property
+  boolean atn
+
+  @Property
+  boolean depend
+
+  @Property
+  String libDirectory
+
+  @Property
+  String packageName
+
+  @Property
+  Set<String> extras = newLinkedHashSet()
 
   def output(IFile file) {
     val project = file.project
@@ -69,7 +95,28 @@ class ToolOptions {
     )
   }
 
-  def get(IFile file) {
+  def defaults() {
+    var listener = "-listener"
+    if (!this.listener) {
+      listener = "-no-listener"
+    }
+    var visitor = "-no-visitor"
+    if (this.visitor) {
+      visitor = "-visitor"
+    }
+    val List<String> options = newArrayList(
+      listener,
+      visitor
+    )
+
+    // encoding
+    if (encoding != null) {
+      options.addAll("-encoding", encoding)
+    }
+    return options
+  }
+
+  def command(IFile file) {
     var listener = "-listener"
     if (!this.listener) {
       listener = "-no-listener"
@@ -79,11 +126,149 @@ class ToolOptions {
       visitor = "-visitor"
     }
     val out = output(file)
-    val options = #[file.name, "-o", out.absolute.toOSString, listener, visitor, "-encoding", encoding]
-    return options + if (out.packageName.length > 0) #["-package", out.packageName] else #[]
+    val List<String> options = newArrayList(
+      "-o",
+      out.absolute.toOSString,
+      listener,
+      visitor
+    )
+
+    // libDirectory
+    if (libDirectory != null) {
+      options.addAll("-lib", libDirectory)
+    }
+
+    // package
+    if (packageName != null) {
+      options.addAll("-package", packageName)
+    } else if (out.packageName.length > 0) {
+      options.addAll("-package", out.packageName)
+    }
+
+    // message-format
+    if (messageFormat != null) {
+      options.addAll("-message-format", messageFormat)
+    }
+
+    // atn
+    if (atn) {
+      options.add("-atn")
+    }
+
+    // depend
+    if (depend) {
+      options.add("-depend")
+    }
+
+    // encoding
+    if (encoding != null) {
+      options.addAll("-encoding", encoding)
+    }
+
+    // extras
+    extras.forEach [ option |
+      options.add(option)
+    ]
+    return options
   }
 
-  def removeSegment(IPath path, String... names) {
+  def static parse(String args, Procedure1<String> err) {
+    val options = args.split("\\s+")
+    val optionsWithValue = newHashSet("-o", "-lib", "-encoding", "-message-format", "-package")
+    val defaults = new ToolOptions
+    val iterator = options.iterator
+
+    while(iterator.hasNext) {
+      val option = iterator.next
+      var String value = null
+      if (optionsWithValue.contains(option)) {
+        value = if (iterator.hasNext) iterator.next
+      }
+      // set options
+      switch(option) {
+        case "-o": {
+          if (value != null) {
+            defaults.outputDirectory = value
+          } else {
+            err.apply("Bad argument: '" + option + "'")
+          }
+        }
+        case "-lib": {
+          if (value != null) {
+            defaults.libDirectory = value
+          } else {
+            err.apply("Bad argument: '" + option + "'")
+          }
+        }
+        case "-encoding": {
+          if (value != null) {
+            defaults.encoding = value
+          } else {
+            err.apply("Bad argument: '" + option + "'")
+          }
+        }
+        case "-message-format": {
+          if (value != null) {
+            defaults.messageFormat = value
+          } else {
+            err.apply("Bad argument: '" + option + "'")
+          }
+        }
+        case "-package": {
+          if (value != null) {
+            defaults.packageName = value
+          } else {
+            err.apply("Bad argument: '" + option + "'")
+          }
+        }
+        case "-atn": {
+          defaults.atn = true
+        }
+        case "-depend": {
+          defaults.depend = true
+        }
+        case "-listener": {
+          defaults.listener = true
+        }
+        case "-no-listener": {
+          defaults.listener = false
+        }
+        case "-visitor": {
+          defaults.visitor = true
+        }
+        case "-no-visitor": {
+          defaults.visitor = false
+        }
+        case option.startsWith("-D"): {
+          defaults.extras += option
+        }
+        case "-Werror": {
+          defaults.extras += option
+        }
+        case "-Xsave-lexer": {
+          defaults.extras += option
+        }
+        case "-XdbgST": {
+          defaults.extras += option
+        }
+        case "-Xforce-atn": {
+          defaults.extras += option
+        }
+        case "-Xlog": {
+          defaults.extras += option
+        }
+        case "-XdbgSTWait": {
+          defaults.extras += option
+        }
+        default: {
+          err.apply("Unknown argument: '" + option + "'")
+        }
+      }
+    }
+    return defaults
+  }
+
+  private def removeSegment(IPath path, String... names) {
     var result = path
     var count = 0
     for (name : names) {

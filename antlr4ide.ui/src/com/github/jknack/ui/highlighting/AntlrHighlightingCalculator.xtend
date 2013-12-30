@@ -1,4 +1,4 @@
-package com.github.jknack.ui.syntaxcoloring
+package com.github.jknack.ui.highlighting
 
 import org.eclipse.xtext.ui.editor.syntaxcoloring.ISemanticHighlightingCalculator
 import org.eclipse.xtext.resource.XtextResource
@@ -32,8 +32,8 @@ import org.eclipse.xtext.util.ITextRegion
 import com.google.common.base.Function
 import org.eclipse.xtext.util.TextRegion
 import com.github.jknack.antlr4.RuleRef
-import com.github.jknack.antlr4.TokenRef
 import com.github.jknack.antlr4.Terminal
+import com.github.jknack.antlr4.EbnfSuffix
 
 class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
 
@@ -217,6 +217,18 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
     val name = object.eClass.getEStructuralFeature("reference")
     if (name != null) {
       highlightObjectAtFeature(acceptor, object, name, AntlrHighlightingConfiguration.TOKEN_REF)
+    }
+  }
+
+  def dispatch void highlight(IHighlightedPositionAcceptor acceptor, EbnfSuffix object) {
+    val operator = object.eClass.getEStructuralFeature("operator")
+    if (operator != null) {
+      highlightObjectAtFeature(acceptor, object, operator, AntlrHighlightingConfiguration.EBNF)
+    }
+
+    val nongreedy = object.eClass.getEStructuralFeature("nongreedy")
+    if (nongreedy != null) {
+      highlightObjectAtFeature(acceptor, object, nongreedy, AntlrHighlightingConfiguration.EBNF)
     }
   }
 

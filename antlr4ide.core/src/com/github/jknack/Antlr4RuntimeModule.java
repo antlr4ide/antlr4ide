@@ -10,6 +10,7 @@ import org.osgi.framework.Bundle;
 
 import com.github.jknack.antlr4.Antlr4Factory;
 import com.github.jknack.generator.BuildConfigurationProvider;
+import com.github.jknack.launch.AntlrToolLaunchConfigurationDelegate;
 import com.github.jknack.scoping.Antlr4NameProvider;
 import com.github.jknack.validation.Antlr4MissingReferenceMessageProvider;
 import com.google.inject.Binder;
@@ -29,6 +30,8 @@ public class Antlr4RuntimeModule extends com.github.jknack.AbstractAntlr4Runtime
 
     binder.bind(ILinkingDiagnosticMessageProvider.Extended.class)
         .to(Antlr4MissingReferenceMessageProvider.class);
+
+    binder.requestStaticInjection(AntlrToolLaunchConfigurationDelegate.class);
   }
 
   @Override

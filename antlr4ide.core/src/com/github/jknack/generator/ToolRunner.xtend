@@ -32,11 +32,11 @@ class ToolRunner {
 
     val parentPath = file.parent + File.separator
     val cp = classpath(options.antlrTool, "antlr-4.1-complete.jar").join(File.pathSeparator)
-    val bootArgs = #["java", "-cp", cp, TOOL]
-    val localOptions = options.get(file)
+    val bootArgs = #["java", "-cp", cp, TOOL, file.name]
+    val localOptions = options.command(file)
     val String[] command = bootArgs + localOptions
 
-    console.info(localOptions.join(" "))
+    console.info(file.name + " " + localOptions.join(" "))
     cleanupResources(file)
     val process = new ProcessBuilder(command).directory(file.parent.location.toFile).start
 

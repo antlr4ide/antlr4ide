@@ -1,7 +1,8 @@
 package com.github.jknack.generator
 
-import org.eclipse.core.resources.IProject
+import org.eclipse.core.resources.IFile
 
 interface ToolOptionsProvider {
-  def ToolOptions options(IProject project)
+
+  def ToolOptions options(IFile file)
 }

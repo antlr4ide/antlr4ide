@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+  <template name="options"
+    description="Options spec"
+    id="options"
+    context="com.github.jknack.Antlr4.PrequelConstruct"
+    enabled="true"
+    autoinsert="true">options {
+  ${cursor}
+}</template>
+
+  <template name="tokens"
+    description="Tokens spec"
+    id="tokens"
+    context="com.github.jknack.Antlr4.PrequelConstruct"
+    enabled="true"
+    autoinsert="true">tokens {
+  ${cursor}
+}</template>
+
+  <template name="header"
+    description="Header action"
+    id="header"
+    context="com.github.jknack.Antlr4.PrequelConstruct"
+    enabled="true"
+    autoinsert="true">@header {
+  ${cursor}
+}</template>
+  <template name="members"
+    description="Member action"
+    id="members"
+    context="com.github.jknack.Antlr4.PrequelConstruct"
+    enabled="true"
+    autoinsert="true">@members {
+  ${cursor}
+}</template>
+ <template name="rule"
+    description="New parser rule"
+    id="rule"
+    context="com.github.jknack.Antlr4.Rule"
+    enabled="true"
+    autoinsert="true">${parserRule}
+:
+  ${cursor}
+;</template>
+
+  <template name="rule"
+    description="New token rule"
+    id="tokenRule"
+    context="com.github.jknack.Antlr4.Rule"
+    enabled="true"
+    autoinsert="true">${TOKEN_RULE}
+:
+  ${cursor}
+;</template>
+
+  <template name="HEX_LITERAL"
+    description="Hexadecimal Literal"
+    id="hexLiteral"
+    context="com.github.jknack.Antlr4.Rule"
+    enabled="true"
+    autoinsert="true">fragment
+${HEX_LITERAL}
+:
+    '0' ('x'|'X') [0-9A-Za-z]
+;</template>
+
+  <template name="ID"
+    description="Identifier"
+    id="id"
+    context="com.github.jknack.Antlr4.Rule"
+    enabled="true"
+    autoinsert="true">${ID}
+:
+    ${LETTER} (${LETTER} | ${DIGIT})*
+;</template>
+
+  <template name="LETTER"
+    description="Letter"
+    id="letter"
+    context="com.github.jknack.Antlr4.Rule"
+    enabled="true"
+    autoinsert="true">fragment
+${LETTER}
+:
+    [a-zA-Z]
+;</template>
+
+  <template name="DIGIT"
+    description="Digit"
+    id="digit"
+    context="com.github.jknack.Antlr4.Rule"
+    enabled="true"
+    autoinsert="true">fragment
+${DIGIT}
+:
+    [0-9]
+;</template>
+
+  <template name="INT"
+    description="Integer"
+    id="int"
+    context="com.github.jknack.Antlr4.Rule"
+    enabled="true"
+    autoinsert="true">${ID}
+:
+    DIGIT+
+;</template>
+
+  <template name="WS"
+    description="Whitespaces"
+    id="whitespaces"
+    context="com.github.jknack.Antlr4.Rule"
+    enabled="true"
+    autoinsert="true">${WS}
+:
+    [ \t\f]+ -> skip
+;</template>
+
+  <template name="NL"
+    description="New line"
+    id="newline"
+    context="com.github.jknack.Antlr4.Rule"
+    enabled="true"
+    autoinsert="true">${NL}
+:
+    '\r'? '\n' -> skip
+;</template>
+
+  <template name="STRING"
+    description="Double quotes string literal"
+    id="string"
+    context="com.github.jknack.Antlr4.Rule"
+    enabled="true"
+    autoinsert="true">${STRING}
+:
+    '"' .*? '"'
+;</template>
+
+  <template name="STRING"
+    description="Single quotes string literal"
+    id="chars"
+    context="com.github.jknack.Antlr4.Rule"
+    enabled="true"
+    autoinsert="true">${STRING}
+:
+    '\'' .*? '\''
+;</template>
+
+  <template name="COMMENT"
+    description="Multi-line comment"
+    id="comment"
+    context="com.github.jknack.Antlr4.Rule"
+    enabled="true"
+    autoinsert="true">${COMMENT}
+:
+    '//' .*? '\n' -> skip
+;</template>
+
+  <template name="SL_COMMENT"
+    description="Single line comment"
+    id="singleLineComment"
+    context="com.github.jknack.Antlr4.Rule"
+    enabled="true"
+    autoinsert="true">${SL_COMMENT}
+:
+    '/*' .*? '*/' -> skip
+;</template>
+
+</templates>
