@@ -73,7 +73,7 @@ public class AntlrGeneratorFragmentWithCustomLexer extends BaseAntlrGeneratorFra
 
     // copy
     copy(new File(absoluteLexerFileName), new File(lexerBaseFileName + ".gxtext"));
-    writeFile(absoluteLexerFileName, readFile(absoluteLexerFileName.replace("src-gen", "src")));
+    writeFile(absoluteLexerFileName, readFile(absoluteLexerFileName.replace("src-gen", "java")));
 
     getAntlrTool().runWithEncodingAndParams(absoluteLexerFileName, encoding, lexerAntlrParams);
     cleanupLexerTokensFile(lexerBaseFileName);

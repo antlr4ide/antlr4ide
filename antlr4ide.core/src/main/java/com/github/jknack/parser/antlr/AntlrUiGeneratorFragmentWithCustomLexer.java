@@ -51,7 +51,7 @@ public class AntlrUiGeneratorFragmentWithCustomLexer extends BaseAntlrGeneratorF
     // copy
     copy(new File(absoluteLexerFileName), new File(absoluteLexerFileName.replace(".g", ".gxtext")));
     writeFile(absoluteLexerFileName,
-        readFile("../antlr4ide.core/src/com/github/jknack/parser/antlr/lexer/InternalAntlr4Lexer.g"));
+        readFile("../antlr4ide.core/src/main/java/com/github/jknack/parser/antlr/lexer/InternalAntlr4Lexer.g"));
 
     getAntlrTool().runWithEncodingAndParams(absoluteLexerFileName, encoding, lexerAntlrParams);
 

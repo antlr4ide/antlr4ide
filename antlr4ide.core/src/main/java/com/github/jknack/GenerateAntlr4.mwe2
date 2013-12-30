@@ -5,7 +5,7 @@ import org.eclipse.xtext.generator.*
 import org.eclipse.xtext.ui.generator.*
 
 var projectName = "antlr4ide.core"
-var grammarURI = "platform:/resource/${projectName}/src/com/github/jknack/Antlr4.xtext"
+var grammarURI = "platform:/resource/${projectName}/src/main/java/com/github/jknack/Antlr4.xtext"
 var fileExtensions = "g4"
 var generateXtendStub = true
 var encoding = "UTF-8"
@@ -29,7 +29,7 @@ Workflow {
     }
     
     component = DirectoryCleaner {
-    	directory = "../antlr4ide.core/src-gen"
+    	directory = "../antlr4ide.core/src/main/src-gen"
     }
     
     component = DirectoryCleaner {
@@ -37,7 +37,7 @@ Workflow {
     }
     
     component = DirectoryCleaner {
-    	directory = "../antlr4ide.ui/src-gen"
+    	directory = "../antlr4ide.ui/src/main/src-gen"
     }
     
     component = DirectoryCleaner {
@@ -45,6 +45,8 @@ Workflow {
     }
     
     component = Generator {
+      srcPath = "/src/main/java"
+      srcGenPath = "/src/main/src-gen"
     	pathRtProject = "../antlr4ide.core"
     	pathUiProject = "../antlr4ide.ui"
     	pathTestProject = "../antlr4ide.tests"
