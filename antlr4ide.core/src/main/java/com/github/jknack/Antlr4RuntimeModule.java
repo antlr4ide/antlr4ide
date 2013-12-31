@@ -21,6 +21,10 @@ public class Antlr4RuntimeModule extends com.github.jknack.AbstractAntlr4Runtime
   @Override
   public void configure(final Binder binder) {
     super.configure(binder);
+    configureLocal(binder);
+  }
+
+  void configureLocal(final Binder binder) {
     binder.bind(Bundle.class).toInstance(Activator.bundle);
 
     binder.bind(Antlr4Factory.class).toInstance(Antlr4Factory.eINSTANCE);

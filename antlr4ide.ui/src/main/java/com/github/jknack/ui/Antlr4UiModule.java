@@ -7,7 +7,7 @@ import org.eclipse.xtext.ui.editor.syntaxcoloring.AbstractAntlrTokenToAttributeI
 import org.eclipse.xtext.ui.editor.syntaxcoloring.IHighlightingConfiguration;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.ISemanticHighlightingCalculator;
 
-import com.github.jknack.console.ConsoleListener;
+import com.github.jknack.console.Console;
 import com.github.jknack.generator.ToolOptionsProvider;
 import com.github.jknack.ui.console.AntlrConsoleFactory;
 import com.github.jknack.ui.console.DefaultConsoleListener;
@@ -33,7 +33,7 @@ public class Antlr4UiModule extends com.github.jknack.ui.AbstractAntlr4UiModule 
   public void configure(final Binder binder) {
     super.configure(binder);
     binder.requestStaticInjection(AntlrConsoleFactory.class);
-    binder.bind(ConsoleListener.class).to(DefaultConsoleListener.class);
+    binder.bind(Console.class).to(DefaultConsoleListener.class);
     binder.bind(ToolOptionsProvider.class).to(DefaultToolOptionsProvider.class);
   }
 

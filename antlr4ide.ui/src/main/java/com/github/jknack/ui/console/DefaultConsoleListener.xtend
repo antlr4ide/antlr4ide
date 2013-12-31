@@ -1,11 +1,11 @@
 package com.github.jknack.ui.console
 
-import com.github.jknack.console.ConsoleListener
 import org.eclipse.debug.ui.console.ConsoleColorProvider
 import org.eclipse.debug.ui.IDebugUIConstants
 import org.eclipse.swt.widgets.Display
+import com.github.jknack.console.Console
 
-class DefaultConsoleListener implements ConsoleListener {
+class DefaultConsoleListener implements Console {
 
   override info(String message, Object...args) {
     log(String.format(message, args), IDebugUIConstants.ID_STANDARD_OUTPUT_STREAM)

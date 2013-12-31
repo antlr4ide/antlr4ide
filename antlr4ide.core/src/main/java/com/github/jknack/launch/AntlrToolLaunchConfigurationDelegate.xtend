@@ -1,6 +1,5 @@
 package com.github.jknack.launch
 
-import com.github.jknack.console.ConsoleListener
 import com.github.jknack.generator.Antlr4Generator
 import com.github.jknack.generator.ToolOptionsProvider
 import com.google.inject.Inject
@@ -12,6 +11,7 @@ import org.eclipse.debug.core.ILaunch
 import org.eclipse.debug.core.ILaunchConfiguration
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate
 import com.github.jknack.generator.ToolOptions
+import com.github.jknack.console.Console
 
 class AntlrToolLaunchConfigurationDelegate extends LaunchConfigurationDelegate {
 
@@ -25,7 +25,7 @@ class AntlrToolLaunchConfigurationDelegate extends LaunchConfigurationDelegate {
   static ToolOptionsProvider optionsProvider
 
   @Inject
-  static ConsoleListener console
+  static Console console
 
   override launch(ILaunchConfiguration config, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
     val path = Path.fromOSString(config.getAttribute(AntlrToolLaunchConstants.GRAMMAR, ""))

@@ -7,13 +7,13 @@ import java.io.BufferedOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 import java.io.FileOutputStream
-import com.github.jknack.console.ConsoleListener
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.concurrent.TimeUnit
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
 import org.eclipse.core.runtime.QualifiedName
 import java.util.Set
+import com.github.jknack.console.Console
 
 class ToolRunner {
 
@@ -21,13 +21,15 @@ class ToolRunner {
 
   private static val GENERATED_FILES = new QualifiedName("antlr4ide", "generatedFiles")
 
+  public static val SRC = new QualifiedName("antlr4ide", "source")
+
   private static val TOOL = "org.antlr.v4.Tool"
 
   new(Bundle bundle) {
     this.bundle = bundle
   }
 
-  def run(IFile file, ToolOptions options, ConsoleListener console) {
+  def run(IFile file, ToolOptions options, Console console) {
     val startBuild = System.currentTimeMillis();
 
     val parentPath = file.parent + File.separator
@@ -78,14 +80,14 @@ class ToolRunner {
     console.info("Total time: %s %s(s)\n", time, timeunit)
 
     // find out dependencies
-    findOutDependencies(file, bootArgs + #["-depend"] + localOptions, console)
+    postProcess(file, bootArgs + #["-depend"] + localOptions, console)
   }
 
   /**
    * Ask ANTLR for dependencies and save them in the file persistence storage.
    * TODO: Ask Terence to generate -depend at the code generation phase.
    */
-  private def findOutDependencies(IFile file, String[] command, ConsoleListener console) {
+  private def postProcess(IFile file, String[] command, Console console) {
     val process = new ProcessBuilder(command).directory(file.parent.location.toFile).start
 
     val Set<String> generatedFiles = newHashSet()

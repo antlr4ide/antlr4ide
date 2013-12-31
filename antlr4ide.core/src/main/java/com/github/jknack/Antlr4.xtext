@@ -274,13 +274,7 @@ Ebnf
     : Block
       // And now we see if we have any of the optional suffixs and rewrite
       // the AST for this rule accordingly
-      operator=BlockSuffix?
-    ;
-
-// The standard EBNF suffixes with additional components that make
-// sense only to ANTLR, in the context of a grammar block.
-BlockSuffix
-    : operator=EbnfSuffix // Standard EBNF
+      operator=EbnfSuffix?
     ;
 
 ActionElement

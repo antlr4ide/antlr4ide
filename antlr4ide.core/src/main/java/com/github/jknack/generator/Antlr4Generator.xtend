@@ -10,11 +10,11 @@ import org.eclipse.core.runtime.Path
 import com.google.inject.Inject
 import org.osgi.framework.Bundle
 import org.eclipse.core.resources.IWorkspaceRoot
-import com.github.jknack.console.ConsoleListener
 import org.eclipse.core.runtime.NullProgressMonitor
 import org.eclipse.core.resources.IResource
 import org.eclipse.core.resources.IFile
 import org.eclipse.core.runtime.Status
+import com.github.jknack.console.Console
 
 /**
  * Generates code from your model files on save.
@@ -29,7 +29,7 @@ class Antlr4Generator implements IGenerator {
   ToolOptionsProvider optionsProvider
 
   @Inject
-  ConsoleListener console
+  Console console
 
   @Inject
   IWorkspaceRoot workspaceRoot
