@@ -2,6 +2,7 @@ package com.github.jknack.ui;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtext.ui.editor.actions.IActionContributor;
+import org.eclipse.xtext.ui.editor.hover.IEObjectHoverProvider;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.AbstractAntlrTokenToAttributeIdMapper;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.IHighlightingConfiguration;
@@ -16,6 +17,7 @@ import com.github.jknack.ui.highlighting.AntlrHighlightingCalculator;
 import com.github.jknack.ui.highlighting.AntlrHighlightingConfiguration;
 import com.github.jknack.ui.highlighting.ShowWhitespaceCharactersActionContributor;
 import com.github.jknack.ui.highlighting.TokenToAttributeIdMapper;
+import com.github.jknack.ui.labeling.Antlr4HoverProvider;
 import com.github.jknack.ui.preferences.BuildPreferenceStoreInitializer;
 import com.google.inject.Binder;
 import com.google.inject.name.Names;
@@ -57,4 +59,9 @@ public class Antlr4UiModule extends com.github.jknack.ui.AbstractAntlr4UiModule 
   public Class<? extends IPreferenceStoreInitializer> bindIPreferenceStoreInitializer() {
     return BuildPreferenceStoreInitializer.class;
   }
+
+  public Class<? extends IEObjectHoverProvider> bindIEObjectHoverProvider() {
+    return Antlr4HoverProvider.class;
+  }
+
 }

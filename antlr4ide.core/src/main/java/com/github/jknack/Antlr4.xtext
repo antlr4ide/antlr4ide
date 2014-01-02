@@ -271,7 +271,7 @@ Element
 // A block of grammar structure optionally followed by standard EBNF
 // notation, or ANTLR specific notation. I.E. ? + ^ and so on
 Ebnf
-    : Block
+    : body=Block
       // And now we see if we have any of the optional suffixs and rewrite
       // the AST for this rule accordingly
       operator=EbnfSuffix?

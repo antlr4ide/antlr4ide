@@ -373,4 +373,26 @@
         </contextualLaunch>
     </shortcut>
   </extension>
+
+  <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="com.github.jknack.Antlr4.viewCategory"
+            class="com.github.jknack.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.ui.railroad.RailroadView"
+            icon="icons/railroad.png"
+            id="com.github.jknack.Antlr4.syntaxDiagram"
+            name="Syntax Diagram"
+            restorable="true">
+      </view>
+      <category
+            id="com.github.jknack.Antlr4.viewCategory"
+            name="ANTLR">
+      </category>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="com.github.jknack.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.ui.railroad.RailroadViewPreferences">
+      </initializer>
+   </extension>
 </plugin>

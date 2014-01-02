@@ -4,32 +4,34 @@ import org.eclipse.xtext.ui.editor.syntaxcoloring.DefaultHighlightingConfigurati
 import org.eclipse.xtext.ui.editor.syntaxcoloring.IHighlightingConfigurationAcceptor
 import org.eclipse.swt.SWT
 import org.eclipse.swt.graphics.RGB
+import org.eclipse.xtext.ui.editor.syntaxcoloring.PreferenceStoreAccessor
+import com.github.jknack.Antlr4RuntimeModule
 
 class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
 
-  public static final String ACTION = "antlr4.action"
+  public static val ACTION = "antlr4.action"
 
-  public static final String RULE = "antlr4.rule"
+  public static val RULE = "antlr4.rule"
 
-  public static final String TOKEN = "antlr4.token"
+  public static val TOKEN = "antlr4.token"
 
-  public static final String LABEL = "antlr4.label"
+  public static val LABEL = "antlr4.label"
 
-  public static final String LOCAL_VAR = "antlr4.localVar"
+  public static val LOCAL_VAR = "antlr4.localVar"
 
-  public static final String LEXER_COMMAND = "antlr4.lexerCommand"
+  public static val LEXER_COMMAND = "antlr4.lexerCommand"
 
-  public static final String MODE_OPERATOR = "antlr4.modeOperator"
+  public static val MODE_OPERATOR = "antlr4.modeOperator"
 
-  public static final String MODE = "antlr4.mode"
+  public static val MODE = "antlr4.mode"
 
-  public static final String CHARSET = "antlr4.charSet"
+  public static val CHARSET = "antlr4.charSet"
 
-  public static final String RULE_REF = "antlr4.ruleRef"
+  public static val RULE_REF = "antlr4.ruleRef"
 
-  public static final String TOKEN_REF = "antlr4.tokenRef"
+  public static val TOKEN_REF = "antlr4.tokenRef"
 
-  public static final String EBNF = "antlr4.ebnf"
+  public static val EBNF = "antlr4.ebnf"
 
   override configure(IHighlightingConfigurationAcceptor acceptor) {
     super.configure(acceptor);
@@ -105,5 +107,10 @@ class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
     val style = keywordTextStyle.copy
     style.style = SWT.NORMAL;
     style
+  }
+
+  def static qualifiedId(String tokenType) {
+    val lang = PreferenceStoreAccessor::tokenTypeTag(Antlr4RuntimeModule.LANG_NAME)
+    return lang + "." + PreferenceStoreAccessor::getTokenColorPreferenceKey(tokenType)
   }
 }

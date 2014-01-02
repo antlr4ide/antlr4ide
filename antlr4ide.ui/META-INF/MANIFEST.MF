@@ -18,12 +18,13 @@ Require-Bundle: antlr4ide.core;visibility:=reexport,
  org.eclipse.compare,
  org.eclipse.ui.console,
  org.eclipse.ui.forms,
- org.eclipse.debug.ui
+ org.eclipse.debug.ui,
+ org.eclipse.draw2d
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.xbase.lib
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: com.github.jknack.ui.quickfix,
- com.github.jknack.ui.contentassist,
+Export-Package: com.github.jknack.ui.contentassist,
  com.github.jknack.ui.contentassist.antlr,
- com.github.jknack.ui.internal
+ com.github.jknack.ui.internal,
+ com.github.jknack.ui.quickfix
 Bundle-Activator: com.github.jknack.ui.internal.Antlr4Activator
