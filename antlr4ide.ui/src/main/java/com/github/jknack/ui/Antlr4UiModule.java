@@ -35,6 +35,7 @@ public class Antlr4UiModule extends com.github.jknack.ui.AbstractAntlr4UiModule 
   public void configure(final Binder binder) {
     super.configure(binder);
     binder.requestStaticInjection(AntlrConsoleFactory.class);
+    binder.requestStaticInjection(AntlrHighlightingConfiguration.class);
     binder.bind(Console.class).to(DefaultConsoleListener.class);
     binder.bind(ToolOptionsProvider.class).to(DefaultToolOptionsProvider.class);
   }

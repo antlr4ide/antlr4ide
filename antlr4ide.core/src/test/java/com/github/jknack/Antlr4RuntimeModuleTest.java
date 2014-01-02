@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.osgi.framework.Bundle;
 
 import com.github.jknack.antlr4.Antlr4Factory;
-import com.github.jknack.generator.BuildConfigurationProvider;
 import com.github.jknack.launch.AntlrToolLaunchConfigurationDelegate;
 import com.github.jknack.scoping.Antlr4NameProvider;
 import com.github.jknack.validation.Antlr4MissingReferenceMessageProvider;
@@ -61,9 +60,4 @@ public class Antlr4RuntimeModuleTest {
     assertEquals(Antlr4NameProvider.class, new Antlr4RuntimeModule().bindIQualifiedNameProvider());
   }
 
-  @Test
-  public void bindIOutputConfigurationProvider() throws Exception {
-    assertEquals(BuildConfigurationProvider.class,
-        new Antlr4RuntimeModule().bindIOutputConfigurationProvider());
-  }
 }

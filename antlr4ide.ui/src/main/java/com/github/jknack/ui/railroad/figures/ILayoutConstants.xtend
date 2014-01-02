@@ -9,8 +9,6 @@
  *******************************************************************************/
 package com.github.jknack.ui.railroad.figures
 
-import org.eclipse.swt.graphics.Color
-
 import com.github.jknack.ui.railroad.figures.layout.RailroadConnectionRouter
 
 /**

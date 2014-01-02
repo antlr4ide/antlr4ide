@@ -22,7 +22,7 @@ import org.eclipse.xtext.generator.OutputConfiguration;
 import org.eclipse.xtext.ui.preferences.OptionsConfigurationBlock;
 import org.eclipse.xtext.ui.preferences.ScrolledPageContent;
 
-import com.github.jknack.generator.BuildConfigurationProvider;
+import com.github.jknack.generator.ToolOptions;
 
 /**
  * @author Michael Clay - Initial contribution and API
@@ -79,7 +79,7 @@ public class BuilderConfigurationBlock extends OptionsConfigurationBlock {
     addCheckBox(othersComposite, "Tool is activated",
         BuilderPreferenceAccess.PREF_AUTO_BUILDING, trueFalseValues, 0);
 
-    addTextField(othersComposite, "JAR", BuildConfigurationProvider.BUILD_ANTLR_TOOL, 0, 300);
+    addTextField(othersComposite, "JAR", ToolOptions.BUILD_ANTLR_TOOL, 0, 300);
 
     Set<OutputConfiguration> outputConfigurations = configurationProvider
         .getOutputConfigurations(getProject());
@@ -95,13 +95,13 @@ public class BuilderConfigurationBlock extends OptionsConfigurationBlock {
               EclipseOutputConfigurationProvider.OUTPUT_DIRECTORY), 0, 300);
 
       addCheckBox(othersComposite, "Generate a parse tree listener (-listener)",
-          BuildConfigurationProvider.BUILD_LISTENER, trueFalseValues, 0);
+          ToolOptions.BUILD_LISTENER, trueFalseValues, 0);
 
       addCheckBox(othersComposite, "Generate parse tree visitors (-visitor)",
-          BuildConfigurationProvider.BUILD_VISITOR, trueFalseValues, 0);
+          ToolOptions.BUILD_VISITOR, trueFalseValues, 0);
 
       addTextField(othersComposite, "Encoding",
-          BuildConfigurationProvider.BUILD_ENCODING, 0, 100);
+          ToolOptions.BUILD_ENCODING, 0, 100);
 
       addCheckBox(othersComposite, "Create directory, if it doesn't exist",
           BuilderPreferenceAccess.getKey(outputConfiguration,

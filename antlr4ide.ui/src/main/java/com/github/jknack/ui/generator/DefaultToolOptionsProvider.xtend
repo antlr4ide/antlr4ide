@@ -6,7 +6,6 @@ import com.google.inject.Inject
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess
 import com.github.jknack.generator.ToolOptions
 import org.eclipse.jface.preference.IPreferenceStore
-import com.github.jknack.generator.BuildConfigurationProvider
 import org.eclipse.core.resources.IFile
 
 class DefaultToolOptionsProvider implements ToolOptionsProvider {
@@ -23,11 +22,11 @@ class DefaultToolOptionsProvider implements ToolOptionsProvider {
     val output = configurationProvider.getOutputConfigurations(project).last
 
     return new ToolOptions => [
-      antlrTool = getString(BuildConfigurationProvider.BUILD_ANTLR_TOOL, store, "embedded")
+      antlrTool = getString(ToolOptions.BUILD_ANTLR_TOOL, store, "embedded")
       outputDirectory = output.outputDirectory
-      listener = getBoolean(BuildConfigurationProvider.BUILD_LISTENER, store, true)
-      visitor = getBoolean(BuildConfigurationProvider.BUILD_VISITOR, store, false)
-      encoding = getString(BuildConfigurationProvider.BUILD_ENCODING, store, "UTF-8")
+      listener = getBoolean(ToolOptions.BUILD_LISTENER, store, true)
+      visitor = getBoolean(ToolOptions.BUILD_VISITOR, store, false)
+      encoding = getString(ToolOptions.BUILD_ENCODING, store, "UTF-8")
       derived = output.setDerivedProperty
     ]
   }

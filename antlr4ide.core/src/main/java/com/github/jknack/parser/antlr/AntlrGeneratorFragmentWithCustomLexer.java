@@ -1,5 +1,3 @@
-package com.github.jknack.parser.antlr;
-
 /*******************************************************************************
  * Copyright (c) 2009 itemis AG (http://www.itemis.eu) and others.
  * All rights reserved. This program and the accompanying materials
@@ -7,7 +5,7 @@ package com.github.jknack.parser.antlr;
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-
+package com.github.jknack.parser.antlr;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -43,6 +41,7 @@ import org.eclipse.xtext.parser.antlr.Lexer;
 import org.eclipse.xtext.parser.antlr.UnorderedGroupHelper;
 import org.eclipse.xtext.parsetree.reconstr.ITokenSerializer;
 import org.eclipse.xtext.parsetree.reconstr.impl.IgnoreCaseKeywordSerializer;
+
 
 /**
  * Converts the Xtext grammar to an AntLR grammar runs the AntLR generator.

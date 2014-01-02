@@ -12,6 +12,15 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
  * ANTLR Tool options.
  */
 class ToolOptions {
+
+  public static val BUILD_LISTENER = "antlr4.listener"
+
+  public static val BUILD_VISITOR = "antlr4.visitor"
+
+  public static val BUILD_ANTLR_TOOL = "antlr4.antlrTool"
+
+  public static val BUILD_ENCODING = "antlr4.encoding"
+
   @Property
   String antlrTool
 
@@ -35,9 +44,6 @@ class ToolOptions {
 
   @Property
   boolean atn
-
-  @Property
-  boolean depend
 
   @Property
   String libDirectory
@@ -155,11 +161,6 @@ class ToolOptions {
       options.add("-atn")
     }
 
-    // depend
-    if (depend) {
-      options.add("-depend")
-    }
-
     // encoding
     if (encoding != null) {
       options.addAll("-encoding", encoding)
@@ -225,7 +226,7 @@ class ToolOptions {
           defaults.atn = true
         }
         case "-depend": {
-          defaults.depend = true
+          err.apply("Unsupported argument: '" + option + "'")
         }
         case "-listener": {
           defaults.listener = true

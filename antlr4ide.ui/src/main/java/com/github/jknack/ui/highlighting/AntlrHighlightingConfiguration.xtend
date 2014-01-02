@@ -5,7 +5,9 @@ import org.eclipse.xtext.ui.editor.syntaxcoloring.IHighlightingConfigurationAcce
 import org.eclipse.swt.SWT
 import org.eclipse.swt.graphics.RGB
 import org.eclipse.xtext.ui.editor.syntaxcoloring.PreferenceStoreAccessor
-import com.github.jknack.Antlr4RuntimeModule
+import com.google.inject.Inject
+import com.google.inject.name.Named
+import org.eclipse.xtext.Constants
 
 class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
 
@@ -32,6 +34,10 @@ class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
   public static val TOKEN_REF = "antlr4.tokenRef"
 
   public static val EBNF = "antlr4.ebnf"
+
+  @Inject
+  @Named(Constants.LANGUAGE_NAME)
+  static String language
 
   override configure(IHighlightingConfigurationAcceptor acceptor) {
     super.configure(acceptor);
@@ -110,7 +116,7 @@ class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
   }
 
   def static qualifiedId(String tokenType) {
-    val lang = PreferenceStoreAccessor::tokenTypeTag(Antlr4RuntimeModule.LANG_NAME)
+    val lang = PreferenceStoreAccessor::tokenTypeTag(language)
     return lang + "." + PreferenceStoreAccessor::getTokenColorPreferenceKey(tokenType)
   }
 }

@@ -15,20 +15,38 @@ import org.eclipse.core.runtime.QualifiedName
 import java.util.Set
 import com.github.jknack.console.Console
 
+/**
+ * Execute ANTLR Tool and generated the code.
+ * @NotThreadSafe
+ */
 class ToolRunner {
 
-  private Bundle bundle
+  /** The core bundle. */
+  Bundle bundle
 
+  /** The generated files property. */
   private static val GENERATED_FILES = new QualifiedName("antlr4ide", "generatedFiles")
 
-  public static val SRC = new QualifiedName("antlr4ide", "source")
-
+  /** The name of the ANTLR Tool class. */
   private static val TOOL = "org.antlr.v4.Tool"
 
-  new(Bundle bundle) {
+  /**
+   * Creates a new ToolRunner.
+   *
+   * @param bundle A core bundle.
+   */
+  new (Bundle bundle) {
     this.bundle = bundle
   }
 
+  /**
+   * Generate code by executing the ANTLR Tool. If the output directory lives inside the workspace,
+   * the parent project will be refreshed.
+   *
+   * Optional, generated files will be marked as derived.
+   *
+   * The embedded jar will be used unless options#antlrTool path is set to something else.
+   */
   def run(IFile file, ToolOptions options, Console console) {
     val startBuild = System.currentTimeMillis();
 
@@ -112,6 +130,9 @@ class ToolRunner {
     file.setPersistentProperty(GENERATED_FILES, generatedFiles.join(File.pathSeparator))
   }
 
+  /**
+   * Delete previously generated files.
+   */
   private def cleanupResources(IFile file) {
     val stored = file.getPersistentProperty(GENERATED_FILES)
     if (stored == null) return
@@ -132,29 +153,37 @@ class ToolRunner {
     }
   }
 
+  /**
+   * Read output from a runtime process.
+   */
   private def processOutput(String parentPath, InputStream stream, Procedure1<String> info,
     Procedure1<String> error) {
     val in = new BufferedReader(new InputStreamReader(stream))
     var line = ""
     var warnings = 0
     var errors = 0
-
-    while ((line = in.readLine()) != null) {
-      line = line.replace(parentPath, "")
-      if (line.startsWith("error")) {
-        errors = errors + 1
-        error.apply(line)
-      } else {
-        if (line.startsWith("warning")) {
-          warnings = warnings + 1
+    try {
+      while ((line = in.readLine()) != null) {
+        line = line.replace(parentPath, "")
+        if (line.startsWith("error")) {
+          errors = errors + 1
+          error.apply(line)
+        } else {
+          if (line.startsWith("warning")) {
+            warnings = warnings + 1
+          }
+          info.apply(line)
         }
-        info.apply(line)
       }
+    } finally {
+      in.close
     }
-    in.close
     return errors -> warnings
   }
 
+  /**
+   * Creates the ANTLR Tool classpath.
+   */
   private def classpath(String path, String name) {
     val tmpdir = new File(System.properties.getProperty("java.io.tmpdir"))
     var jar = new File(path)
@@ -168,6 +197,9 @@ class ToolRunner {
     return #[jar.absolutePath] + if(jar.parentFile == tmpdir) #[] else #[jar.parentFile.absolutePath]
   }
 
+  /**
+   * Copy file function.
+   */
   private def copy(InputStream in, OutputStream out) {
     try {
       val buffer = newByteArrayOfSize(1024)

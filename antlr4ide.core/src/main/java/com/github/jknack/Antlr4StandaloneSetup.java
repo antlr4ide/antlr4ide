@@ -6,6 +6,9 @@ package com.github.jknack;
  */
 public class Antlr4StandaloneSetup extends Antlr4StandaloneSetupGenerated {
 
+  /**
+   * Initialize Guice and EMF.
+   */
   public static void doSetup() {
     new Antlr4StandaloneSetup().createInjectorAndDoEMFRegistration();
   }
