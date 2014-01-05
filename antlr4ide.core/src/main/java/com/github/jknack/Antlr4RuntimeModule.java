@@ -2,11 +2,13 @@ package com.github.jknack;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.linking.ILinkingDiagnosticMessageProvider;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.osgi.framework.Bundle;
 
 import com.github.jknack.antlr4.Antlr4Factory;
+import com.github.jknack.generator.Antlr4OutputConfigurationProvider;
 import com.github.jknack.launch.AntlrToolLaunchConfigurationDelegate;
 import com.github.jknack.scoping.Antlr4NameProvider;
 import com.github.jknack.validation.Antlr4MissingReferenceMessageProvider;
@@ -44,6 +46,10 @@ public class Antlr4RuntimeModule extends com.github.jknack.AbstractAntlr4Runtime
   @Override
   public Class<? extends IQualifiedNameProvider> bindIQualifiedNameProvider() {
     return Antlr4NameProvider.class;
+  }
+
+  public Class<? extends IOutputConfigurationProvider> bindIOutputConfigurationProvider() {
+    return Antlr4OutputConfigurationProvider.class;
   }
 
 }

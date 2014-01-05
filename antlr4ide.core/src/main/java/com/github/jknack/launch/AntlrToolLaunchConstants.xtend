@@ -16,6 +16,11 @@ interface AntlrToolLaunchConstants {
    */
   val ARGUMENTS = "antlr4.arguments"
 
+  /**
+   * Specify VM arguments.
+   */
+  val VM_ARGUMENTS = "antlr4.vmArguments"
+
   /** Launch ID. */
   val ID = "com.github.jknack.Antlr4.tool"
 }

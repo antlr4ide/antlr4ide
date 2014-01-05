@@ -40,7 +40,7 @@ class Antlr4RailroadFactory {
     if (operator == "*" || operator == "+") {
       ebnf = new LoopSegment(suffix, ebnf, primitiveFactory)
     }
-    if (operator == "?") {
+    if (operator == "?" || operator == "*") {
       ebnf = new BypassSegment(suffix, ebnf, primitiveFactory)
     }
     return ebnf

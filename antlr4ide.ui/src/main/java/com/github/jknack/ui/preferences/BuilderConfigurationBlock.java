@@ -79,7 +79,7 @@ public class BuilderConfigurationBlock extends OptionsConfigurationBlock {
     addCheckBox(othersComposite, "Tool is activated",
         BuilderPreferenceAccess.PREF_AUTO_BUILDING, trueFalseValues, 0);
 
-    addTextField(othersComposite, "JAR", ToolOptions.BUILD_ANTLR_TOOL, 0, 300);
+    addTextField(othersComposite, "JAR", ToolOptions.BUILD_ANTLR_TOOL, 0, 340);
 
     Set<OutputConfiguration> outputConfigurations = configurationProvider
         .getOutputConfigurations(getProject());
@@ -111,6 +111,13 @@ public class BuilderConfigurationBlock extends OptionsConfigurationBlock {
           BuilderPreferenceAccess.getKey(outputConfiguration,
               EclipseOutputConfigurationProvider.OUTPUT_DERIVED), trueFalseValues, 0);
     }
+
+    excomposite = createStyleSection(composite, "VM Arguments", columns);
+    othersComposite = new Composite(excomposite, SWT.NONE);
+    excomposite.setClient(othersComposite);
+    othersComposite.setLayout(new GridLayout(columns, false));
+
+    addTextField(othersComposite, "", ToolOptions.VM_ARGS, 0, 360);
 
     registerKey(OptionsConfigurationBlock.IS_PROJECT_SPECIFIC);
     IDialogSettings section = Activator.getDefault().getDialogSettings()

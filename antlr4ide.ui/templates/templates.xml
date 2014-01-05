@@ -102,7 +102,7 @@ ${DIGIT}
     id="int"
     context="com.github.jknack.Antlr4.Rule"
     enabled="true"
-    autoinsert="true">${ID}
+    autoinsert="true">${INT}
 :
     DIGIT+
 ;</template>

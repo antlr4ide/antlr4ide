@@ -5,7 +5,7 @@ import org.eclipse.debug.ui.IDebugUIConstants
 import org.eclipse.swt.widgets.Display
 import com.github.jknack.console.Console
 
-class DefaultConsoleListener implements Console {
+class DefaultConsole implements Console {
 
   override info(String message, Object...args) {
     log(String.format(message, args), IDebugUIConstants.ID_STANDARD_OUTPUT_STREAM)
@@ -15,7 +15,7 @@ class DefaultConsoleListener implements Console {
     log(String.format(message, args), IDebugUIConstants.ID_STANDARD_ERROR_STREAM)
   }
 
-  def log(String message, String streamId) {
+  private def log(String message, String streamId) {
     Display.^default.syncExec([ |
       val console = AntlrConsoleFactory.console
       val stream = console.newOutputStream

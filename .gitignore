@@ -1,9 +1,10 @@
 *.class
 
 # Package Files #
-*.jar
 *.war
 *.ear
+*.jar
+*.zip
 target
 bin
 dependency-reduced-pom.xml

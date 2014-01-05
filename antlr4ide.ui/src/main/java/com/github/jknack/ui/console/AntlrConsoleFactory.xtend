@@ -11,7 +11,7 @@ class AntlrConsoleFactory implements IConsoleFactory {
   public static val ANTLR_CONSOLE = "ANTLR Console"
 
   @Inject
-  private static IImageDescriptorHelper imageHelper;
+  static IImageDescriptorHelper imageHelper
 
   override openConsole() {
     val manager = ConsolePlugin.^default.consoleManager
@@ -27,9 +27,8 @@ class AntlrConsoleFactory implements IConsoleFactory {
         return console as IOConsole
     }
 
-    val console = new IOConsole(ANTLR_CONSOLE, imageHelper.getImageDescriptor("console.png"));
-    // TODO: console.addPatternMatchListener(new AntlrProblemPatternMatcher());
-    manager.addConsoles(#[console]);
+    val console = new IOConsole(ANTLR_CONSOLE, imageHelper.getImageDescriptor("console.png"))
+    manager.addConsoles(#[console])
     return console
   }
 }

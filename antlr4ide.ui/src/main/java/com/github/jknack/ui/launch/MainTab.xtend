@@ -42,6 +42,8 @@ class MainTab extends AbstractLaunchConfigurationTab {
 
   Text fArgsText
 
+  Text fVmArgsText
+
   ModifyListener modifyListener = [ event |
     updateLaunchConfigurationDialog
   ]
@@ -56,6 +58,10 @@ class MainTab extends AbstractLaunchConfigurationTab {
     createVerticalSpacer(comp, 8)
 
     fArgsText = createSection(comp, "Arguments:",
+      SWT.MULTI.bitwiseOr(SWT.WRAP).bitwiseOr(SWT.BORDER), 5, false
+    )
+
+    fVmArgsText = createSection(comp, "VM Arguments:",
       SWT.MULTI.bitwiseOr(SWT.WRAP).bitwiseOr(SWT.BORDER), 5, false
     )
 
@@ -82,12 +88,16 @@ class MainTab extends AbstractLaunchConfigurationTab {
     fGrammarText.setText(config.getAttribute(AntlrToolLaunchConstants.GRAMMAR, ""))
 
     fArgsText.setText(config.getAttribute(AntlrToolLaunchConstants.ARGUMENTS, ""))
+
+    fVmArgsText.setText(config.getAttribute(AntlrToolLaunchConstants.VM_ARGUMENTS, ""))
   }
 
   override performApply(ILaunchConfigurationWorkingCopy workingCopy) {
     workingCopy.setAttribute(AntlrToolLaunchConstants.GRAMMAR, fGrammarText.text)
 
     workingCopy.setAttribute(AntlrToolLaunchConstants.ARGUMENTS, fArgsText.text)
+
+    workingCopy.setAttribute(AntlrToolLaunchConstants.VM_ARGUMENTS, fVmArgsText.text)
   }
 
   override setDefaults(ILaunchConfigurationWorkingCopy workingCopy) {

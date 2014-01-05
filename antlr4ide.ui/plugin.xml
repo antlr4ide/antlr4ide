@@ -12,7 +12,7 @@
             extensions="g4"
             icon="icons/g.png"
             id="com.github.jknack.Antlr4"
-            name="Antlr4 Editor">
+            name="ANTLR 4 Editor">
         </editor>
     </extension>
     <extension
@@ -63,7 +63,7 @@
         <page
             class="com.github.jknack.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
             id="com.github.jknack.Antlr4"
-            name="Antlr4">
+            name="ANTLR 4">
             <keywordReference id="com.github.jknack.ui.keyword_Antlr4"/>
         </page>
         <page
@@ -86,7 +86,7 @@
         <page
             class="com.github.jknack.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
             id="com.github.jknack.Antlr4"
-            name="Antlr4">
+            name="ANTLR 4">
             <keywordReference id="com.github.jknack.ui.keyword_Antlr4"/>
             <enabledWhen>
               <adapt type="org.eclipse.core.resources.IProject"/>
@@ -98,7 +98,7 @@
         point="org.eclipse.ui.keywords">
         <keyword
             id="com.github.jknack.ui.keyword_Antlr4"
-            label="Antlr4"/>
+            label="ANTLR 4"/>
     </extension>
     <extension
          point="org.eclipse.ui.commands">
@@ -207,7 +207,7 @@
             category="com.github.jknack.Antlr4"
             class="com.github.jknack.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.ui.preferences.BuilderPreferencePage"
             id="com.github.jknack.Antlr4.compiler.propertyPage"
-            name="Compiler">
+            name="Tool">
             <keywordReference id="com.github.jknack.ui.keyword_Antlr4"/>
             <enabledWhen>
 	            <adapt type="org.eclipse.core.resources.IProject"/>
@@ -321,7 +321,7 @@
   <extension point="org.eclipse.compare.contentMergeViewers">
     <viewer id="com.github.jknack.Antlr4.compare.contentMergeViewers"
             class="com.github.jknack.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
-            extensions="g4" label="Antlr4 Compare">
+            extensions="g4" label="ANTLR 4 Compare">
      </viewer>
   </extension>
   <extension point="org.eclipse.ui.editors.documentProviders">
@@ -358,7 +358,7 @@
     <shortcut
         id="com.github.jknack.Antlr4.toolLaunchShortcut"
         class="com.github.jknack.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.ui.launch.AntlrToolLaunchShortcut"
-        label="ANTLR"
+        label="ANTLR 4"
         icon="icons/g.png"
         modes="run">
         <contextualLaunch>
@@ -386,7 +386,7 @@
       </view>
       <category
             id="com.github.jknack.Antlr4.viewCategory"
-            name="ANTLR">
+            name="ANTLR 4">
       </category>
    </extension>
    <extension

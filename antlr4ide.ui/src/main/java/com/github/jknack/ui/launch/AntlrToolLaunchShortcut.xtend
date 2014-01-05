@@ -34,7 +34,8 @@ class AntlrToolLaunchShortcut implements ILaunchShortcut {
   }
 
   private def launchConfiguration(IFile file, String mode) {
-    val args = optionsProvider.options(file).defaults.join(" ")
+    val options = optionsProvider.options(file)
+    val args = options.defaults.join(" ")
     val grammar = file.fullPath.toOSString
     val manager = DebugPlugin.^default.launchManager
     val configType = manager.getLaunchConfigurationType(AntlrToolLaunchConstants.ID)
@@ -60,6 +61,7 @@ class AntlrToolLaunchShortcut implements ILaunchShortcut {
       val cgwc = configType.newInstance(null, name)
       cgwc.setAttribute(AntlrToolLaunchConstants.GRAMMAR, grammar)
       cgwc.setAttribute(AntlrToolLaunchConstants.ARGUMENTS, args)
+      cgwc.setAttribute(AntlrToolLaunchConstants.VM_ARGUMENTS, options.vmArgs)
 
       val config = cgwc.doSave()
       config.launch(mode, new NullProgressMonitor)

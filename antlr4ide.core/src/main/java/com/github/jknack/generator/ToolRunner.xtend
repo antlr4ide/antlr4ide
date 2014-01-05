@@ -51,9 +51,19 @@ class ToolRunner {
     val startBuild = System.currentTimeMillis();
 
     val parentPath = file.parent + File.separator
+
+    // classpath
     val cp = classpath(options.antlrTool, "antlr-4.1-complete.jar").join(File.pathSeparator)
-    val bootArgs = #["java", "-cp", cp, TOOL, file.name]
+
+    // boot args
+    val Set<String> bootArgs = newLinkedHashSet("java")
+    bootArgs.addAll(options.vmArguments)
+    bootArgs.addAll("-cp", cp, TOOL, file.name)
+
+    // tool args
     val localOptions = options.command(file)
+
+    // full command
     val String[] command = bootArgs + localOptions
 
     console.info(file.name + " " + localOptions.join(" "))

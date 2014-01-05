@@ -13,7 +13,7 @@
     <module>antlr4ide.tests</module>
     <module>antlr4ide.ui</module>
     <module>antlr4ide.sdk</module>
-    <module>antlr4ide.updatesite</module>
+    <module>updates</module>
   </modules>
 
   <build>

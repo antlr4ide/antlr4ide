@@ -86,8 +86,7 @@ class Antlr4LabelProvider extends org.eclipse.xtext.ui.label.DefaultEObjectLabel
     }
     if (rule.^return != null) {
       text = text + " : "
-      val values = rule.^return
-          .replace("returns", "")
+      val values = rule.^return.body
           .replace("[", "")
           .replace("]", "")
           .trim()

@@ -87,7 +87,7 @@ StringOption
 
 ActionOption
   :
-    value=Action
+    value=LANG_ACTION
   ;
 
 IntOption
@@ -98,7 +98,7 @@ IntOption
 
 /** Imports */
 Imports:
-  'import' imports+=Import (',' imports+=Import)* ';'
+  keyword='import' imports+=Import (',' imports+=Import)* ';'
   ;
 
 Import
@@ -214,7 +214,7 @@ FinallyClause
 
 Return
   :
-    'returns' ARG_OR_CHARSET
+    'returns' body=ARG_OR_CHARSET
   ;
 
 Exceptions

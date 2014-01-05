@@ -13,6 +13,8 @@ import org.eclipse.core.resources.IFile
 import org.eclipse.core.runtime.Status
 import com.github.jknack.console.Console
 import static com.google.common.base.Preconditions.*
+import org.eclipse.debug.core.DebugPlugin
+import com.github.jknack.launch.AntlrToolLaunchConstants
 
 /**
  * Generate code by executing ANTLR Tool. The code is generated on saved for valid grammars.
@@ -48,7 +50,44 @@ class Antlr4Generator implements IGenerator {
   override void doGenerate(Resource resource, IFileSystemAccess fsa) {
     checkNotNull(resource)
     val file = workspaceRoot.getFile(new Path(resource.getURI().toPlatformString(true)))
-    doGenerate(file, optionsProvider.options(file))
+    doGenerate(file, options(file, optionsProvider.options(file)))
+  }
+
+  /**
+   * Find a launch configuration and create tool options from there. If no launch configuration
+   * exists, the defaults options will be used it.
+   */
+  private def options(IFile file, ToolOptions defaults) {
+    val manager = DebugPlugin.^default.launchManager
+    val grammar = file.fullPath.toOSString
+    val configType = manager.getLaunchConfigurationType(AntlrToolLaunchConstants.ID)
+    var configurations = manager.getLaunchConfigurations(configType)
+
+    val existing = configurations.filter [ launch |
+      if (grammar == launch.getAttribute(AntlrToolLaunchConstants.GRAMMAR, "")) {
+        return true
+      }
+      return false
+    ]
+
+    if (existing.size > 0) {
+
+      // launch existing
+      val config = existing.head
+      val args = config.getAttribute(AntlrToolLaunchConstants.ARGUMENTS, "")
+      val options = ToolOptions.parse(args) [ message |
+        console.error(message)
+      ]
+
+      // set some defaults if they are missing
+      if (options.outputDirectory == null) {
+        options.outputDirectory = defaults.outputDirectory
+      }
+      options.antlrTool = defaults.antlrTool
+      return options
+    } else {
+      return defaults
+    }
   }
 
   /**

@@ -21,6 +21,8 @@ class ToolOptions {
 
   public static val BUILD_ENCODING = "antlr4.encoding"
 
+  public static val VM_ARGS = "antlr4.vmArgs"
+
   @Property
   String antlrTool
 
@@ -53,6 +55,9 @@ class ToolOptions {
 
   @Property
   Set<String> extras = newLinkedHashSet()
+
+  @Property
+  String vmArgs
 
   def output(IFile file) {
     val project = file.project
@@ -191,42 +196,42 @@ class ToolOptions {
           if (value != null) {
             defaults.outputDirectory = value
           } else {
-            err.apply("Bad argument: '" + option + "'")
+            err.apply("Bad command-line option: '" + option + "'")
           }
         }
         case "-lib": {
           if (value != null) {
             defaults.libDirectory = value
           } else {
-            err.apply("Bad argument: '" + option + "'")
+            err.apply("Bad command-line option: '" + option + "'")
           }
         }
         case "-encoding": {
           if (value != null) {
             defaults.encoding = value
           } else {
-            err.apply("Bad argument: '" + option + "'")
+            err.apply("Bad command-line option: '" + option + "'")
           }
         }
         case "-message-format": {
           if (value != null) {
             defaults.messageFormat = value
           } else {
-            err.apply("Bad argument: '" + option + "'")
+            err.apply("Bad command-line option: '" + option + "'")
           }
         }
         case "-package": {
           if (value != null) {
             defaults.packageName = value
           } else {
-            err.apply("Bad argument: '" + option + "'")
+            err.apply("Bad command-line option: '" + option + "'")
           }
         }
         case "-atn": {
           defaults.atn = true
         }
         case "-depend": {
-          err.apply("Unsupported argument: '" + option + "'")
+          err.apply("Unsupported command-line option: '" + option + "'")
         }
         case "-listener": {
           defaults.listener = true
@@ -262,11 +267,15 @@ class ToolOptions {
           defaults.extras += option
         }
         default: {
-          err.apply("Unknown argument: '" + option + "'")
+          err.apply("Unknown command-line option: '" + option + "'")
         }
       }
     }
     return defaults
+  }
+
+  def String[] vmArguments() {
+    if (vmArgs == null || vmArgs.length == 0) #[] else vmArgs.split("\\s+")
   }
 
   private def removeSegment(IPath path, String... names) {

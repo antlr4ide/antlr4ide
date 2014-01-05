@@ -27,6 +27,7 @@ class DefaultToolOptionsProvider implements ToolOptionsProvider {
       listener = getBoolean(ToolOptions.BUILD_LISTENER, store, true)
       visitor = getBoolean(ToolOptions.BUILD_VISITOR, store, false)
       encoding = getString(ToolOptions.BUILD_ENCODING, store, "UTF-8")
+      vmArgs = getString(ToolOptions.VM_ARGS, store, "")
       derived = output.setDerivedProperty
     ]
   }

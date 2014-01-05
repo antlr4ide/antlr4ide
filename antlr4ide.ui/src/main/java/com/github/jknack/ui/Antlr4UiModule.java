@@ -11,7 +11,7 @@ import org.eclipse.xtext.ui.editor.syntaxcoloring.ISemanticHighlightingCalculato
 import com.github.jknack.console.Console;
 import com.github.jknack.generator.ToolOptionsProvider;
 import com.github.jknack.ui.console.AntlrConsoleFactory;
-import com.github.jknack.ui.console.DefaultConsoleListener;
+import com.github.jknack.ui.console.DefaultConsole;
 import com.github.jknack.ui.generator.DefaultToolOptionsProvider;
 import com.github.jknack.ui.highlighting.AntlrHighlightingCalculator;
 import com.github.jknack.ui.highlighting.AntlrHighlightingConfiguration;
@@ -36,7 +36,7 @@ public class Antlr4UiModule extends com.github.jknack.ui.AbstractAntlr4UiModule 
     super.configure(binder);
     binder.requestStaticInjection(AntlrConsoleFactory.class);
     binder.requestStaticInjection(AntlrHighlightingConfiguration.class);
-    binder.bind(Console.class).to(DefaultConsoleListener.class);
+    binder.bind(Console.class).to(DefaultConsole.class);
     binder.bind(ToolOptionsProvider.class).to(DefaultToolOptionsProvider.class);
   }
 

@@ -1,17 +1,17 @@
 package com.github.jknack.ui.highlighting
 
 import org.eclipse.xtext.ui.editor.syntaxcoloring.DefaultAntlrTokenToAttributeIdMapper
-import org.eclipse.xtext.ui.editor.syntaxcoloring.DefaultHighlightingConfiguration
 
 class TokenToAttributeIdMapper extends DefaultAntlrTokenToAttributeIdMapper {
+
   override calculateId(String tokenName, int tokenType) {
-    if (tokenName.endsWith("RULE_TOKEN_VOCAB") || tokenName.endsWith("RULE_OPTIONS_SPEC") ||
-      tokenName.endsWith("RULE_TOKENS_SPEC")) {
-      return DefaultHighlightingConfiguration.DEFAULT_ID;
+    switch (tokenName) {
+      case "RULE_TOKEN_VOCAB": AntlrHighlightingConfiguration.DEFAULT_ID
+      case "RULE_OPTIONS_SPEC": AntlrHighlightingConfiguration.DEFAULT_ID
+      case "RULE_TOKENS_SPEC": AntlrHighlightingConfiguration.DEFAULT_ID
+      case tokenName.endsWith("_SPEC"): AntlrHighlightingConfiguration.KEYWORD_ID
+      default: super.calculateId(tokenName, tokenType)
     }
-    if (tokenName.endsWith("_SPEC")) {
-      return DefaultHighlightingConfiguration.KEYWORD_ID
-    }
-    return super.calculateId(tokenName, tokenType)
   }
+
 }

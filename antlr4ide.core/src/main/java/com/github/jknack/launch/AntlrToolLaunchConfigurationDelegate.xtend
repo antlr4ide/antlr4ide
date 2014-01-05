@@ -39,6 +39,7 @@ class AntlrToolLaunchConfigurationDelegate extends LaunchConfigurationDelegate {
   override launch(ILaunchConfiguration config, String mode, ILaunch launch, IProgressMonitor monitor) {
     val path = Path.fromOSString(config.getAttribute(AntlrToolLaunchConstants.GRAMMAR, ""))
     val args = config.getAttribute(AntlrToolLaunchConstants.ARGUMENTS, "")
+    val vmArgs = config.getAttribute(AntlrToolLaunchConstants.VM_ARGUMENTS, "")
     val file = workspaceRoot.getFile(path)
     val defaults = optionsProvider.options(file)
     val options = ToolOptions.parse(args) [ message |
@@ -50,6 +51,7 @@ class AntlrToolLaunchConfigurationDelegate extends LaunchConfigurationDelegate {
       options.outputDirectory = defaults.outputDirectory
     }
     options.antlrTool = defaults.antlrTool
+    options.vmArgs = vmArgs
     generator.generate(file, options)
   }
 

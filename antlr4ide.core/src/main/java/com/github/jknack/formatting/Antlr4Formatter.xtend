@@ -165,7 +165,7 @@ class Antlr4Formatter extends AbstractDeclarativeFormatter {
    * @param c formatter configuration
    */
   protected def imports(FormattingConfig c) {
-    c.setLinewrap.before(g.importsAccess.importKeyword_0)
+    c.setLinewrap.before(g.importsAccess.keywordImportKeyword_0_0)
 
     // ','
     c.setNoSpace.before(g.importsAccess.commaKeyword_2_0)
