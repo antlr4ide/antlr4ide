@@ -3,7 +3,7 @@
 # Package Files #
 *.war
 *.ear
-*.jar
+
 *.zip
 target
 bin
@@ -21,3 +21,8 @@ xtend-gen
 .antlr-generator-3.2.0.jar
 plugin.xml_gen
 model
+
+site/features
+site/plugins
+site/artifacts.jar
+site/content.jar
