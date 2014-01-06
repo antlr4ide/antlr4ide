@@ -1,7 +1,8 @@
 ANTLR 4 IDE
 =========
 
-ANTLR 4 IDE for Eclipse 4.x
+![ANTLR 4 IDE](https://raw.github.com/jknack/antlr4ide/master/site/screenshots/full.png)
+
 
 Features
 =========
@@ -14,6 +15,7 @@ Features
 * Syntax Diagrams
 * Advanced Rule Navigation between files (F3)
 * Quick fixes
+
 
 
 Welcome
