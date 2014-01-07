@@ -10,6 +10,9 @@ import com.github.jknack.antlr4.LexerRule
 import com.github.jknack.antlr4.V3Token
 import com.github.jknack.antlr4.V4Token
 import com.github.jknack.antlr4.ParserRule
+import org.eclipse.xtext.nodemodel.INode
+import org.eclipse.xtext.nodemodel.ILeafNode
+import org.eclipse.xtext.nodemodel.ICompositeNode
 
 class Antlr4HoverProvider extends DefaultEObjectHoverProvider {
 
@@ -19,25 +22,42 @@ class Antlr4HoverProvider extends DefaultEObjectHoverProvider {
   }
 
   private def dispatch String body(Grammar grammar) {
-    grammar.name
+    ""
   }
 
   private def dispatch String body(RuleRef ref) {
-    val rule = ref.reference
-    NodeModelUtils.findActualNodeFor(rule.body).text
+    text(ref.reference)
   }
 
   private def dispatch String body(Terminal terminal) {
     val literal = terminal.literal
-    if (literal != null) literal else body(terminal.reference)
+    if (literal != null) literal else text(terminal.reference)
   }
 
   private def dispatch String body(ParserRule rule) {
-    NodeModelUtils.findActualNodeFor(rule.body).text
+    text(rule.body)
   }
 
   private def dispatch String body(LexerRule rule) {
-    NodeModelUtils.findActualNodeFor(rule.body).text
+    text(rule.body)
+  }
+
+  private def String text(EObject source) {
+    val node = NodeModelUtils.findActualNodeFor(source)
+    text(node)
+  }
+
+  private def String text(INode node) {
+    if (node instanceof ILeafNode) {
+      return if (node.hidden) " " else node.text
+    } else {
+      val composite = node as ICompositeNode
+      val buff = new StringBuilder
+      for(child : composite.children) {
+        buff.append(text(child))
+      }
+      return buff.toString
+    } 
   }
 
   private def dispatch String body(V3Token token) {
