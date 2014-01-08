@@ -384,6 +384,22 @@ class Antlr4Validator extends AbstractAntlr4Validator {
   }
 
   @Check
+  def deprecateGatedSemanticPredicate(ActionElement action) {
+    val body = action.body.trim
+    val gated = "=>"
+    val idx = body.indexOf(gated)
+
+    if (idx > 0) {
+      warning(
+      "{...}?=> explicitly gated semantic predicates are deprecated in ANTLR 4; use {...}? instead",
+      action,
+      idx,
+      gated.length
+    )
+    }
+  }
+
+  @Check
   def nameConflict(Rule rule) {
     val name = rule.name
     nameConflict(name, rule)
