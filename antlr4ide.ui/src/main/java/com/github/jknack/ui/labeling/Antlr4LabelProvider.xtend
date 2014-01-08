@@ -12,7 +12,6 @@ import com.github.jknack.antlr4.V4Token
 import com.github.jknack.antlr4.Import
 import com.github.jknack.antlr4.Imports
 import com.github.jknack.antlr4.ParserRule
-import com.github.jknack.antlr4.Action
 import com.github.jknack.antlr4.RuleAction
 import com.github.jknack.antlr4.LexerRule
 import org.eclipse.emf.ecore.EObject
@@ -26,6 +25,7 @@ import com.github.jknack.antlr4.ExceptionGroup
 import com.github.jknack.antlr4.TokenVocab
 import com.github.jknack.antlr4.LocalVars
 import com.github.jknack.antlr4.Mode
+import com.github.jknack.antlr4.GrammarAction
 
 /**
  * Provides labels for a EObjects.
@@ -71,7 +71,7 @@ class Antlr4LabelProvider extends org.eclipse.xtext.ui.label.DefaultEObjectLabel
     "locals " + locals.body
   }
 
-  def text(Action action) {
+  def text(GrammarAction action) {
     if (action.scope == null) {
       action.name
     } else {
@@ -153,7 +153,7 @@ class Antlr4LabelProvider extends org.eclipse.xtext.ui.label.DefaultEObjectLabel
     }
   }
 
-  def image(Action action) {
+  def image(GrammarAction action) {
     return "action.png"
   }
 

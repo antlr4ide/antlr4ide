@@ -46,7 +46,7 @@ PrequelConstruct
       // action sections start with '@' and are given to the language target's
       // StringTemplate group. For instance @parser::header and @lexer::header
       // are gathered here.
-      Action
+      GrammarAction
     ;
 
 /** Options */
@@ -87,7 +87,7 @@ StringOption
 
 ActionOption
   :
-    value=LANG_ACTION
+    value=ACTION
   ;
 
 IntOption
@@ -141,9 +141,9 @@ V3Token
   ;
 
 /** Grammar Actions */
-Action
+GrammarAction
   :
-    atSymbol='@' (scope=ActionScope colonSymbol='::')? name=Id action=LANG_ACTION
+    atSymbol='@' (scope=ActionScope colonSymbol='::')? name=Id action=ACTION
   ;
 
 ActionScope
@@ -205,11 +205,11 @@ ExceptionGroup
 // thrown by a rule
 ExceptionHandler
   :
-    'catch' exception=ARG_OR_CHARSET body=LANG_ACTION
+    'catch' exception=ARG_OR_CHARSET body=ACTION
   ;
 
 FinallyClause
-  : 'finally' body=LANG_ACTION
+  : 'finally' body=ACTION
   ;
 
 Return
@@ -235,7 +235,7 @@ RulePrequel
 
 RuleAction
   :
-    atSymbol='@' name=Id body=LANG_ACTION
+    atSymbol='@' name=Id body=ACTION
   ;
 
 RuleBlock
@@ -279,7 +279,7 @@ Ebnf
 
 ActionElement
   :
-    body=LANG_ACTION options=ElementOptions?
+    body=ACTION options=ElementOptions?
   ;
 
 LabeledElement
@@ -518,14 +518,14 @@ RARROW: '->';
 terminal
 OPTIONS_SPEC
   :
-  'options' WS_LOOP '{'
+  'options' WSNLCHARS* '{'
   ;
 
 /** Tokens */
 terminal
 TOKENS_SPEC
   :
-  'tokens' WS_LOOP '{'
+  'tokens' WSNLCHARS* '{'
   ;
 
 /** IDS */
@@ -629,23 +629,9 @@ XDIGIT
   ;
 
 /** Language action (a.k.a language code) */
-terminal LANG_ACTION:
-  '{' LAC_BODY '?'?;
+terminal ACTION: NESTED_ACTION;
 
-terminal fragment NO_ACTION: !('{' | '}' | '\'' | '"' | '/');
-
-terminal fragment START_ACTION: '{' LAC_BODY;
-
-terminal fragment LAC_BODY:
-  (
-    SL_COMMENT
-  | ML_COMMENT
-  | ACTION_STRING_LITERAL
-  | ACTION_CHAR_LITERAL
-  | NO_ACTION
-  | START_ACTION
-  )*
-  '}';
+terminal fragment NESTED_ACTION: '___nested_action_';
 
 terminal
 fragment
@@ -749,13 +735,4 @@ WS
   )+
   ;
 
-terminal
-fragment
-WS_LOOP
-  :
-  (
-    WS
-    | SL_COMMENT
-    | ML_COMMENT
-  )*
-  ;
+terminal fragment WSNLCHARS: ' ' | '\t' | '\f' | '\n' | '\r';

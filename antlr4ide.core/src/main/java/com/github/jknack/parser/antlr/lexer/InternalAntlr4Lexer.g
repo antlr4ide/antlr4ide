@@ -97,9 +97,9 @@ RULE_COLON : ':';
 
 RULE_RARROW : '->';
 
-RULE_OPTIONS_SPEC : 'options' RULE_WS_LOOP '{';
+RULE_OPTIONS_SPEC : 'options' RULE_WSNLCHARS* '{';
 
-RULE_TOKENS_SPEC : 'tokens' RULE_WS_LOOP '{';
+RULE_TOKENS_SPEC : 'tokens' RULE_WSNLCHARS* '{';
 
 RULE_RULE_REF : 'a'..'z' RULE_NAME_CHAR* {isLexerRule=false;};
 
@@ -119,13 +119,9 @@ fragment RULE_ESC : '\\' ('n'|'r'|'t'|'b'|'f'|'"'|'\''|'\\'|'>'|'u' RULE_XDIGIT 
 
 fragment RULE_XDIGIT : ('0'..'9'|'a'..'f'|'A'..'F');
 
-RULE_LANG_ACTION : '{' RULE_LAC_BODY '?'?;
+RULE_ACTION : RULE_NESTED_ACTION ('?' ((RULE_WSNLCHARS* '=>') => RULE_WSNLCHARS* '=>')?)?;
 
-fragment RULE_NO_ACTION : ~(('{'|'}'|'\''|'"'|'/'));
-
-fragment RULE_START_ACTION : '{' RULE_LAC_BODY;
-
-fragment RULE_LAC_BODY : (RULE_SL_COMMENT|RULE_ML_COMMENT|RULE_ACTION_STRING_LITERAL|RULE_ACTION_CHAR_LITERAL|RULE_NO_ACTION|RULE_START_ACTION)* '}';
+fragment RULE_NESTED_ACTION : '{' ( options {greedy=false; k=2;}: RULE_NESTED_ACTION | RULE_SL_COMMENT | RULE_ML_COMMENT | RULE_ACTION_STRING_LITERAL | RULE_ACTION_CHAR_LITERAL | . )* '}' ;
 
 fragment RULE_ACTION_STRING_LITERAL : '"' (('\\')=>RULE_ACTION_ESC | ~'"')* '"';
 
@@ -145,6 +141,4 @@ RULE_ML_COMMENT : '/*' ( options {greedy=false;} : . )*'*/';
 
 RULE_WS : (' '|'\t'|'\f'|'\r'? '\n')+;
 
-fragment RULE_WS_LOOP : (RULE_WS|RULE_SL_COMMENT|RULE_ML_COMMENT)*;
-
-
+fragment RULE_WSNLCHARS : (' '|'\t'|'\f'|'\n'|'\r');

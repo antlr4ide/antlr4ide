@@ -133,7 +133,7 @@ class Antlr4Formatter extends AbstractDeclarativeFormatter {
     c.setLinewrap(0, 1, 1).after(g.ruleActionAccess.atSymbolCommercialAtKeyword_0_0)
     c.setNoSpace.after(g.ruleActionAccess.atSymbolCommercialAtKeyword_0_0)
     c.setSpace(" ").after(g.ruleActionAccess.nameIdParserRuleCall_1_0)
-    c.setLinewrap.after(g.ruleActionAccess.bodyLANG_ACTIONTerminalRuleCall_2_0)
+    c.setLinewrap.after(g.ruleActionAccess.bodyACTIONTerminalRuleCall_2_0)
 
     // ebnf
     c.setNoSpace.before(g.ebnfSuffixAccess.operatorQuestionMarkKeyword_0_0_0)
@@ -182,20 +182,20 @@ class Antlr4Formatter extends AbstractDeclarativeFormatter {
    * @param c formatter configuration
    */
   protected def actions(FormattingConfig c) {
-    c.setLinewrap.before(g.actionAccess.atSymbolCommercialAtKeyword_0_0)
-    c.setNoSpace.after(g.actionAccess.atSymbolCommercialAtKeyword_0_0)
+    c.setLinewrap.before(g.grammarActionAccess.atSymbolCommercialAtKeyword_0_0)
+    c.setNoSpace.after(g.grammarActionAccess.atSymbolCommercialAtKeyword_0_0)
 
     // [@]scope
-    c.setNoSpace.after(g.actionAccess.scopeActionScopeParserRuleCall_1_0_0)
+    c.setNoSpace.after(g.grammarActionAccess.scopeActionScopeParserRuleCall_1_0_0)
 
     // [@scope]::
-    c.setNoSpace.after(g.actionAccess.colonSymbolColonColonKeyword_1_1_0)
+    c.setNoSpace.after(g.grammarActionAccess.colonSymbolColonColonKeyword_1_1_0)
 
     // [@scope::]name
-    c.setSpace(" ").after(g.actionAccess.nameIdParserRuleCall_2_0)
+    c.setSpace(" ").after(g.grammarActionAccess.nameIdParserRuleCall_2_0)
 
     // {}
-    c.setLinewrap(2).after(g.actionAccess.actionLANG_ACTIONTerminalRuleCall_3_0)
+    c.setLinewrap(2).after(g.grammarActionAccess.actionACTIONTerminalRuleCall_3_0)
   }
 
   /**

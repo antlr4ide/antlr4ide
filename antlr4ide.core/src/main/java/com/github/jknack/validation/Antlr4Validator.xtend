@@ -26,7 +26,7 @@ import com.github.jknack.antlr4.Option
 import com.github.jknack.antlr4.LabeledElement
 import com.github.jknack.antlr4.Terminal
 import com.github.jknack.antlr4.RuleRef
-import com.github.jknack.antlr4.Action
+import com.github.jknack.antlr4.GrammarAction
 import com.github.jknack.antlr4.Mode
 import static extension org.eclipse.xtext.EcoreUtil2.*
 import com.github.jknack.antlr4.Options
@@ -74,8 +74,8 @@ class Antlr4Validator extends AbstractAntlr4Validator {
   def checkActionRedefinition(Grammar grammar) {
     val Set<String> actions = newHashSet()
 
-    grammar.prequels.filter[it instanceof Action].forEach [ it |
-      val action = it as Action
+    grammar.prequels.filter[it instanceof GrammarAction].forEach [ it |
+      val action = it as GrammarAction
       if (!actions.add(action.name)) {
         error(
           "redefinition of '" + action.name + "' action",

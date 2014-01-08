@@ -3,7 +3,6 @@ package com.github.jknack.ui.highlighting
 import org.eclipse.xtext.ui.editor.syntaxcoloring.ISemanticHighlightingCalculator
 import org.eclipse.xtext.resource.XtextResource
 import org.eclipse.xtext.ui.editor.syntaxcoloring.IHighlightedPositionAcceptor
-import com.github.jknack.antlr4.Action
 import com.github.jknack.antlr4.Grammar
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
@@ -34,6 +33,7 @@ import org.eclipse.xtext.util.TextRegion
 import com.github.jknack.antlr4.RuleRef
 import com.github.jknack.antlr4.Terminal
 import com.github.jknack.antlr4.EbnfSuffix
+import com.github.jknack.antlr4.GrammarAction
 
 class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
 
@@ -63,7 +63,7 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
     }
   }
 
-  def dispatch void highlight(IHighlightedPositionAcceptor acceptor, Action object) {
+  def dispatch void highlight(IHighlightedPositionAcceptor acceptor, GrammarAction object) {
     val at = object.eClass.getEStructuralFeature("atSymbol");
     val scope = object.eClass.getEStructuralFeature("scope");
     val name = object.eClass.getEStructuralFeature("name");
