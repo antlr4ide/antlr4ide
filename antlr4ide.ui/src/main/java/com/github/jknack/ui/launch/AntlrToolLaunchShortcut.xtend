@@ -11,11 +11,16 @@ import org.eclipse.core.runtime.NullProgressMonitor
 import com.github.jknack.launch.AntlrToolLaunchConstants
 import com.google.inject.Inject
 import com.github.jknack.generator.ToolOptionsProvider
+import org.eclipse.core.runtime.IExecutableExtension
+import org.eclipse.core.runtime.IConfigurationElement
+import org.eclipse.core.runtime.CoreException
 
-class AntlrToolLaunchShortcut implements ILaunchShortcut {
+class AntlrToolLaunchShortcut implements ILaunchShortcut, IExecutableExtension {
 
   @Inject
   ToolOptionsProvider optionsProvider
+
+  boolean showDialog
 
   override launch(ISelection selection, String mode) {
     if (selection instanceof IStructuredSelection) {
@@ -66,6 +71,10 @@ class AntlrToolLaunchShortcut implements ILaunchShortcut {
       val config = cgwc.doSave()
       config.launch(mode, new NullProgressMonitor)
     }
+  }
+
+  override setInitializationData(IConfigurationElement config, String propertyName, Object data) throws CoreException {
+    showDialog = "showDialog".equals(data)
   }
 
 }

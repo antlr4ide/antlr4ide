@@ -358,8 +358,9 @@
     <shortcut
         id="com.github.jknack.Antlr4.toolLaunchShortcut"
         class="com.github.jknack.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.ui.launch.AntlrToolLaunchShortcut"
-        label="ANTLR 4"
+        label="Generate ANTLR Recognizer"
         icon="icons/g.png"
+        category="org.eclipse.ui.externaltools"
         modes="run">
         <contextualLaunch>
            <enablement>
@@ -371,6 +372,7 @@
              </with>
            </enablement>
         </contextualLaunch>
+      <configurationType id="com.github.jknack.Antlr4.tool"></configurationType>
     </shortcut>
   </extension>
 
