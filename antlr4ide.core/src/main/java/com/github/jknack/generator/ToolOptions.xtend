@@ -62,7 +62,8 @@ class ToolOptions {
   def output(IFile file) {
     val project = file.project
     val projectPath = project.location
-    val prefix = file.location.removeFirstSegments(projectPath.segmentCount)
+    // device = null is required on Windows, see https://github.com/jknack/antlr4ide/issues/1
+    val prefix = file.location.setDevice(null).removeFirstSegments(projectPath.segmentCount)
     var pkg = removeSegment(
       removeSegment(
         removeSegment(removeSegment(prefix, "src", "main", "antlr4"), "src", "main", "java"),
@@ -100,7 +101,7 @@ class ToolOptions {
 
     // make it project relative
     return new OutputOption(
-      Path.fromPortableString(project.location.toOSString).append(output).append(pkg),
+      Path.fromPortableString(projectPath.toOSString).append(output).append(pkg),
       Path.fromPortableString(output).append(pkg),
       pkg.toString.replace("/", ".")
     )
