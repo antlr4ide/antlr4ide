@@ -2,6 +2,8 @@ package com.github.jknack.ui;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtext.ui.editor.actions.IActionContributor;
+import org.eclipse.xtext.ui.editor.folding.IFoldingRegionProvider;
+import org.eclipse.xtext.ui.editor.folding.IFoldingStructureProvider;
 import org.eclipse.xtext.ui.editor.hover.IEObjectHoverProvider;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.AbstractAntlrTokenToAttributeIdMapper;
@@ -12,6 +14,8 @@ import com.github.jknack.console.Console;
 import com.github.jknack.generator.ToolOptionsProvider;
 import com.github.jknack.ui.console.AntlrConsoleFactory;
 import com.github.jknack.ui.console.DefaultConsole;
+import com.github.jknack.ui.folding.Antlr4FoldingRegionProvider;
+import com.github.jknack.ui.folding.Antlr4FoldingStructureProvider;
 import com.github.jknack.ui.generator.DefaultToolOptionsProvider;
 import com.github.jknack.ui.highlighting.AntlrHighlightingCalculator;
 import com.github.jknack.ui.highlighting.AntlrHighlightingConfiguration;
@@ -38,6 +42,8 @@ public class Antlr4UiModule extends com.github.jknack.ui.AbstractAntlr4UiModule 
     binder.requestStaticInjection(AntlrHighlightingConfiguration.class);
     binder.bind(Console.class).to(DefaultConsole.class);
     binder.bind(ToolOptionsProvider.class).to(DefaultToolOptionsProvider.class);
+    binder.bind(IFoldingStructureProvider.class).to(Antlr4FoldingStructureProvider.class);
+    binder.bind(IFoldingRegionProvider.class).to(Antlr4FoldingRegionProvider.class);
   }
 
   public void configureIShowWhitespaceCharactersActionContributor(final Binder binder) {
