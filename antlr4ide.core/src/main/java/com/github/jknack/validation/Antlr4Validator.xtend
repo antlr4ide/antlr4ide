@@ -41,7 +41,7 @@ class Antlr4Validator extends AbstractAntlr4Validator {
 
   public static val GRAMMAR_NAME_DIFFER = "grammarNameDiffer"
 
-  static val OPTIONS = newHashSet("superClass", "TokenLabelType", "tokenVocab", "language")
+  public static val OPTIONS = newHashSet("superClass", "TokenLabelType", "tokenVocab", "language")
 
   @Check
   def checkGrammarName(Grammar grammar) {
@@ -245,7 +245,7 @@ class Antlr4Validator extends AbstractAntlr4Validator {
     ]
   }
 
-  private def Set<String> locals(ParserRule rule) {
+  def private Set<String> locals(ParserRule rule) {
     val scope = new StringBuilder
     val Procedure1<String> append = [ content |
       if (content != null) {
