@@ -59,26 +59,36 @@ class ToolOptions {
   @Property
   String vmArgs
 
+  boolean outputSet = false
+
   def output(IFile file) {
     val project = file.project
     val projectPath = project.location
+
     // device = null is required on Windows, see https://github.com/jknack/antlr4ide/issues/1
     val prefix = file.location.setDevice(null).removeFirstSegments(projectPath.segmentCount)
-    var pkg = removeSegment(
-      removeSegment(
-        removeSegment(removeSegment(prefix, "src", "main", "antlr4"), "src", "main", "java"),
-        "src",
-        "main",
-        "resources"
-      ),
-      "src"
-    )
+    var pkg = if (outputSet)
+        // Output folder was set by user, just follow what user say and don't find a
+        // default package see: https://github.com/jknack/antlr4ide/issues/5
+        Path.fromPortableString("")
+      else
+        removeSegment(
+          removeSegment(
+            removeSegment(removeSegment(prefix, "src", "main", "antlr4"), "src", "main", "java"),
+            "src",
+            "main",
+            "resources"
+          ),
+          "src"
+        )
+
     val dir = new File(outputDirectory)
 
     if (pkg == prefix) {
       pkg = pkg.removeFirstSegments(prefix.segmentCount)
     }
 
+    // if output was set by user, over
     if (dir.absolute || dir.exists) {
       return new OutputOption(
         Path.fromOSString(outputDirectory).append(pkg),
@@ -185,16 +195,18 @@ class ToolOptions {
     val defaults = new ToolOptions
     val iterator = options.iterator
 
-    while(iterator.hasNext) {
+    while (iterator.hasNext) {
       val option = iterator.next
       var String value = null
       if (optionsWithValue.contains(option)) {
-        value = if (iterator.hasNext) iterator.next
+        value = if(iterator.hasNext) iterator.next
       }
+
       // set options
-      switch(option) {
+      switch (option) {
         case "-o": {
           if (value != null) {
+            defaults.outputSet = true
             defaults.outputDirectory = value
           } else {
             err.apply("Bad command-line option: '" + option + "'")
@@ -276,7 +288,7 @@ class ToolOptions {
   }
 
   def String[] vmArguments() {
-    if (vmArgs == null || vmArgs.length == 0) #[] else vmArgs.split("\\s+")
+    if(vmArgs == null || vmArgs.length == 0) #[] else vmArgs.split("\\s+")
   }
 
   private def removeSegment(IPath path, String... names) {
