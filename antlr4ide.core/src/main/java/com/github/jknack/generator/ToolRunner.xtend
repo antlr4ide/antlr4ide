@@ -14,6 +14,9 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
 import org.eclipse.core.runtime.QualifiedName
 import java.util.Set
 import com.github.jknack.console.Console
+import java.util.jar.JarInputStream
+import java.io.FileInputStream
+import java.util.jar.Attributes
 
 /**
  * Execute ANTLR Tool and generated the code.
@@ -35,7 +38,7 @@ class ToolRunner {
    *
    * @param bundle A core bundle.
    */
-  new (Bundle bundle) {
+  new(Bundle bundle) {
     this.bundle = bundle
   }
 
@@ -53,12 +56,12 @@ class ToolRunner {
     val parentPath = file.parent + File.separator
 
     // classpath
-    val cp = classpath(options.antlrTool, "antlr-4.1-complete.jar").join(File.pathSeparator)
+    val cp = classpath(options.antlrTool, "antlr-4.1-complete.jar", console)
 
     // boot args
     val Set<String> bootArgs = newLinkedHashSet("java")
     bootArgs.addAll(options.vmArguments)
-    bootArgs.addAll("-cp", cp, TOOL, file.name)
+    bootArgs.addAll("-cp", cp.join(File.pathSeparator), TOOL, file.name)
 
     // tool args
     val localOptions = options.command(file)
@@ -111,6 +114,29 @@ class ToolRunner {
     postProcess(file, bootArgs + #["-depend"] + localOptions, console)
   }
 
+  /** Validate an ANTLR distribution. */
+  def private validate(File jar, Console console) {
+
+    // TODO: cache version number for a jar file
+    val jarJar = new JarInputStream(new FileInputStream(jar))
+    val attributes = jarJar.manifest.mainAttributes
+    val version = attributes.get(new Attributes.Name("Implementation-Version"))
+    val mainClass = attributes.get(new Attributes.Name("Main-Class"))
+    jarJar.close
+
+    if (mainClass == TOOL) {
+      console.info("ANTLR Tool v" + version + " (" + jar + ")")
+      return true
+    } else {
+      console.error("error: Couldn't load '%s' from '%s'", TOOL, jar)
+      console.error(
+        "error: Please visit http://www.antlr.org/download.html and download " +
+          "'antlr-4.x-complete.jar'")
+      console.error("warning: falling back to 'embedded'")
+      return false
+    }
+  }
+
   /**
    * Ask ANTLR for dependencies and save them in the file persistence storage.
    * TODO: Ask Terence to generate -depend at the code generation phase.
@@ -145,11 +171,11 @@ class ToolRunner {
    */
   private def cleanupResources(IFile file) {
     val stored = file.getPersistentProperty(GENERATED_FILES)
-    if (stored == null) return
+    if(stored == null) return
 
     val generatedFiles = stored.split(File.pathSeparator)
     var File parentFolder = null
-    for(generatedFile : generatedFiles) {
+    for (generatedFile : generatedFiles) {
       val candidate = new File(generatedFile)
       parentFolder = candidate.parentFile
       candidate.delete
@@ -157,6 +183,7 @@ class ToolRunner {
     if (parentFolder != null) {
       val children = parentFolder.listFiles
       if (children == null || children.length == 0) {
+
         // delete parent folder if empty
         parentFolder.delete
       }
@@ -194,15 +221,25 @@ class ToolRunner {
   /**
    * Creates the ANTLR Tool classpath.
    */
-  private def classpath(String path, String name) {
+  private def classpath(String path, String name, Console console) {
     val tmpdir = new File(System.properties.getProperty("java.io.tmpdir"))
     var jar = new File(path)
     if (!jar.exists) {
-      jar = new File(tmpdir, name);
-      if (!jar.exists) {
-        val url = bundle.getResource("lib/" + name);
-        copy(url.openStream, new BufferedOutputStream(new FileOutputStream(jar)))
+      if (path != "embedded") {
+        console.error(
+          "error: File not found %s, please go to Window > Preferences > ANTLR 4 > Tool and " +
+            "review the JAR path", path)
+        console.error("warning: falling back to 'embedded'")
       }
+    }
+
+    if (!jar.exists || !validate(jar, console)) {
+      jar = new File(tmpdir, name)
+      val url = bundle.getResource("lib/" + name);
+      copy(url.openStream, new BufferedOutputStream(new FileOutputStream(jar)))
+
+      // revalidate
+      validate(jar, console)
     }
     return #[jar.absolutePath] + if(jar.parentFile == tmpdir) #[] else #[jar.parentFile.absolutePath]
   }
