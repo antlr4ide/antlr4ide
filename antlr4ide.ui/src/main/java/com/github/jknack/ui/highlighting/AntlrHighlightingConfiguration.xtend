@@ -35,6 +35,12 @@ class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
 
   public static val EBNF = "antlr4.ebnf"
 
+  public static val ELEMENT_OPTION_DELIMITER = "antlr4.elementOptionDelimiter"
+
+  public static val ELEMENT_OPTION_ASSIGN_OP = "antlr4.elementOptionAssignOp"
+
+  public static val WILDCARD = "antlr4.wildcard"
+
   @Inject
   @Named(Constants.LANGUAGE_NAME)
   static String language
@@ -54,11 +60,29 @@ class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
     acceptor.acceptDefaultHighlighting(MODE, "Mode", modeStyle)
     acceptor.acceptDefaultHighlighting(CHARSET, "Char set", charSetStyle)
     acceptor.acceptDefaultHighlighting(EBNF, "Ebnf Opertator", ebnfStyle)
+    acceptor.acceptDefaultHighlighting(WILDCARD, "Wildcard", wildcardStyle)
+    acceptor.acceptDefaultHighlighting(
+      ELEMENT_OPTION_DELIMITER,
+      "Element option delimiter",
+      elementOptionDelimiterStyle
+    )
+    acceptor.acceptDefaultHighlighting(
+      ELEMENT_OPTION_ASSIGN_OP,
+      "Element option assign operator",
+      elementOptionAssignOpStyle
+    )
   }
 
   def ruleStyle() {
     val style = defaultTextStyle.copy
     style.color = new RGB(0, 64, 128)
+    style
+  }
+
+  def targetStringLiteralStyle() {
+    val style = stringTextStyle.copy
+    style.color = new RGB(0, 128, 0)
+    style.style = SWT.BOLD
     style
   }
 
@@ -71,6 +95,10 @@ class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
   }
 
   def charSetStyle() {
+    stringTextStyle.copy
+  }
+
+  def wildcardStyle() {
     stringTextStyle.copy
   }
 
@@ -95,6 +123,14 @@ class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
 
   def labelStyle() {
     numberTextStyle.copy
+  }
+
+  def elementOptionDelimiterStyle() {
+    numberTextStyle.copy
+  }
+
+  def elementOptionAssignOpStyle() {
+    elementOptionDelimiterStyle.copy
   }
 
   def lexerCommandStyle() {

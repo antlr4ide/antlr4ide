@@ -17,10 +17,11 @@ import com.github.jknack.console.Console
 import java.util.jar.JarInputStream
 import java.io.FileInputStream
 import java.util.jar.Attributes
+import com.google.common.cache.CacheBuilder
+import com.google.common.cache.Cache
 
 /**
  * Execute ANTLR Tool and generated the code.
- * @NotThreadSafe
  */
 class ToolRunner {
 
@@ -32,6 +33,12 @@ class ToolRunner {
 
   /** The name of the ANTLR Tool class. */
   private static val TOOL = "org.antlr.v4.Tool"
+
+  /** Cache ANTLR distributions. */
+  private static val Cache<File, Pair<String, String>> distributions = CacheBuilder.newBuilder()
+    .build([jar |
+      version(jar)
+    ])
 
   /**
    * Creates a new ToolRunner.
@@ -114,15 +121,24 @@ class ToolRunner {
     postProcess(file, bootArgs + #["-depend"] + localOptions, console)
   }
 
+  def static private version(File jar) {
+    if (jar.exists && jar.name.endsWith(".jar")) {
+      val jarJar = new JarInputStream(new FileInputStream(jar))
+      val attributes = jarJar.manifest.mainAttributes
+      val version = attributes.get(new Attributes.Name("Implementation-Version")) + ""
+      val mainClass = attributes.get(new Attributes.Name("Main-Class")) + ""
+      jarJar.close
+      return mainClass -> version
+    }
+    return "" -> ""
+  }
+
   /** Validate an ANTLR distribution. */
   def private validate(File jar, Console console) {
 
-    // TODO: cache version number for a jar file
-    val jarJar = new JarInputStream(new FileInputStream(jar))
-    val attributes = jarJar.manifest.mainAttributes
-    val version = attributes.get(new Attributes.Name("Implementation-Version"))
-    val mainClass = attributes.get(new Attributes.Name("Main-Class"))
-    jarJar.close
+    val distribution = distributions.get(jar)
+    val mainClass = distribution.key
+    val version = distribution.value
 
     if (mainClass == TOOL) {
       console.info("ANTLR Tool v" + version + " (" + jar + ")")

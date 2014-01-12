@@ -334,7 +334,7 @@ RuleRef
 
 ElementOptions
     :
-      {ElementOptions} '<' (options+=ElementOption (',' options+=ElementOption)*)? '>'
+      {ElementOptions} begin='<' (options+=ElementOption (',' options+=ElementOption)*)? end='>'
     ;
 
 Range
@@ -381,15 +381,15 @@ SetElement
 
 Wildcard
   :
-    {Wildcard}'.' options=ElementOptions?
+    dot='.' options=ElementOptions?
   ;
 
 // When used with elements we can specify what the tree node type can
 // be and also assign settings of various options  (which we do not check here)
 ElementOption
     : // This format indicates the default element option
-      QualifiedId
-    | Id '=' OptionValue
+      qualifiedId=QualifiedId
+    | id=Id assign='=' value=OptionValue
     ;
 
 /** Lexer Rule */

@@ -31,6 +31,10 @@ import com.github.jknack.antlr4.Mode
 import static extension org.eclipse.xtext.EcoreUtil2.*
 import com.github.jknack.antlr4.Options
 import com.github.jknack.antlr4.Imports
+import com.github.jknack.antlr4.ElementOptions
+import com.github.jknack.antlr4.ElementOption
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure2
+import com.github.jknack.antlr4.Wildcard
 
 /**
  * Custom validation rules. 
@@ -42,6 +46,12 @@ class Antlr4Validator extends AbstractAntlr4Validator {
   public static val GRAMMAR_NAME_DIFFER = "grammarNameDiffer"
 
   public static val OPTIONS = newHashSet("superClass", "TokenLabelType", "tokenVocab", "language")
+
+  public static val SEMPRED_OPTIONS = newHashSet("fail")
+
+  public static val RULEREF_OPTIONS = newHashSet("fail")
+
+  public static val TOKEN_OPTIONS = newHashSet("assoc")
 
   @Check
   def checkGrammarName(Grammar grammar) {
@@ -245,6 +255,37 @@ class Antlr4Validator extends AbstractAntlr4Validator {
     ]
   }
 
+  @Check
+  def checkElementOptions(ElementOptions options) {
+    val Procedure2<ElementOption, Set<String>> validator = [ option, validOptions |
+      var String feature
+      val name = if (option.qualifiedId == null) {
+          feature = "id"
+          option.id
+        } else {
+          feature = "qualifiedId"
+          option.qualifiedId.name.join(".")
+        }
+      if (!validOptions.contains(name)) {
+        warning(
+          "unknown option: " + name,
+          option,
+          option.eClass.getEStructuralFeature(feature)
+        )
+      }
+    ]
+    val validOptions = switch (options.eContainer) {
+      Terminal: TOKEN_OPTIONS
+      Wildcard: TOKEN_OPTIONS
+      RuleRef: RULEREF_OPTIONS
+      ActionElement: SEMPRED_OPTIONS
+      default: newHashSet()
+    }
+    options.options.forEach [ option |
+      validator.apply(option, validOptions)
+    ]
+  }
+
   def private Set<String> locals(ParserRule rule) {
     val scope = new StringBuilder
     val Procedure1<String> append = [ content |
@@ -391,11 +432,11 @@ class Antlr4Validator extends AbstractAntlr4Validator {
 
     if (idx > 0) {
       warning(
-      "{...}?=> explicitly gated semantic predicates are deprecated in ANTLR 4; use {...}? instead",
-      action,
-      idx,
-      gated.length
-    )
+        "{...}?=> explicitly gated semantic predicates are deprecated in ANTLR 4; use {...}? instead",
+        action,
+        idx,
+        gated.length
+      )
     }
   }
 
