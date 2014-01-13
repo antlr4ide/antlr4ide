@@ -45,8 +45,14 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure2
 import java.util.Set
 import com.github.jknack.antlr4.SetElement
 import com.github.jknack.antlr4.QualifiedOption
+import com.google.inject.Inject
+import org.eclipse.xtext.documentation.IEObjectDocumentationProviderExtension
+import org.eclipse.xtext.documentation.IEObjectDocumentationProvider
 
 class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
+
+  @Inject
+  IEObjectDocumentationProvider documentationProvider
 
   val C_LIKE_COMMENT = Pattern.compile("(//.*?\n)|(?s)/\\*.*?\\*/")
 
@@ -138,6 +144,8 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
     for (mode : grammar.modes) {
       highlight(acceptor, mode)
     }
+
+    highlightDoc(acceptor, grammar)
   }
 
   def dispatch void highlight(IHighlightedPositionAcceptor acceptor, GrammarAction object) {
@@ -211,6 +219,16 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
       } catch (IllegalArgumentException ex) {
         // not all the rule elements have highlighting
       }
+    }
+
+    highlightDoc(acceptor, rule)
+  }
+
+  def private highlightDoc(IHighlightedPositionAcceptor acceptor,EObject source) {
+    val docs = (documentationProvider as IEObjectDocumentationProviderExtension).getDocumentationNodes(source)
+    if (docs != null && docs.size > 0) {
+      val doc = docs.head
+      acceptor.addPosition(doc.offset, doc.length, DOC_COMMENT)
     }
   }
 
@@ -310,6 +328,8 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
         // not all the rule elements have highlighting
       }
     }
+
+    highlightDoc(acceptor, rule)
   }
 
   def dispatch void highlight(IHighlightedPositionAcceptor acceptor, LexerCommands object) {

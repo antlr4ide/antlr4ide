@@ -1,6 +1,7 @@
 package com.github.jknack.ui;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.xtext.documentation.impl.AbstractMultiLineCommentProvider;
 import org.eclipse.xtext.ui.editor.actions.IActionContributor;
 import org.eclipse.xtext.ui.editor.folding.IFoldingRegionProvider;
 import org.eclipse.xtext.ui.editor.folding.IFoldingStructureProvider;
@@ -44,6 +45,9 @@ public class Antlr4UiModule extends com.github.jknack.ui.AbstractAntlr4UiModule 
     binder.bind(ToolOptionsProvider.class).to(DefaultToolOptionsProvider.class);
     binder.bind(IFoldingStructureProvider.class).to(Antlr4FoldingStructureProvider.class);
     binder.bind(IFoldingRegionProvider.class).to(Antlr4FoldingRegionProvider.class);
+    binder.bind(String.class)
+        .annotatedWith(Names.named(AbstractMultiLineCommentProvider.START_TAG))
+        .toInstance("/\\*\\*");
   }
 
   public void configureIShowWhitespaceCharactersActionContributor(final Binder binder) {

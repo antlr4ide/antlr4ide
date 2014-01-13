@@ -51,6 +51,8 @@ class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
 
   public static val SEM_PRED = "antlr4.semanticPredicate"
 
+  public static val DOC_COMMENT = "antlr4.docComment"
+
   @Inject
   @Named(Constants.LANGUAGE_NAME)
   static String language
@@ -58,7 +60,7 @@ class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
   override configure(IHighlightingConfigurationAcceptor acceptor) {
     super.configure(acceptor);
 
-    acceptor.acceptDefaultHighlighting(ACTION, "Action", actionStyle)
+    acceptor.acceptDefaultHighlighting(ACTION, "Action Name", actionStyle)
     acceptor.acceptDefaultHighlighting(LABEL, "Label", labelStyle)
     acceptor.acceptDefaultHighlighting(RULE, "Rule", ruleStyle)
     acceptor.acceptDefaultHighlighting(RULE_REF, "Rule Reference", ruleRefStyle)
@@ -72,6 +74,7 @@ class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
     acceptor.acceptDefaultHighlighting(EBNF, "Ebnf Opertator", ebnfStyle)
     acceptor.acceptDefaultHighlighting(WILDCARD, "Wildcard", wildcardStyle)
     acceptor.acceptDefaultHighlighting(SEM_PRED, "Semantic Predicate", semanticPredicateStyle)
+    acceptor.acceptDefaultHighlighting(DOC_COMMENT, "Doc Comment", docCommentSyle)
     acceptor.acceptDefaultHighlighting(LANG_STRING_LITERAL, "Language String Literal",
       langStringLiteralStyle
     )
@@ -94,6 +97,12 @@ class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
   def ruleStyle() {
     val style = defaultTextStyle.copy
     style.color = new RGB(0, 64, 128)
+    style
+  }
+
+  def docCommentSyle() {
+    val style = defaultTextStyle.copy
+    style.color = new RGB(63, 95, 191)
     style
   }
 
