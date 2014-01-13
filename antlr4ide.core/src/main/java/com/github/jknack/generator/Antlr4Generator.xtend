@@ -5,7 +5,6 @@ import org.eclipse.xtext.generator.IGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.core.runtime.Path
 import com.google.inject.Inject
-import org.osgi.framework.Bundle
 import org.eclipse.core.resources.IWorkspaceRoot
 import org.eclipse.core.runtime.NullProgressMonitor
 import org.eclipse.core.resources.IResource
@@ -24,9 +23,9 @@ import com.github.jknack.launch.AntlrToolLaunchConstants
  */
 class Antlr4Generator implements IGenerator {
 
-  /** The core bundle. */
+  /** The tool runner. */
   @Inject
-  Bundle bundle
+  ToolRunner tool
 
   /** The tools option provider. */
   @Inject
@@ -119,7 +118,7 @@ class Antlr4Generator implements IGenerator {
     val project = file.project
     val monitor = new NullProgressMonitor()
 
-    new ToolRunner(bundle).run(file, options, console)
+    tool.run(file, options, console)
 
     project.refreshLocal(IResource.DEPTH_INFINITE, monitor)
     val output = options.output(file)

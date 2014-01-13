@@ -19,10 +19,12 @@ import java.io.FileInputStream
 import java.util.jar.Attributes
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.Cache
+import com.google.inject.Singleton
 
 /**
  * Execute ANTLR Tool and generated the code.
  */
+ @Singleton
 class ToolRunner {
 
   /** The core bundle. */

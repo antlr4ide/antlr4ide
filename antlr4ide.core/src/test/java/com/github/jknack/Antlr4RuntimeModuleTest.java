@@ -2,6 +2,7 @@ package com.github.jknack;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import org.osgi.framework.Bundle;
 
 import com.github.jknack.antlr4.Antlr4Factory;
+import com.github.jknack.generator.ToolRunner;
 import com.github.jknack.launch.AntlrToolLaunchConfigurationDelegate;
 import com.github.jknack.scoping.Antlr4NameProvider;
 import com.github.jknack.validation.Antlr4MissingReferenceMessageProvider;
@@ -24,8 +26,8 @@ public class Antlr4RuntimeModuleTest {
   public void configureLocal() throws Exception {
     Activator.bundle = createMock(Bundle.class);
 
-    AnnotatedBindingBuilder<Bundle> bundleBind = createMock(AnnotatedBindingBuilder.class);
-    bundleBind.toInstance(Activator.bundle);
+    AnnotatedBindingBuilder<ToolRunner> toolBind = createMock(AnnotatedBindingBuilder.class);
+    toolBind.toInstance(isA(ToolRunner.class));
 
     AnnotatedBindingBuilder<Antlr4Factory> factoryBind = createMock(AnnotatedBindingBuilder.class);
     factoryBind.toInstance(Antlr4Factory.eINSTANCE);
@@ -35,7 +37,7 @@ public class Antlr4RuntimeModuleTest {
         null);
 
     Binder binder = createMock(Binder.class);
-    expect(binder.bind(Bundle.class)).andReturn(bundleBind);
+    expect(binder.bind(ToolRunner.class)).andReturn(toolBind);
 
     expect(binder.bind(Antlr4Factory.class)).andReturn(factoryBind);
 
@@ -44,7 +46,7 @@ public class Antlr4RuntimeModuleTest {
 
     binder.requestStaticInjection(AntlrToolLaunchConfigurationDelegate.class);
 
-    Object[] mocks = {Activator.bundle, bundleBind, factoryBind, diagnosticMessageProvider, binder };
+    Object[] mocks = {Activator.bundle, toolBind, factoryBind, diagnosticMessageProvider, binder };
 
     replay(mocks);
 

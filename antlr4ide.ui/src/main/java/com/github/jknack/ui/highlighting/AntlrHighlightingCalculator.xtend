@@ -37,8 +37,83 @@ import com.github.jknack.antlr4.ElementOption
 import com.github.jknack.antlr4.ElementOptions
 import com.github.jknack.antlr4.Wildcard
 import static com.github.jknack.ui.highlighting.AntlrHighlightingConfiguration.*
+import java.util.regex.Pattern
+import com.github.jknack.antlr4.ActionOption
+import com.github.jknack.antlr4.ActionElement
+import org.eclipse.xtext.EcoreUtil2
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure2
+import java.util.Set
+import com.github.jknack.antlr4.SetElement
+import com.github.jknack.antlr4.QualifiedOption
 
 class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
+
+  val C_LIKE_COMMENT = Pattern.compile("(//.*?\n)|(?s)/\\*.*?\\*/")
+
+  val C_LIKE_STRING = Pattern.compile("(\".*?\")|(\'.*?\')")
+
+  val C_LIKE_REF = Pattern.compile("[$]([\\p{L}_$][\\p{L}\\p{N}_$]*\\.)*[\\p{L}_$][\\p{L}\\p{N}_$]*")
+
+  val LANG = #{
+    "java" -> #[
+      LANG_COMMENT -> C_LIKE_COMMENT,
+      LANG_STRING_LITERAL -> C_LIKE_STRING,
+      LANG_REF -> C_LIKE_REF,
+      LANG_KEYWORD -> Pattern.compile(
+        "(" + newHashSet(
+          "abstract",
+          "true",
+          "false",
+          "continue",
+          "for",
+          "while",
+          "new",
+          "switch",
+          "assert",
+          "default",
+          "goto",
+          "package",
+          "synchronized",
+          "boolean",
+          "do",
+          "if",
+          "private",
+          "this",
+          "break",
+          "double",
+          "implements",
+          "protected",
+          "throw",
+          "byte",
+          "else",
+          "import",
+          "public",
+          "throws",
+          "case",
+          "enum",
+          "instanceof",
+          "return",
+          "transient",
+          "catch",
+          "extends",
+          "int",
+          "short",
+          "try",
+          "char",
+          "final",
+          "interface",
+          "static",
+          "void",
+          "class",
+          "finally",
+          "long",
+          "strictfp",
+          "volatile",
+          "const",
+          "null"
+        ).join("\\b)|(\\b") + ")")
+    ]
+  }
 
   override provideHighlightingFor(XtextResource resource, IHighlightedPositionAcceptor acceptor) {
     if (resource == null) {
@@ -70,6 +145,9 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
     highlightObjectAtFeature(acceptor, object, "scope", ACTION)
     highlightObjectAtFeature(acceptor, object, "name", ACTION)
     highlightObjectAtFeature(acceptor, object, "colonSymbol", ACTION)
+
+    // action code
+    highlightAction(acceptor, object, "action", object.action)
   }
 
   def dispatch void highlight(IHighlightedPositionAcceptor acceptor, Imports object) {
@@ -141,6 +219,56 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
     highlightObjectAtFeature(acceptor, object, "end", ELEMENT_OPTION_DELIMITER)
   }
 
+  def dispatch void highlight(IHighlightedPositionAcceptor acceptor, ActionOption object) {
+    highlightAction(acceptor, object, "value", object.value)
+  }
+
+  def dispatch void highlight(IHighlightedPositionAcceptor acceptor, ActionElement object) {
+    val body = object.body
+    highlightAction(acceptor, object, "body", body)
+    if (body.endsWith("?")) {
+      highlightObjectAtFeature(acceptor, object, "body", SEM_PRED)[region |
+        new TextRegion(region.offset, 1)
+      ]
+      highlightObjectAtFeature(acceptor, object, "body", SEM_PRED)[region |
+        new TextRegion(region.offset + region.length - 2, 2)
+      ]
+    }
+  }
+
+  def private void highlightAction(IHighlightedPositionAcceptor acceptor, EObject object, String featureName,
+    String body) {
+    val Set<Pair<Integer, Integer>> sections = newHashSet()
+    val Procedure2<Pattern, String> highlighter = [ pattern, type |
+      val matcher = pattern.matcher(body)
+      while (matcher.find) {
+        highlightObjectAtFeature(acceptor, object, featureName, type) [ region |
+          val offset = region.offset + matcher.start
+          val existing = sections.findFirst[it|offset >= it.key && offset <= it.value]
+          if (existing == null) {
+            val len = matcher.group.length
+            sections.add(offset -> offset + len)
+            new TextRegion(offset, len)
+          }
+        ]
+      }
+    ]
+    val grammar = EcoreUtil2.getContainerOfType(object, Grammar) as Grammar
+    val options = grammar.prequels.findFirst[it instanceof Options] as Options
+    val langOption = if(options != null) options.options.findFirst[it.name == "language"]
+    val language = if(langOption == null)
+        "java"
+      else
+        (langOption.value as QualifiedOption).value.name.join(".")
+
+    val partitions = LANG.get(language.toLowerCase)
+    if (partitions != null) {
+      partitions.forEach [ it |
+        highlighter.apply(it.value, it.key)
+      ]
+    }
+  }
+
   def dispatch void highlight(IHighlightedPositionAcceptor acceptor, Wildcard object) {
     highlightObjectAtFeature(acceptor, object, "dot", WILDCARD)
   }
@@ -164,6 +292,8 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
   def dispatch void highlight(IHighlightedPositionAcceptor acceptor, RuleAction object) {
     highlightObjectAtFeature(acceptor, object, "atSymbol", ACTION)
     highlightObjectAtFeature(acceptor, object, "name", ACTION)
+
+    highlightAction(acceptor, object, "body", object.body)
   }
 
   def dispatch void highlight(IHighlightedPositionAcceptor acceptor, LexerRule rule) {
@@ -223,6 +353,16 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
     ]
   }
 
+  def dispatch void highlight(IHighlightedPositionAcceptor acceptor, SetElement object) {
+    val charSet = object.charSet
+    if (charSet != null) {
+      highlightObjectAtFeature(acceptor, object, "charSet", CHARSET) [ region |
+        new TextRegion(region.offset + 1, region.length - 2)
+      ]
+    }
+  }
+
+
   /**
    * Highlights an object at the position of the given {@link EStructuralFeature}
    */
@@ -263,7 +403,9 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
     }
     if (region != null) {
       val result = fn.apply(region)
-      acceptor.addPosition(result.offset, result.length, id)
+      if (result != null) {
+        acceptor.addPosition(result.offset, result.length, id)
+      }
     }
   }
 

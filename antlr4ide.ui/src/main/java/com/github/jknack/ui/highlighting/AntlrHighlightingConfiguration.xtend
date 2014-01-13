@@ -41,6 +41,16 @@ class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
 
   public static val WILDCARD = "antlr4.wildcard"
 
+  public static val LANG_STRING_LITERAL = "antlr4.langStringLiteral"
+
+  public static val LANG_KEYWORD = "antlr4.langKeyword"
+
+  public static val LANG_COMMENT = "antlr4.langComment"
+
+  public static val LANG_REF = "antlr4.langRef"
+
+  public static val SEM_PRED = "antlr4.semanticPredicate"
+
   @Inject
   @Named(Constants.LANGUAGE_NAME)
   static String language
@@ -61,6 +71,14 @@ class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
     acceptor.acceptDefaultHighlighting(CHARSET, "Char set", charSetStyle)
     acceptor.acceptDefaultHighlighting(EBNF, "Ebnf Opertator", ebnfStyle)
     acceptor.acceptDefaultHighlighting(WILDCARD, "Wildcard", wildcardStyle)
+    acceptor.acceptDefaultHighlighting(SEM_PRED, "Semantic Predicate", semanticPredicateStyle)
+    acceptor.acceptDefaultHighlighting(LANG_STRING_LITERAL, "Language String Literal",
+      langStringLiteralStyle
+    )
+    acceptor.acceptDefaultHighlighting(LANG_KEYWORD, "Language Keyword", langKeywordStyle)
+    acceptor.acceptDefaultHighlighting(LANG_COMMENT, "Language Comment", langCommentStyle)
+    acceptor.acceptDefaultHighlighting(LANG_REF, "Language Reference", langRefStyle)
+
     acceptor.acceptDefaultHighlighting(
       ELEMENT_OPTION_DELIMITER,
       "Element option delimiter",
@@ -79,10 +97,25 @@ class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
     style
   }
 
-  def targetStringLiteralStyle() {
+  def langStringLiteralStyle() {
     val style = stringTextStyle.copy
     style.color = new RGB(0, 128, 0)
     style.style = SWT.BOLD
+    style
+  }
+
+  def langCommentStyle() {
+    val style = defaultTextStyle.copy
+    style.color = new RGB(128, 128, 128)
+    style
+  }
+
+  def langRefStyle() {
+    localVarStyle.copy
+  }
+
+  def langKeywordStyle() {
+    val style = keywordTextStyle.copy
     style
   }
 
@@ -99,7 +132,9 @@ class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
   }
 
   def wildcardStyle() {
-    stringTextStyle.copy
+    val style = stringTextStyle.copy
+    style.style = SWT.BOLD
+    style
   }
 
   def localVarStyle() {
@@ -126,6 +161,10 @@ class AntlrHighlightingConfiguration extends DefaultHighlightingConfiguration {
   }
 
   def elementOptionDelimiterStyle() {
+    numberTextStyle.copy
+  }
+
+  def semanticPredicateStyle() {
     numberTextStyle.copy
   }
 
