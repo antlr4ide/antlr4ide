@@ -43,7 +43,7 @@ class Anchor extends ChopboxAnchor {
     val owner = owner
     val bounds = owner.bounds.copy
     owner.translateToAbsolute(bounds)
-    if (reference.x < bounds.getLeft().x) {
+    if (reference.x < bounds.left.x) {
       return bounds.left
     } else {
       return bounds.getRight

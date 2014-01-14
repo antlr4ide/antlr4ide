@@ -14,7 +14,8 @@ import java.util.List;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.LayoutManager;
 import org.eclipse.draw2d.ToolbarLayout;
-import org.eclipse.emf.ecore.EObject;
+
+import com.github.jknack.antlr4.Grammar;
 
 /**
  * The railroad diagram figure. A railroad diagram consists of {@link RailroadTrack}s
@@ -23,13 +24,21 @@ import org.eclipse.emf.ecore.EObject;
  */
 public class RailroadDiagram extends AbstractSegmentFigure {
 
-  public RailroadDiagram(final EObject eObject, final List<ISegmentFigure> children) {
-    super(eObject);
+  private Grammar grammar;
+
+  public RailroadDiagram(final Grammar grammar, final List<ISegmentFigure> children) {
+    super(grammar);
+    this.grammar = grammar;
+
     setOpaque(true);
     setBackgroundColor(ColorConstants.white);
     for (ISegmentFigure child : children) {
       add(child);
     }
+  }
+
+  public Grammar getGrammar() {
+    return grammar;
   }
 
   @Override

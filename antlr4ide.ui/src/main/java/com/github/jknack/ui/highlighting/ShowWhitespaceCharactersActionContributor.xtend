@@ -19,8 +19,8 @@ class ShowWhitespaceCharactersActionContributor implements IActionContributor {
     action.disabledImageDescriptor = imageHelper.getImageDescriptor("showWhitespace.disabled.gif")
 
     val toolBarManager = editor.editorSite.actionBars.toolBarManager
-    toolBarManager.remove(ITextEditorActionConstants.SHOW_WHITESPACE_CHARACTERS);
-    toolBarManager.add(action);
+    toolBarManager.remove(ITextEditorActionConstants.SHOW_WHITESPACE_CHARACTERS)
+    toolBarManager.add(action)
   }
 
   override void editorDisposed(XtextEditor editor) {

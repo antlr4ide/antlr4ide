@@ -39,20 +39,23 @@ public class Antlr4UiModule extends com.github.jknack.ui.AbstractAntlr4UiModule 
   @Override
   public void configure(final Binder binder) {
     super.configure(binder);
+
     binder.requestStaticInjection(AntlrConsoleFactory.class);
     binder.requestStaticInjection(AntlrHighlightingConfiguration.class);
     binder.bind(Console.class).to(DefaultConsole.class);
+
     binder.bind(ToolOptionsProvider.class).to(DefaultToolOptionsProvider.class);
+
     binder.bind(IFoldingStructureProvider.class).to(Antlr4FoldingStructureProvider.class);
     binder.bind(IFoldingRegionProvider.class).to(Antlr4FoldingRegionProvider.class);
+
     binder.bind(String.class)
         .annotatedWith(Names.named(AbstractMultiLineCommentProvider.START_TAG))
         .toInstance("/\\*\\*");
-  }
 
-  public void configureIShowWhitespaceCharactersActionContributor(final Binder binder) {
     binder.bind(IActionContributor.class).annotatedWith(Names.named("Show Whitespace"))
         .to(ShowWhitespaceCharactersActionContributor.class);
+
   }
 
   public Class<? extends AbstractAntlrTokenToAttributeIdMapper> bindAntlrTokenToAttributeIdMapper() {

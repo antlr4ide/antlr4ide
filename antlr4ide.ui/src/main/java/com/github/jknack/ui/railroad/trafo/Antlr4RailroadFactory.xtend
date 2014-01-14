@@ -78,7 +78,7 @@ class Antlr4RailroadFactory {
     val region = getTextRegion(source)
     val doc = "Select " + name + " in editor"
     val node = new NodeSegment(source, type, name, doc, primitiveFactory, region)
-    if (name.length > 0) {
+    if (name != null && name.length > 0) {
       node.foregroundColor = color(name)
     }
     node

@@ -25,7 +25,7 @@ import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 
-import com.github.jknack.ui.railroad.actions.ExportToFileAction;
+import com.github.jknack.ui.railroad.actions.ExportToHtmlAction;
 import com.github.jknack.ui.railroad.actions.LinkWithEditorAction;
 import com.github.jknack.ui.railroad.actions.RailroadSelectionLinker;
 import com.google.inject.Inject;
@@ -47,7 +47,7 @@ public class RailroadView extends ViewPart {
   private RailroadSelectionProvider selectionProvider;
 
   @Inject
-  private ExportToFileAction exportAction;
+  private ExportToHtmlAction exportAction;
 
   @Inject
   private LinkWithEditorAction linkWithEditorAction;
@@ -78,7 +78,7 @@ public class RailroadView extends ViewPart {
 
   private void createActions() {
     IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();
-//    toolBarManager.add(exportAction);
+    toolBarManager.add(exportAction);
     toolBarManager.add(linkWithEditorAction);
     selectionLinker.activate();
   }

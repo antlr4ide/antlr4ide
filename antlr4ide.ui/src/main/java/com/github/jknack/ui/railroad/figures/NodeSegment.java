@@ -26,12 +26,19 @@ import com.github.jknack.ui.railroad.figures.primitives.PrimitiveFigureFactory;
  */
 public class NodeSegment extends AbstractSegmentFigure {
 
+  private String name;
+
   public NodeSegment(final EObject eObject, final NodeType nodeType, final String name, final String doc, final PrimitiveFigureFactory primitiveFactory, final Region textRegion) {
     super(eObject);
+    this.name = name;
     AbstractNode node = primitiveFactory.createNode(nodeType, eObject, name, this, textRegion);
     setEntry(node);
     setExit(node);
     setToolTip(new Label(doc));
+  }
+
+  public String getName() {
+    return name;
   }
 
   @Override

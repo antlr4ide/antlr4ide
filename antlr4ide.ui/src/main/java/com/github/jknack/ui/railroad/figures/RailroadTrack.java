@@ -25,13 +25,20 @@ import com.github.jknack.ui.railroad.figures.primitives.PrimitiveFigureFactory;
  */
 public class RailroadTrack extends AbstractSegmentFigure {
 
+  private String name;
+
   public RailroadTrack(final EObject eObject, final String name, final ISegmentFigure body, final PrimitiveFigureFactory primitiveFactory,
       final Region textRegion) {
     super(eObject);
+    this.name = name;
     primitiveFactory.createNode(NodeType.LABEL, eObject, name, this, textRegion);
     if (body != null) {
       add(body);
     }
+  }
+
+  public String getName() {
+    return name;
   }
 
   @Override
