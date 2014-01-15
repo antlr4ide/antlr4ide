@@ -8,11 +8,11 @@ Features
 =========
 
 * ANTLR 4.x
-* Advanced Syntax Highlighting ([even for target language](https://raw.github.com/jknack/antlr4ide/master/site/screenshots/target-language-highlighting.png.png))
+* Advanced Syntax Highlighting ([even for target language](https://raw.github.com/jknack/antlr4ide/master/site/screenshots/target-language-highlighting.png))
 * Automatic Code Generation (on save)
 * Manual Code Generation (through External Tools menu)
 * Code Formatter (Ctrl+Shift+F)
-* [Syntax Diagrams](https://raw.github.com/jknack/antlr4ide/master/site/screenshots/Java.g4.html)
+* [Syntax Diagrams as HTML](http://jknack.github.io/antlr4ide/Java/Javav4.g4.html)
 * Advanced Rule Navigation between files (F3 or Ctrl+Click over a rule)
 * Quick fixes
 
