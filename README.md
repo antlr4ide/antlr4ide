@@ -8,14 +8,13 @@ Features
 =========
 
 * ANTLR 4.x
-* Advanced Syntax Highlighting
+* Advanced Syntax Highlighting ([even for target language](https://raw.github.com/jknack/antlr4ide/master/site/screenshots/target-language-highlighting.png.png))
 * Automatic Code Generation (on save)
 * Manual Code Generation (through External Tools menu)
 * Code Formatter (Ctrl+Shift+F)
-* Syntax Diagrams
-* Advanced Rule Navigation between files (F3)
+* [Syntax Diagrams](https://raw.github.com/jknack/antlr4ide/master/site/screenshots/Java.g4.html)
+* Advanced Rule Navigation between files (F3 or Ctrl+Click over a rule)
 * Quick fixes
-
 
 
 Welcome
@@ -52,7 +51,7 @@ ANTLR 4 IDE **isn't** available in the Eclipse Market Place yet, so you MUST ins
 
 Usage
 =========
-The new IDE is very simple to use all the files with a ```*.g4``` extension will be opened with the ANTLR 4 Editor. So, just open a ```*.g4``` file and play with it
+The new IDE is very simple to use all the files with a ```*.g4``` extension will be opened by the ANTLR 4 Editor. So, just open a ```*.g4``` file and play with it
 
 Code Generation
 =========
@@ -69,7 +68,6 @@ A default ANTLR 4 launch configuration will be created. You can modify the gener
 Syntax Diagrams
 =========
 To open the Syntax Diagram view go to: ```Window > Show View > Other``` search and select: **Syntax Diagram**
-
 
 Want to contribute?
 =========
@@ -96,7 +94,3 @@ Author
 License
 =========
 [EPL](http://www.eclipse.org/legal/epl-v10.html)
-
-
-
-

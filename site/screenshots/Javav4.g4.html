@@ -1,0 +1,4620 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Javav4.g4</title>
+<style type="text/css">
+body { 
+  color: #000;
+  font-family: sans-serif;
+  font-size: 12px;
+  margin: 20px 5px 10px 20px;
+}
+/* resets */
+ul {
+  list-style: none;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+img {
+  border: 0;
+}
+.clear {
+  clear: both;
+}
+.container {
+  position: relative;
+}
+/* Grammar name */
+h1 {
+  font-size: 20px;
+}
+/*Grammar documentation*/
+.gdoc {
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+#index {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  overflow: auto;
+}
+#index h2 {
+  margin: 0;
+}
+#index ol {
+  padding-left: 30px;
+  list-style-type: square;
+  color: #364559;
+}
+#index ol li {
+  margin: 2px 0;
+}
+#index ol li a {
+  color: #366199;
+  font-family: monospace;
+}
+#rules {
+  margin-left: 210px;
+  padding-left: 20px;
+  border-left: 1px solid #AAA;
+}
+.rule {
+  margin-bottom: 30px;
+}
+/* Rule name*/
+.rule h3 {
+  color: #364559;
+  background-color: #DADFE6;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 4px 5px;
+  border-bottom: 1px solid #828B99;
+}
+.rule h3 a.topLink {
+  font-family: sans-serif;
+  font-size: 10px;
+  color: #000;
+  margin-left: 20px;
+}
+.rule h3, .rule .ebnf div {
+  font-family: monospace;
+}
+/* Sections: ebnf, railroad*/
+.doc, .ebnf, .railroad {
+  padding-left: 20px;
+}
+.doc h4, .ebnf h4, .railroad h4 {
+  font-size: 12px;
+  margin: 15px 0 10px -20px;
+}
+.ebnf div {
+  background-color: #F7F7F7;
+  border-top: 1px solid #E8E8E8;
+  border-bottom: 1px solid #E8E8E8;
+  padding: 10px 5px;
+}
+.ebnf div .literal {
+  color: #0000FF;
+}
+.ebnf div .keyword {
+  color: #7F0055;
+  font-weight: bold;
+}
+.ebnf div .rule {
+  color: #004084;
+  font-weight: bold;
+}
+.ebnf div .token {
+  font-style:italic;
+}
+.railroad img {
+  display: block;
+}
+footer {
+  float: right;
+}
+</style>
+</head>
+<body>
+<h1><a href="Javav4.g4.html" name="top">Javav4</a></h1>
+<p class="gdoc">A Java 1.7 grammar for ANTLR v4 derived from ANTLR v3 Java grammar.
+ Uses ANTLR v4's left-recursive expression notation.
+ It parses ECJ, Netbeans, JDK etc...
+
+ Sam Harwell cleaned this up significantly and updated to 1.7!
+
+ You can test with
+
+ $ antlr4 Java.g4
+ $ javac *.java
+ $ grun Java compilationUnit *.java</p>
+<div class="container">
+<div id="index">
+<h2>Rules</h2>
+<ol>
+  <li><a href="#compilationUnit">compilationUnit</a></li>
+  <li><a href="#packageDeclaration">packageDeclaration</a></li>
+  <li><a href="#importDeclaration">importDeclaration</a></li>
+  <li><a href="#typeDeclaration">typeDeclaration</a></li>
+  <li><a href="#modifier">modifier</a></li>
+  <li><a href="#classOrInterfaceModifier">classOrInterfaceModifier</a></li>
+  <li><a href="#variableModifier">variableModifier</a></li>
+  <li><a href="#classDeclaration">classDeclaration</a></li>
+  <li><a href="#typeParameters">typeParameters</a></li>
+  <li><a href="#typeParameter">typeParameter</a></li>
+  <li><a href="#typeBound">typeBound</a></li>
+  <li><a href="#enumDeclaration">enumDeclaration</a></li>
+  <li><a href="#enumConstants">enumConstants</a></li>
+  <li><a href="#enumConstant">enumConstant</a></li>
+  <li><a href="#enumBodyDeclarations">enumBodyDeclarations</a></li>
+  <li><a href="#interfaceDeclaration">interfaceDeclaration</a></li>
+  <li><a href="#typeList">typeList</a></li>
+  <li><a href="#classBody">classBody</a></li>
+  <li><a href="#interfaceBody">interfaceBody</a></li>
+  <li><a href="#classBodyDeclaration">classBodyDeclaration</a></li>
+  <li><a href="#memberDeclaration">memberDeclaration</a></li>
+  <li><a href="#methodDeclaration">methodDeclaration</a></li>
+  <li><a href="#genericMethodDeclaration">genericMethodDeclaration</a></li>
+  <li><a href="#constructorDeclaration">constructorDeclaration</a></li>
+  <li><a href="#genericConstructorDeclaration">genericConstructorDeclaration</a></li>
+  <li><a href="#fieldDeclaration">fieldDeclaration</a></li>
+  <li><a href="#interfaceBodyDeclaration">interfaceBodyDeclaration</a></li>
+  <li><a href="#interfaceMemberDeclaration">interfaceMemberDeclaration</a></li>
+  <li><a href="#constDeclaration">constDeclaration</a></li>
+  <li><a href="#constantDeclarator">constantDeclarator</a></li>
+  <li><a href="#interfaceMethodDeclaration">interfaceMethodDeclaration</a></li>
+  <li><a href="#genericInterfaceMethodDeclaration">genericInterfaceMethodDeclaration</a></li>
+  <li><a href="#variableDeclarators">variableDeclarators</a></li>
+  <li><a href="#variableDeclarator">variableDeclarator</a></li>
+  <li><a href="#variableDeclaratorId">variableDeclaratorId</a></li>
+  <li><a href="#variableInitializer">variableInitializer</a></li>
+  <li><a href="#arrayInitializer">arrayInitializer</a></li>
+  <li><a href="#enumConstantName">enumConstantName</a></li>
+  <li><a href="#type">type</a></li>
+  <li><a href="#classOrInterfaceType">classOrInterfaceType</a></li>
+  <li><a href="#primitiveType">primitiveType</a></li>
+  <li><a href="#typeArguments">typeArguments</a></li>
+  <li><a href="#typeArgument">typeArgument</a></li>
+  <li><a href="#qualifiedNameList">qualifiedNameList</a></li>
+  <li><a href="#formalParameters">formalParameters</a></li>
+  <li><a href="#formalParameterList">formalParameterList</a></li>
+  <li><a href="#formalParameter">formalParameter</a></li>
+  <li><a href="#lastFormalParameter">lastFormalParameter</a></li>
+  <li><a href="#methodBody">methodBody</a></li>
+  <li><a href="#constructorBody">constructorBody</a></li>
+  <li><a href="#qualifiedName">qualifiedName</a></li>
+  <li><a href="#literal">literal</a></li>
+  <li><a href="#annotation">annotation</a></li>
+  <li><a href="#annotationName">annotationName</a></li>
+  <li><a href="#elementValuePairs">elementValuePairs</a></li>
+  <li><a href="#elementValuePair">elementValuePair</a></li>
+  <li><a href="#elementValue">elementValue</a></li>
+  <li><a href="#elementValueArrayInitializer">elementValueArrayInitializer</a></li>
+  <li><a href="#annotationTypeDeclaration">annotationTypeDeclaration</a></li>
+  <li><a href="#annotationTypeBody">annotationTypeBody</a></li>
+  <li><a href="#annotationTypeElementDeclaration">annotationTypeElementDeclaration</a></li>
+  <li><a href="#annotationTypeElementRest">annotationTypeElementRest</a></li>
+  <li><a href="#annotationMethodOrConstantRest">annotationMethodOrConstantRest</a></li>
+  <li><a href="#annotationMethodRest">annotationMethodRest</a></li>
+  <li><a href="#annotationConstantRest">annotationConstantRest</a></li>
+  <li><a href="#defaultValue">defaultValue</a></li>
+  <li><a href="#block">block</a></li>
+  <li><a href="#blockStatement">blockStatement</a></li>
+  <li><a href="#localVariableDeclarationStatement">localVariableDeclarationStatement</a></li>
+  <li><a href="#localVariableDeclaration">localVariableDeclaration</a></li>
+  <li><a href="#statement">statement</a></li>
+  <li><a href="#catchClause">catchClause</a></li>
+  <li><a href="#catchType">catchType</a></li>
+  <li><a href="#finallyBlock">finallyBlock</a></li>
+  <li><a href="#resourceSpecification">resourceSpecification</a></li>
+  <li><a href="#resources">resources</a></li>
+  <li><a href="#resource">resource</a></li>
+  <li><a href="#switchBlockStatementGroup">switchBlockStatementGroup</a></li>
+  <li><a href="#switchLabel">switchLabel</a></li>
+  <li><a href="#forControl">forControl</a></li>
+  <li><a href="#forInit">forInit</a></li>
+  <li><a href="#enhancedForControl">enhancedForControl</a></li>
+  <li><a href="#forUpdate">forUpdate</a></li>
+  <li><a href="#parExpression">parExpression</a></li>
+  <li><a href="#expressionList">expressionList</a></li>
+  <li><a href="#statementExpression">statementExpression</a></li>
+  <li><a href="#constantExpression">constantExpression</a></li>
+  <li><a href="#expression">expression</a></li>
+  <li><a href="#primary">primary</a></li>
+  <li><a href="#creator">creator</a></li>
+  <li><a href="#createdName">createdName</a></li>
+  <li><a href="#innerCreator">innerCreator</a></li>
+  <li><a href="#arrayCreatorRest">arrayCreatorRest</a></li>
+  <li><a href="#classCreatorRest">classCreatorRest</a></li>
+  <li><a href="#explicitGenericInvocation">explicitGenericInvocation</a></li>
+  <li><a href="#nonWildcardTypeArguments">nonWildcardTypeArguments</a></li>
+  <li><a href="#typeArgumentsOrDiamond">typeArgumentsOrDiamond</a></li>
+  <li><a href="#nonWildcardTypeArgumentsOrDiamond">nonWildcardTypeArgumentsOrDiamond</a></li>
+  <li><a href="#superSuffix">superSuffix</a></li>
+  <li><a href="#explicitGenericInvocationSuffix">explicitGenericInvocationSuffix</a></li>
+  <li><a href="#arguments">arguments</a></li>
+  <li><a href="#ABSTRACT">ABSTRACT</a></li>
+  <li><a href="#ASSERT">ASSERT</a></li>
+  <li><a href="#BOOLEAN">BOOLEAN</a></li>
+  <li><a href="#BREAK">BREAK</a></li>
+  <li><a href="#BYTE">BYTE</a></li>
+  <li><a href="#CASE">CASE</a></li>
+  <li><a href="#CATCH">CATCH</a></li>
+  <li><a href="#CHAR">CHAR</a></li>
+  <li><a href="#CLASS">CLASS</a></li>
+  <li><a href="#CONST">CONST</a></li>
+  <li><a href="#CONTINUE">CONTINUE</a></li>
+  <li><a href="#DEFAULT">DEFAULT</a></li>
+  <li><a href="#DO">DO</a></li>
+  <li><a href="#DOUBLE">DOUBLE</a></li>
+  <li><a href="#ELSE">ELSE</a></li>
+  <li><a href="#ENUM">ENUM</a></li>
+  <li><a href="#EXTENDS">EXTENDS</a></li>
+  <li><a href="#FINAL">FINAL</a></li>
+  <li><a href="#FINALLY">FINALLY</a></li>
+  <li><a href="#FLOAT">FLOAT</a></li>
+  <li><a href="#FOR">FOR</a></li>
+  <li><a href="#IF">IF</a></li>
+  <li><a href="#GOTO">GOTO</a></li>
+  <li><a href="#IMPLEMENTS">IMPLEMENTS</a></li>
+  <li><a href="#IMPORT">IMPORT</a></li>
+  <li><a href="#INSTANCEOF">INSTANCEOF</a></li>
+  <li><a href="#INT">INT</a></li>
+  <li><a href="#INTERFACE">INTERFACE</a></li>
+  <li><a href="#LONG">LONG</a></li>
+  <li><a href="#NATIVE">NATIVE</a></li>
+  <li><a href="#NEW">NEW</a></li>
+  <li><a href="#PACKAGE">PACKAGE</a></li>
+  <li><a href="#PRIVATE">PRIVATE</a></li>
+  <li><a href="#PROTECTED">PROTECTED</a></li>
+  <li><a href="#PUBLIC">PUBLIC</a></li>
+  <li><a href="#RETURN">RETURN</a></li>
+  <li><a href="#SHORT">SHORT</a></li>
+  <li><a href="#STATIC">STATIC</a></li>
+  <li><a href="#STRICTFP">STRICTFP</a></li>
+  <li><a href="#SUPER">SUPER</a></li>
+  <li><a href="#SWITCH">SWITCH</a></li>
+  <li><a href="#SYNCHRONIZED">SYNCHRONIZED</a></li>
+  <li><a href="#THIS">THIS</a></li>
+  <li><a href="#THROW">THROW</a></li>
+  <li><a href="#THROWS">THROWS</a></li>
+  <li><a href="#TRANSIENT">TRANSIENT</a></li>
+  <li><a href="#TRY">TRY</a></li>
+  <li><a href="#VOID">VOID</a></li>
+  <li><a href="#VOLATILE">VOLATILE</a></li>
+  <li><a href="#WHILE">WHILE</a></li>
+  <li><a href="#IntegerLiteral">IntegerLiteral</a></li>
+  <li><a href="#DecimalIntegerLiteral">DecimalIntegerLiteral</a></li>
+  <li><a href="#HexIntegerLiteral">HexIntegerLiteral</a></li>
+  <li><a href="#OctalIntegerLiteral">OctalIntegerLiteral</a></li>
+  <li><a href="#BinaryIntegerLiteral">BinaryIntegerLiteral</a></li>
+  <li><a href="#IntegerTypeSuffix">IntegerTypeSuffix</a></li>
+  <li><a href="#DecimalNumeral">DecimalNumeral</a></li>
+  <li><a href="#Digits">Digits</a></li>
+  <li><a href="#Digit">Digit</a></li>
+  <li><a href="#NonZeroDigit">NonZeroDigit</a></li>
+  <li><a href="#DigitOrUnderscore">DigitOrUnderscore</a></li>
+  <li><a href="#Underscores">Underscores</a></li>
+  <li><a href="#HexNumeral">HexNumeral</a></li>
+  <li><a href="#HexDigits">HexDigits</a></li>
+  <li><a href="#HexDigit">HexDigit</a></li>
+  <li><a href="#HexDigitOrUnderscore">HexDigitOrUnderscore</a></li>
+  <li><a href="#OctalNumeral">OctalNumeral</a></li>
+  <li><a href="#OctalDigits">OctalDigits</a></li>
+  <li><a href="#OctalDigit">OctalDigit</a></li>
+  <li><a href="#OctalDigitOrUnderscore">OctalDigitOrUnderscore</a></li>
+  <li><a href="#BinaryNumeral">BinaryNumeral</a></li>
+  <li><a href="#BinaryDigits">BinaryDigits</a></li>
+  <li><a href="#BinaryDigit">BinaryDigit</a></li>
+  <li><a href="#BinaryDigitOrUnderscore">BinaryDigitOrUnderscore</a></li>
+  <li><a href="#FloatingPointLiteral">FloatingPointLiteral</a></li>
+  <li><a href="#DecimalFloatingPointLiteral">DecimalFloatingPointLiteral</a></li>
+  <li><a href="#ExponentPart">ExponentPart</a></li>
+  <li><a href="#ExponentIndicator">ExponentIndicator</a></li>
+  <li><a href="#SignedInteger">SignedInteger</a></li>
+  <li><a href="#Sign">Sign</a></li>
+  <li><a href="#FloatTypeSuffix">FloatTypeSuffix</a></li>
+  <li><a href="#HexadecimalFloatingPointLiteral">HexadecimalFloatingPointLiteral</a></li>
+  <li><a href="#HexSignificand">HexSignificand</a></li>
+  <li><a href="#BinaryExponent">BinaryExponent</a></li>
+  <li><a href="#BinaryExponentIndicator">BinaryExponentIndicator</a></li>
+  <li><a href="#BooleanLiteral">BooleanLiteral</a></li>
+  <li><a href="#CharacterLiteral">CharacterLiteral</a></li>
+  <li><a href="#SingleCharacter">SingleCharacter</a></li>
+  <li><a href="#StringLiteral">StringLiteral</a></li>
+  <li><a href="#StringCharacters">StringCharacters</a></li>
+  <li><a href="#StringCharacter">StringCharacter</a></li>
+  <li><a href="#EscapeSequence">EscapeSequence</a></li>
+  <li><a href="#OctalEscape">OctalEscape</a></li>
+  <li><a href="#UnicodeEscape">UnicodeEscape</a></li>
+  <li><a href="#ZeroToThree">ZeroToThree</a></li>
+  <li><a href="#NullLiteral">NullLiteral</a></li>
+  <li><a href="#LPAREN">LPAREN</a></li>
+  <li><a href="#RPAREN">RPAREN</a></li>
+  <li><a href="#LBRACE">LBRACE</a></li>
+  <li><a href="#RBRACE">RBRACE</a></li>
+  <li><a href="#LBRACK">LBRACK</a></li>
+  <li><a href="#RBRACK">RBRACK</a></li>
+  <li><a href="#SEMI">SEMI</a></li>
+  <li><a href="#COMMA">COMMA</a></li>
+  <li><a href="#DOT">DOT</a></li>
+  <li><a href="#ASSIGN">ASSIGN</a></li>
+  <li><a href="#GT">GT</a></li>
+  <li><a href="#LT">LT</a></li>
+  <li><a href="#BANG">BANG</a></li>
+  <li><a href="#TILDE">TILDE</a></li>
+  <li><a href="#QUESTION">QUESTION</a></li>
+  <li><a href="#COLON">COLON</a></li>
+  <li><a href="#EQUAL">EQUAL</a></li>
+  <li><a href="#LE">LE</a></li>
+  <li><a href="#GE">GE</a></li>
+  <li><a href="#NOTEQUAL">NOTEQUAL</a></li>
+  <li><a href="#AND">AND</a></li>
+  <li><a href="#OR">OR</a></li>
+  <li><a href="#INC">INC</a></li>
+  <li><a href="#DEC">DEC</a></li>
+  <li><a href="#ADD">ADD</a></li>
+  <li><a href="#SUB">SUB</a></li>
+  <li><a href="#MUL">MUL</a></li>
+  <li><a href="#DIV">DIV</a></li>
+  <li><a href="#BITAND">BITAND</a></li>
+  <li><a href="#BITOR">BITOR</a></li>
+  <li><a href="#CARET">CARET</a></li>
+  <li><a href="#MOD">MOD</a></li>
+  <li><a href="#ADD_ASSIGN">ADD_ASSIGN</a></li>
+  <li><a href="#SUB_ASSIGN">SUB_ASSIGN</a></li>
+  <li><a href="#MUL_ASSIGN">MUL_ASSIGN</a></li>
+  <li><a href="#DIV_ASSIGN">DIV_ASSIGN</a></li>
+  <li><a href="#AND_ASSIGN">AND_ASSIGN</a></li>
+  <li><a href="#OR_ASSIGN">OR_ASSIGN</a></li>
+  <li><a href="#XOR_ASSIGN">XOR_ASSIGN</a></li>
+  <li><a href="#MOD_ASSIGN">MOD_ASSIGN</a></li>
+  <li><a href="#LSHIFT_ASSIGN">LSHIFT_ASSIGN</a></li>
+  <li><a href="#RSHIFT_ASSIGN">RSHIFT_ASSIGN</a></li>
+  <li><a href="#URSHIFT_ASSIGN">URSHIFT_ASSIGN</a></li>
+  <li><a href="#Identifier">Identifier</a></li>
+  <li><a href="#JavaLetter">JavaLetter</a></li>
+  <li><a href="#JavaLetterOrDigit">JavaLetterOrDigit</a></li>
+  <li><a href="#AT">AT</a></li>
+  <li><a href="#ELLIPSIS">ELLIPSIS</a></li>
+  <li><a href="#WS">WS</a></li>
+  <li><a href="#COMMENT">COMMENT</a></li>
+  <li><a href="#LINE_COMMENT">LINE_COMMENT</a></li>
+</ol>
+</div>
+
+<div id="rules">
+<ul>
+  <li class="rule" id="compilationUnit">
+  <h3>compilationUnit <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+      starting point for parsing a java file
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">compilationUnit</span> :  <a href="#packageDeclaration" class="rule">packageDeclaration</a><span class="operator">?</span> <a href="#importDeclaration" class="rule">importDeclaration</a><span class="operator">*</span> <a href="#typeDeclaration" class="rule">typeDeclaration</a><span class="operator">*</span> <span class="keyword">EOF</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/compilationUnit.png" />
+  </div>
+  </li>
+  <li class="rule" id="packageDeclaration">
+  <h3>packageDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">packageDeclaration</span> :  <a href="#annotation" class="rule">annotation</a><span class="operator">*</span> <span class="literal">'package'</span> <a href="#qualifiedName" class="rule">qualifiedName</a> <span class="literal">';'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/packageDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="importDeclaration">
+  <h3>importDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">importDeclaration</span> :  <span class="literal">'import'</span> <span class="literal">'static'</span><span class="operator">?</span> <a href="#qualifiedName" class="rule">qualifiedName</a> <span class="operator">(</span><span class="literal">'.'</span> <span class="literal">'*'</span><span class="operator">)</span><span class="operator">?</span> <span class="literal">';'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/importDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="typeDeclaration">
+  <h3>typeDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">typeDeclaration</span> :  <a href="#classOrInterfaceModifier" class="rule">classOrInterfaceModifier</a><span class="operator">*</span> <a href="#classDeclaration" class="rule">classDeclaration</a> <span class="operator">|</span> <a href="#classOrInterfaceModifier" class="rule">classOrInterfaceModifier</a><span class="operator">*</span> <a href="#enumDeclaration" class="rule">enumDeclaration</a> <span class="operator">|</span> <a href="#classOrInterfaceModifier" class="rule">classOrInterfaceModifier</a><span class="operator">*</span> <a href="#interfaceDeclaration" class="rule">interfaceDeclaration</a> <span class="operator">|</span> <a href="#classOrInterfaceModifier" class="rule">classOrInterfaceModifier</a><span class="operator">*</span> <a href="#annotationTypeDeclaration" class="rule">annotationTypeDeclaration</a> <span class="operator">|</span> <span class="literal">';'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/typeDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="modifier">
+  <h3>modifier <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">modifier</span> :  <a href="#classOrInterfaceModifier" class="rule">classOrInterfaceModifier</a> <span class="operator">|</span> <span class="operator">(</span> <span class="literal">'native'</span> <span class="operator">|</span> <span class="literal">'synchronized'</span> <span class="operator">|</span> <span class="literal">'transient'</span> <span class="operator">|</span> <span class="literal">'volatile'</span> <span class="operator">)</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/modifier.png" />
+  </div>
+  </li>
+  <li class="rule" id="classOrInterfaceModifier">
+  <h3>classOrInterfaceModifier <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">classOrInterfaceModifier</span> :  <a href="#annotation" class="rule">annotation</a>   <span class="operator">|</span> <span class="operator">(</span> <span class="literal">'public'</span>   <span class="operator">|</span> <span class="literal">'protected'</span>   <span class="operator">|</span> <span class="literal">'private'</span>   <span class="operator">|</span> <span class="literal">'static'</span>   <span class="operator">|</span> <span class="literal">'abstract'</span>   <span class="operator">|</span> <span class="literal">'final'</span>   <span class="operator">|</span> <span class="literal">'strictfp'</span>   <span class="operator">)</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/classOrInterfaceModifier.png" />
+  </div>
+  </li>
+  <li class="rule" id="variableModifier">
+  <h3>variableModifier <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">variableModifier</span> :  <span class="literal">'final'</span> <span class="operator">|</span> <a href="#annotation" class="rule">annotation</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/variableModifier.png" />
+  </div>
+  </li>
+  <li class="rule" id="classDeclaration">
+  <h3>classDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">classDeclaration</span> :  <span class="literal">'class'</span> <a href="#Identifier" class="token">Identifier</a> <a href="#typeParameters" class="rule">typeParameters</a><span class="operator">?</span> <span class="operator">(</span><span class="literal">'extends'</span> <a href="#type" class="rule">type</a><span class="operator">)</span><span class="operator">?</span> <span class="operator">(</span><span class="literal">'implements'</span> <a href="#typeList" class="rule">typeList</a><span class="operator">)</span><span class="operator">?</span> <a href="#classBody" class="rule">classBody</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/classDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="typeParameters">
+  <h3>typeParameters <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">typeParameters</span> :  <span class="literal">'<'</span> <a href="#typeParameter" class="rule">typeParameter</a> <span class="operator">(</span><span class="literal">','</span> <a href="#typeParameter" class="rule">typeParameter</a><span class="operator">)</span><span class="operator">*</span> <span class="literal">'>'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/typeParameters.png" />
+  </div>
+  </li>
+  <li class="rule" id="typeParameter">
+  <h3>typeParameter <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">typeParameter</span> :  <a href="#Identifier" class="token">Identifier</a> <span class="operator">(</span><span class="literal">'extends'</span> <a href="#typeBound" class="rule">typeBound</a><span class="operator">)</span><span class="operator">?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/typeParameter.png" />
+  </div>
+  </li>
+  <li class="rule" id="typeBound">
+  <h3>typeBound <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">typeBound</span> :  <a href="#type" class="rule">type</a> <span class="operator">(</span><span class="literal">'&'</span> <a href="#type" class="rule">type</a><span class="operator">)</span><span class="operator">*</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/typeBound.png" />
+  </div>
+  </li>
+  <li class="rule" id="enumDeclaration">
+  <h3>enumDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">enumDeclaration</span> :  <a href="#ENUM" class="token">ENUM</a> <a href="#Identifier" class="token">Identifier</a> <span class="operator">(</span><span class="literal">'implements'</span> <a href="#typeList" class="rule">typeList</a><span class="operator">)</span><span class="operator">?</span> <span class="literal">'{'</span> <a href="#enumConstants" class="rule">enumConstants</a><span class="operator">?</span> <span class="literal">','</span><span class="operator">?</span> <a href="#enumBodyDeclarations" class="rule">enumBodyDeclarations</a><span class="operator">?</span> <span class="literal">'}'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/enumDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="enumConstants">
+  <h3>enumConstants <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">enumConstants</span> :  <a href="#enumConstant" class="rule">enumConstant</a> <span class="operator">(</span><span class="literal">','</span> <a href="#enumConstant" class="rule">enumConstant</a><span class="operator">)</span><span class="operator">*</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/enumConstants.png" />
+  </div>
+  </li>
+  <li class="rule" id="enumConstant">
+  <h3>enumConstant <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">enumConstant</span> :  <a href="#annotation" class="rule">annotation</a><span class="operator">*</span> <a href="#Identifier" class="token">Identifier</a> <a href="#arguments" class="rule">arguments</a><span class="operator">?</span> <a href="#classBody" class="rule">classBody</a><span class="operator">?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/enumConstant.png" />
+  </div>
+  </li>
+  <li class="rule" id="enumBodyDeclarations">
+  <h3>enumBodyDeclarations <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">enumBodyDeclarations</span> :  <span class="literal">';'</span> <a href="#classBodyDeclaration" class="rule">classBodyDeclaration</a><span class="operator">*</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/enumBodyDeclarations.png" />
+  </div>
+  </li>
+  <li class="rule" id="interfaceDeclaration">
+  <h3>interfaceDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">interfaceDeclaration</span> :  <span class="literal">'interface'</span> <a href="#Identifier" class="token">Identifier</a> <a href="#typeParameters" class="rule">typeParameters</a><span class="operator">?</span> <span class="operator">(</span><span class="literal">'extends'</span> <a href="#typeList" class="rule">typeList</a><span class="operator">)</span><span class="operator">?</span> <a href="#interfaceBody" class="rule">interfaceBody</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/interfaceDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="typeList">
+  <h3>typeList <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">typeList</span> :  <a href="#type" class="rule">type</a> <span class="operator">(</span><span class="literal">','</span> <a href="#type" class="rule">type</a><span class="operator">)</span><span class="operator">*</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/typeList.png" />
+  </div>
+  </li>
+  <li class="rule" id="classBody">
+  <h3>classBody <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">classBody</span> :  <span class="literal">'{'</span> <a href="#classBodyDeclaration" class="rule">classBodyDeclaration</a><span class="operator">*</span> <span class="literal">'}'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/classBody.png" />
+  </div>
+  </li>
+  <li class="rule" id="interfaceBody">
+  <h3>interfaceBody <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">interfaceBody</span> :  <span class="literal">'{'</span> <a href="#interfaceBodyDeclaration" class="rule">interfaceBodyDeclaration</a><span class="operator">*</span> <span class="literal">'}'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/interfaceBody.png" />
+  </div>
+  </li>
+  <li class="rule" id="classBodyDeclaration">
+  <h3>classBodyDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">classBodyDeclaration</span> :  <span class="literal">';'</span> <span class="operator">|</span> <span class="literal">'static'</span><span class="operator">?</span> <a href="#block" class="rule">block</a> <span class="operator">|</span> <a href="#modifier" class="rule">modifier</a><span class="operator">*</span> <a href="#memberDeclaration" class="rule">memberDeclaration</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/classBodyDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="memberDeclaration">
+  <h3>memberDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">memberDeclaration</span> :  <a href="#methodDeclaration" class="rule">methodDeclaration</a> <span class="operator">|</span> <a href="#genericMethodDeclaration" class="rule">genericMethodDeclaration</a> <span class="operator">|</span> <a href="#fieldDeclaration" class="rule">fieldDeclaration</a> <span class="operator">|</span> <a href="#constructorDeclaration" class="rule">constructorDeclaration</a> <span class="operator">|</span> <a href="#genericConstructorDeclaration" class="rule">genericConstructorDeclaration</a> <span class="operator">|</span> <a href="#interfaceDeclaration" class="rule">interfaceDeclaration</a> <span class="operator">|</span> <a href="#annotationTypeDeclaration" class="rule">annotationTypeDeclaration</a> <span class="operator">|</span> <a href="#classDeclaration" class="rule">classDeclaration</a> <span class="operator">|</span> <a href="#enumDeclaration" class="rule">enumDeclaration</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/memberDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="methodDeclaration">
+  <h3>methodDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">methodDeclaration</span> :  <span class="operator">(</span><a href="#type" class="rule">type</a><span class="operator">|</span><span class="literal">'void'</span><span class="operator">)</span> <a href="#Identifier" class="token">Identifier</a> <a href="#formalParameters" class="rule">formalParameters</a> <span class="operator">(</span><span class="literal">'['</span> <span class="literal">']'</span><span class="operator">)</span><span class="operator">*</span> <span class="operator">(</span><span class="literal">'throws'</span> <a href="#qualifiedNameList" class="rule">qualifiedNameList</a><span class="operator">)</span><span class="operator">?</span> <span class="operator">(</span> <a href="#methodBody" class="rule">methodBody</a> <span class="operator">|</span> <span class="literal">';'</span> <span class="operator">)</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/methodDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="genericMethodDeclaration">
+  <h3>genericMethodDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">genericMethodDeclaration</span> :  <a href="#typeParameters" class="rule">typeParameters</a> <a href="#methodDeclaration" class="rule">methodDeclaration</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/genericMethodDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="constructorDeclaration">
+  <h3>constructorDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">constructorDeclaration</span> :  <a href="#Identifier" class="token">Identifier</a> <a href="#formalParameters" class="rule">formalParameters</a> <span class="operator">(</span><span class="literal">'throws'</span> <a href="#qualifiedNameList" class="rule">qualifiedNameList</a><span class="operator">)</span><span class="operator">?</span> <a href="#constructorBody" class="rule">constructorBody</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/constructorDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="genericConstructorDeclaration">
+  <h3>genericConstructorDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">genericConstructorDeclaration</span> :  <a href="#typeParameters" class="rule">typeParameters</a> <a href="#constructorDeclaration" class="rule">constructorDeclaration</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/genericConstructorDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="fieldDeclaration">
+  <h3>fieldDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">fieldDeclaration</span> :  <a href="#type" class="rule">type</a> <a href="#variableDeclarators" class="rule">variableDeclarators</a> <span class="literal">';'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/fieldDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="interfaceBodyDeclaration">
+  <h3>interfaceBodyDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">interfaceBodyDeclaration</span> :  <a href="#modifier" class="rule">modifier</a><span class="operator">*</span> <a href="#interfaceMemberDeclaration" class="rule">interfaceMemberDeclaration</a> <span class="operator">|</span> <span class="literal">';'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/interfaceBodyDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="interfaceMemberDeclaration">
+  <h3>interfaceMemberDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">interfaceMemberDeclaration</span> :  <a href="#constDeclaration" class="rule">constDeclaration</a> <span class="operator">|</span> <a href="#interfaceMethodDeclaration" class="rule">interfaceMethodDeclaration</a> <span class="operator">|</span> <a href="#genericInterfaceMethodDeclaration" class="rule">genericInterfaceMethodDeclaration</a> <span class="operator">|</span> <a href="#interfaceDeclaration" class="rule">interfaceDeclaration</a> <span class="operator">|</span> <a href="#annotationTypeDeclaration" class="rule">annotationTypeDeclaration</a> <span class="operator">|</span> <a href="#classDeclaration" class="rule">classDeclaration</a> <span class="operator">|</span> <a href="#enumDeclaration" class="rule">enumDeclaration</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/interfaceMemberDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="constDeclaration">
+  <h3>constDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">constDeclaration</span> :  <a href="#type" class="rule">type</a> <a href="#constantDeclarator" class="rule">constantDeclarator</a> <span class="operator">(</span><span class="literal">','</span> <a href="#constantDeclarator" class="rule">constantDeclarator</a><span class="operator">)</span><span class="operator">*</span> <span class="literal">';'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/constDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="constantDeclarator">
+  <h3>constantDeclarator <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">constantDeclarator</span> :  <a href="#Identifier" class="token">Identifier</a> <span class="operator">(</span><span class="literal">'['</span> <span class="literal">']'</span><span class="operator">)</span><span class="operator">*</span> <span class="literal">'='</span> <a href="#variableInitializer" class="rule">variableInitializer</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/constantDeclarator.png" />
+  </div>
+  </li>
+  <li class="rule" id="interfaceMethodDeclaration">
+  <h3>interfaceMethodDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">interfaceMethodDeclaration</span> :  <span class="operator">(</span><a href="#type" class="rule">type</a><span class="operator">|</span><span class="literal">'void'</span><span class="operator">)</span> <a href="#Identifier" class="token">Identifier</a> <a href="#formalParameters" class="rule">formalParameters</a> <span class="operator">(</span><span class="literal">'['</span> <span class="literal">']'</span><span class="operator">)</span><span class="operator">*</span> <span class="operator">(</span><span class="literal">'throws'</span> <a href="#qualifiedNameList" class="rule">qualifiedNameList</a><span class="operator">)</span><span class="operator">?</span> <span class="literal">';'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/interfaceMethodDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="genericInterfaceMethodDeclaration">
+  <h3>genericInterfaceMethodDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">genericInterfaceMethodDeclaration</span> :  <a href="#typeParameters" class="rule">typeParameters</a> <a href="#interfaceMethodDeclaration" class="rule">interfaceMethodDeclaration</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/genericInterfaceMethodDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="variableDeclarators">
+  <h3>variableDeclarators <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">variableDeclarators</span> :  <a href="#variableDeclarator" class="rule">variableDeclarator</a> <span class="operator">(</span><span class="literal">','</span> <a href="#variableDeclarator" class="rule">variableDeclarator</a><span class="operator">)</span><span class="operator">*</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/variableDeclarators.png" />
+  </div>
+  </li>
+  <li class="rule" id="variableDeclarator">
+  <h3>variableDeclarator <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">variableDeclarator</span> :  <a href="#variableDeclaratorId" class="rule">variableDeclaratorId</a> <span class="operator">(</span><span class="literal">'='</span> <a href="#variableInitializer" class="rule">variableInitializer</a><span class="operator">)</span><span class="operator">?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/variableDeclarator.png" />
+  </div>
+  </li>
+  <li class="rule" id="variableDeclaratorId">
+  <h3>variableDeclaratorId <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">variableDeclaratorId</span> :  <a href="#Identifier" class="token">Identifier</a> <span class="operator">(</span><span class="literal">'['</span> <span class="literal">']'</span><span class="operator">)</span><span class="operator">*</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/variableDeclaratorId.png" />
+  </div>
+  </li>
+  <li class="rule" id="variableInitializer">
+  <h3>variableInitializer <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">variableInitializer</span> :  <a href="#arrayInitializer" class="rule">arrayInitializer</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/variableInitializer.png" />
+  </div>
+  </li>
+  <li class="rule" id="arrayInitializer">
+  <h3>arrayInitializer <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">arrayInitializer</span> :  <span class="literal">'{'</span> <span class="operator">(</span><a href="#variableInitializer" class="rule">variableInitializer</a> <span class="operator">(</span><span class="literal">','</span> <a href="#variableInitializer" class="rule">variableInitializer</a><span class="operator">)</span><span class="operator">*</span> <span class="operator">(</span><span class="literal">','</span><span class="operator">)</span><span class="operator">?</span> <span class="operator">)</span><span class="operator">?</span> <span class="literal">'}'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/arrayInitializer.png" />
+  </div>
+  </li>
+  <li class="rule" id="enumConstantName">
+  <h3>enumConstantName <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">enumConstantName</span> :  <a href="#Identifier" class="token">Identifier</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/enumConstantName.png" />
+  </div>
+  </li>
+  <li class="rule" id="type">
+  <h3>type <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">type</span> :  <a href="#classOrInterfaceType" class="rule">classOrInterfaceType</a> <span class="operator">(</span><span class="literal">'['</span> <span class="literal">']'</span><span class="operator">)</span><span class="operator">*</span> <span class="operator">|</span> <a href="#primitiveType" class="rule">primitiveType</a> <span class="operator">(</span><span class="literal">'['</span> <span class="literal">']'</span><span class="operator">)</span><span class="operator">*</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/type.png" />
+  </div>
+  </li>
+  <li class="rule" id="classOrInterfaceType">
+  <h3>classOrInterfaceType <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">classOrInterfaceType</span> :  <a href="#Identifier" class="token">Identifier</a> <a href="#typeArguments" class="rule">typeArguments</a><span class="operator">?</span> <span class="operator">(</span><span class="literal">'.'</span> <a href="#Identifier" class="token">Identifier</a> <a href="#typeArguments" class="rule">typeArguments</a><span class="operator">?</span> <span class="operator">)</span><span class="operator">*</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/classOrInterfaceType.png" />
+  </div>
+  </li>
+  <li class="rule" id="primitiveType">
+  <h3>primitiveType <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">primitiveType</span> :  <span class="literal">'boolean'</span> <span class="operator">|</span> <span class="literal">'char'</span> <span class="operator">|</span> <span class="literal">'byte'</span> <span class="operator">|</span> <span class="literal">'short'</span> <span class="operator">|</span> <span class="literal">'int'</span> <span class="operator">|</span> <span class="literal">'long'</span> <span class="operator">|</span> <span class="literal">'float'</span> <span class="operator">|</span> <span class="literal">'double'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/primitiveType.png" />
+  </div>
+  </li>
+  <li class="rule" id="typeArguments">
+  <h3>typeArguments <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">typeArguments</span> :  <span class="literal">'<'</span> <a href="#typeArgument" class="rule">typeArgument</a> <span class="operator">(</span><span class="literal">','</span> <a href="#typeArgument" class="rule">typeArgument</a><span class="operator">)</span><span class="operator">*</span> <span class="literal">'>'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/typeArguments.png" />
+  </div>
+  </li>
+  <li class="rule" id="typeArgument">
+  <h3>typeArgument <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">typeArgument</span> :  <a href="#type" class="rule">type</a> <span class="operator">|</span> <span class="literal">'?'</span> <span class="operator">(</span><span class="operator">(</span><span class="literal">'extends'</span> <span class="operator">|</span> <span class="literal">'super'</span><span class="operator">)</span> <a href="#type" class="rule">type</a><span class="operator">)</span><span class="operator">?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/typeArgument.png" />
+  </div>
+  </li>
+  <li class="rule" id="qualifiedNameList">
+  <h3>qualifiedNameList <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">qualifiedNameList</span> :  <a href="#qualifiedName" class="rule">qualifiedName</a> <span class="operator">(</span><span class="literal">','</span> <a href="#qualifiedName" class="rule">qualifiedName</a><span class="operator">)</span><span class="operator">*</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/qualifiedNameList.png" />
+  </div>
+  </li>
+  <li class="rule" id="formalParameters">
+  <h3>formalParameters <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">formalParameters</span> :  <span class="literal">'('</span> <a href="#formalParameterList" class="rule">formalParameterList</a><span class="operator">?</span> <span class="literal">')'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/formalParameters.png" />
+  </div>
+  </li>
+  <li class="rule" id="formalParameterList">
+  <h3>formalParameterList <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">formalParameterList</span> :  <a href="#formalParameter" class="rule">formalParameter</a> <span class="operator">(</span><span class="literal">','</span> <a href="#formalParameter" class="rule">formalParameter</a><span class="operator">)</span><span class="operator">*</span> <span class="operator">(</span><span class="literal">','</span> <a href="#lastFormalParameter" class="rule">lastFormalParameter</a><span class="operator">)</span><span class="operator">?</span> <span class="operator">|</span> <a href="#lastFormalParameter" class="rule">lastFormalParameter</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/formalParameterList.png" />
+  </div>
+  </li>
+  <li class="rule" id="formalParameter">
+  <h3>formalParameter <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">formalParameter</span> :  <a href="#variableModifier" class="rule">variableModifier</a><span class="operator">*</span> <a href="#type" class="rule">type</a> <a href="#variableDeclaratorId" class="rule">variableDeclaratorId</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/formalParameter.png" />
+  </div>
+  </li>
+  <li class="rule" id="lastFormalParameter">
+  <h3>lastFormalParameter <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">lastFormalParameter</span> :  <a href="#variableModifier" class="rule">variableModifier</a><span class="operator">*</span> <a href="#type" class="rule">type</a> <span class="literal">'...'</span> <a href="#variableDeclaratorId" class="rule">variableDeclaratorId</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/lastFormalParameter.png" />
+  </div>
+  </li>
+  <li class="rule" id="methodBody">
+  <h3>methodBody <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">methodBody</span> :  <a href="#block" class="rule">block</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/methodBody.png" />
+  </div>
+  </li>
+  <li class="rule" id="constructorBody">
+  <h3>constructorBody <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">constructorBody</span> :  <a href="#block" class="rule">block</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/constructorBody.png" />
+  </div>
+  </li>
+  <li class="rule" id="qualifiedName">
+  <h3>qualifiedName <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">qualifiedName</span> :  <a href="#Identifier" class="token">Identifier</a> <span class="operator">(</span><span class="literal">'.'</span> <a href="#Identifier" class="token">Identifier</a><span class="operator">)</span><span class="operator">*</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/qualifiedName.png" />
+  </div>
+  </li>
+  <li class="rule" id="literal">
+  <h3>literal <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">literal</span> :  <a href="#IntegerLiteral" class="token">IntegerLiteral</a> <span class="operator">|</span> <a href="#FloatingPointLiteral" class="token">FloatingPointLiteral</a> <span class="operator">|</span> <a href="#CharacterLiteral" class="token">CharacterLiteral</a> <span class="operator">|</span> <a href="#StringLiteral" class="token">StringLiteral</a> <span class="operator">|</span> <a href="#BooleanLiteral" class="token">BooleanLiteral</a> <span class="operator">|</span> <span class="literal">'null'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/literal.png" />
+  </div>
+  </li>
+  <li class="rule" id="annotation">
+  <h3>annotation <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">annotation</span> :  <span class="literal">'@'</span> <a href="#annotationName" class="rule">annotationName</a> <span class="operator">(</span> <span class="literal">'('</span> <span class="operator">(</span> <a href="#elementValuePairs" class="rule">elementValuePairs</a> <span class="operator">|</span> <a href="#elementValue" class="rule">elementValue</a> <span class="operator">)</span><span class="operator">?</span> <span class="literal">')'</span> <span class="operator">)</span><span class="operator">?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/annotation.png" />
+  </div>
+  </li>
+  <li class="rule" id="annotationName">
+  <h3>annotationName <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">annotationName</span> :  <a href="#qualifiedName" class="rule">qualifiedName</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/annotationName.png" />
+  </div>
+  </li>
+  <li class="rule" id="elementValuePairs">
+  <h3>elementValuePairs <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">elementValuePairs</span> :  <a href="#elementValuePair" class="rule">elementValuePair</a> <span class="operator">(</span><span class="literal">','</span> <a href="#elementValuePair" class="rule">elementValuePair</a><span class="operator">)</span><span class="operator">*</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/elementValuePairs.png" />
+  </div>
+  </li>
+  <li class="rule" id="elementValuePair">
+  <h3>elementValuePair <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">elementValuePair</span> :  <a href="#Identifier" class="token">Identifier</a> <span class="literal">'='</span> <a href="#elementValue" class="rule">elementValue</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/elementValuePair.png" />
+  </div>
+  </li>
+  <li class="rule" id="elementValue">
+  <h3>elementValue <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">elementValue</span> :  <a href="#expression" class="rule">expression</a> <span class="operator">|</span> <a href="#annotation" class="rule">annotation</a> <span class="operator">|</span> <a href="#elementValueArrayInitializer" class="rule">elementValueArrayInitializer</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/elementValue.png" />
+  </div>
+  </li>
+  <li class="rule" id="elementValueArrayInitializer">
+  <h3>elementValueArrayInitializer <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">elementValueArrayInitializer</span> :  <span class="literal">'{'</span> <span class="operator">(</span><a href="#elementValue" class="rule">elementValue</a> <span class="operator">(</span><span class="literal">','</span> <a href="#elementValue" class="rule">elementValue</a><span class="operator">)</span><span class="operator">*</span><span class="operator">)</span><span class="operator">?</span> <span class="operator">(</span><span class="literal">','</span><span class="operator">)</span><span class="operator">?</span> <span class="literal">'}'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/elementValueArrayInitializer.png" />
+  </div>
+  </li>
+  <li class="rule" id="annotationTypeDeclaration">
+  <h3>annotationTypeDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">annotationTypeDeclaration</span> :  <span class="literal">'@'</span> <span class="literal">'interface'</span> <a href="#Identifier" class="token">Identifier</a> <a href="#annotationTypeBody" class="rule">annotationTypeBody</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/annotationTypeDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="annotationTypeBody">
+  <h3>annotationTypeBody <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">annotationTypeBody</span> :  <span class="literal">'{'</span> <span class="operator">(</span><a href="#annotationTypeElementDeclaration" class="rule">annotationTypeElementDeclaration</a><span class="operator">)</span><span class="operator">*</span> <span class="literal">'}'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/annotationTypeBody.png" />
+  </div>
+  </li>
+  <li class="rule" id="annotationTypeElementDeclaration">
+  <h3>annotationTypeElementDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">annotationTypeElementDeclaration</span> :  <a href="#modifier" class="rule">modifier</a><span class="operator">*</span> <a href="#annotationTypeElementRest" class="rule">annotationTypeElementRest</a> <span class="operator">|</span> <span class="literal">';'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/annotationTypeElementDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="annotationTypeElementRest">
+  <h3>annotationTypeElementRest <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">annotationTypeElementRest</span> :  <a href="#type" class="rule">type</a> <a href="#annotationMethodOrConstantRest" class="rule">annotationMethodOrConstantRest</a> <span class="literal">';'</span> <span class="operator">|</span> <a href="#classDeclaration" class="rule">classDeclaration</a> <span class="literal">';'</span><span class="operator">?</span> <span class="operator">|</span> <a href="#interfaceDeclaration" class="rule">interfaceDeclaration</a> <span class="literal">';'</span><span class="operator">?</span> <span class="operator">|</span> <a href="#enumDeclaration" class="rule">enumDeclaration</a> <span class="literal">';'</span><span class="operator">?</span> <span class="operator">|</span> <a href="#annotationTypeDeclaration" class="rule">annotationTypeDeclaration</a> <span class="literal">';'</span><span class="operator">?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/annotationTypeElementRest.png" />
+  </div>
+  </li>
+  <li class="rule" id="annotationMethodOrConstantRest">
+  <h3>annotationMethodOrConstantRest <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">annotationMethodOrConstantRest</span> :  <a href="#annotationMethodRest" class="rule">annotationMethodRest</a> <span class="operator">|</span> <a href="#annotationConstantRest" class="rule">annotationConstantRest</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/annotationMethodOrConstantRest.png" />
+  </div>
+  </li>
+  <li class="rule" id="annotationMethodRest">
+  <h3>annotationMethodRest <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">annotationMethodRest</span> :  <a href="#Identifier" class="token">Identifier</a> <span class="literal">'('</span> <span class="literal">')'</span> <a href="#defaultValue" class="rule">defaultValue</a><span class="operator">?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/annotationMethodRest.png" />
+  </div>
+  </li>
+  <li class="rule" id="annotationConstantRest">
+  <h3>annotationConstantRest <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">annotationConstantRest</span> :  <a href="#variableDeclarators" class="rule">variableDeclarators</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/annotationConstantRest.png" />
+  </div>
+  </li>
+  <li class="rule" id="defaultValue">
+  <h3>defaultValue <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">defaultValue</span> :  <span class="literal">'default'</span> <a href="#elementValue" class="rule">elementValue</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/defaultValue.png" />
+  </div>
+  </li>
+  <li class="rule" id="block">
+  <h3>block <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">block</span> :  <span class="literal">'{'</span> <a href="#blockStatement" class="rule">blockStatement</a><span class="operator">*</span> <span class="literal">'}'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/block.png" />
+  </div>
+  </li>
+  <li class="rule" id="blockStatement">
+  <h3>blockStatement <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">blockStatement</span> :  <a href="#localVariableDeclarationStatement" class="rule">localVariableDeclarationStatement</a> <span class="operator">|</span> <a href="#statement" class="rule">statement</a> <span class="operator">|</span> <a href="#typeDeclaration" class="rule">typeDeclaration</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/blockStatement.png" />
+  </div>
+  </li>
+  <li class="rule" id="localVariableDeclarationStatement">
+  <h3>localVariableDeclarationStatement <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">localVariableDeclarationStatement</span> :  <a href="#localVariableDeclaration" class="rule">localVariableDeclaration</a> <span class="literal">';'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/localVariableDeclarationStatement.png" />
+  </div>
+  </li>
+  <li class="rule" id="localVariableDeclaration">
+  <h3>localVariableDeclaration <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">localVariableDeclaration</span> :  <a href="#variableModifier" class="rule">variableModifier</a><span class="operator">*</span> <a href="#type" class="rule">type</a> <a href="#variableDeclarators" class="rule">variableDeclarators</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/localVariableDeclaration.png" />
+  </div>
+  </li>
+  <li class="rule" id="statement">
+  <h3>statement <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">statement</span> :  <a href="#block" class="rule">block</a> <span class="operator">|</span> <a href="#ASSERT" class="token">ASSERT</a> <a href="#expression" class="rule">expression</a> <span class="operator">(</span><span class="literal">':'</span> <a href="#expression" class="rule">expression</a><span class="operator">)</span><span class="operator">?</span> <span class="literal">';'</span> <span class="operator">|</span> <span class="literal">'if'</span> <a href="#parExpression" class="rule">parExpression</a> <a href="#statement" class="rule">statement</a> <span class="operator">(</span><span class="literal">'else'</span> <a href="#statement" class="rule">statement</a><span class="operator">)</span><span class="operator">?</span> <span class="operator">|</span> <span class="literal">'for'</span> <span class="literal">'('</span> <a href="#forControl" class="rule">forControl</a> <span class="literal">')'</span> <a href="#statement" class="rule">statement</a> <span class="operator">|</span> <span class="literal">'while'</span> <a href="#parExpression" class="rule">parExpression</a> <a href="#statement" class="rule">statement</a> <span class="operator">|</span> <span class="literal">'do'</span> <a href="#statement" class="rule">statement</a> <span class="literal">'while'</span> <a href="#parExpression" class="rule">parExpression</a> <span class="literal">';'</span> <span class="operator">|</span> <span class="literal">'try'</span> <a href="#block" class="rule">block</a> <span class="operator">(</span><a href="#catchClause" class="rule">catchClause</a><span class="operator">+</span> <a href="#finallyBlock" class="rule">finallyBlock</a><span class="operator">?</span> <span class="operator">|</span> <a href="#finallyBlock" class="rule">finallyBlock</a><span class="operator">)</span> <span class="operator">|</span> <span class="literal">'try'</span> <a href="#resourceSpecification" class="rule">resourceSpecification</a> <a href="#block" class="rule">block</a> <a href="#catchClause" class="rule">catchClause</a><span class="operator">*</span> <a href="#finallyBlock" class="rule">finallyBlock</a><span class="operator">?</span> <span class="operator">|</span> <span class="literal">'switch'</span> <a href="#parExpression" class="rule">parExpression</a> <span class="literal">'{'</span> <a href="#switchBlockStatementGroup" class="rule">switchBlockStatementGroup</a><span class="operator">*</span> <a href="#switchLabel" class="rule">switchLabel</a><span class="operator">*</span> <span class="literal">'}'</span> <span class="operator">|</span> <span class="literal">'synchronized'</span> <a href="#parExpression" class="rule">parExpression</a> <a href="#block" class="rule">block</a> <span class="operator">|</span> <span class="literal">'return'</span> <a href="#expression" class="rule">expression</a><span class="operator">?</span> <span class="literal">';'</span> <span class="operator">|</span> <span class="literal">'throw'</span> <a href="#expression" class="rule">expression</a> <span class="literal">';'</span> <span class="operator">|</span> <span class="literal">'break'</span> <a href="#Identifier" class="token">Identifier</a><span class="operator">?</span> <span class="literal">';'</span> <span class="operator">|</span> <span class="literal">'continue'</span> <a href="#Identifier" class="token">Identifier</a><span class="operator">?</span> <span class="literal">';'</span> <span class="operator">|</span> <span class="literal">';'</span> <span class="operator">|</span> <a href="#statementExpression" class="rule">statementExpression</a> <span class="literal">';'</span> <span class="operator">|</span> <a href="#Identifier" class="token">Identifier</a> <span class="literal">':'</span> <a href="#statement" class="rule">statement</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/statement.png" />
+  </div>
+  </li>
+  <li class="rule" id="catchClause">
+  <h3>catchClause <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">catchClause</span> :  <span class="literal">'catch'</span> <span class="literal">'('</span> <a href="#variableModifier" class="rule">variableModifier</a><span class="operator">*</span> <a href="#catchType" class="rule">catchType</a> <a href="#Identifier" class="token">Identifier</a> <span class="literal">')'</span> <a href="#block" class="rule">block</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/catchClause.png" />
+  </div>
+  </li>
+  <li class="rule" id="catchType">
+  <h3>catchType <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">catchType</span> :  <a href="#qualifiedName" class="rule">qualifiedName</a> <span class="operator">(</span><span class="literal">'|'</span> <a href="#qualifiedName" class="rule">qualifiedName</a><span class="operator">)</span><span class="operator">*</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/catchType.png" />
+  </div>
+  </li>
+  <li class="rule" id="finallyBlock">
+  <h3>finallyBlock <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">finallyBlock</span> :  <span class="literal">'finally'</span> <a href="#block" class="rule">block</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/finallyBlock.png" />
+  </div>
+  </li>
+  <li class="rule" id="resourceSpecification">
+  <h3>resourceSpecification <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">resourceSpecification</span> :  <span class="literal">'('</span> <a href="#resources" class="rule">resources</a> <span class="literal">';'</span><span class="operator">?</span> <span class="literal">')'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/resourceSpecification.png" />
+  </div>
+  </li>
+  <li class="rule" id="resources">
+  <h3>resources <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">resources</span> :  <a href="#resource" class="rule">resource</a> <span class="operator">(</span><span class="literal">';'</span> <a href="#resource" class="rule">resource</a><span class="operator">)</span><span class="operator">*</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/resources.png" />
+  </div>
+  </li>
+  <li class="rule" id="resource">
+  <h3>resource <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">resource</span> :  <a href="#variableModifier" class="rule">variableModifier</a><span class="operator">*</span> <a href="#classOrInterfaceType" class="rule">classOrInterfaceType</a> <a href="#variableDeclaratorId" class="rule">variableDeclaratorId</a> <span class="literal">'='</span> <a href="#expression" class="rule">expression</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/resource.png" />
+  </div>
+  </li>
+  <li class="rule" id="switchBlockStatementGroup">
+  <h3>switchBlockStatementGroup <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+      Matches cases then statements, both of which are mandatory.
+       To handle empty cases at the end, we add switchLabel* to statement.
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">switchBlockStatementGroup</span> :  <a href="#switchLabel" class="rule">switchLabel</a><span class="operator">+</span> <a href="#blockStatement" class="rule">blockStatement</a><span class="operator">+</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/switchBlockStatementGroup.png" />
+  </div>
+  </li>
+  <li class="rule" id="switchLabel">
+  <h3>switchLabel <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">switchLabel</span> :  <span class="literal">'case'</span> <a href="#constantExpression" class="rule">constantExpression</a> <span class="literal">':'</span> <span class="operator">|</span> <span class="literal">'case'</span> <a href="#enumConstantName" class="rule">enumConstantName</a> <span class="literal">':'</span> <span class="operator">|</span> <span class="literal">'default'</span> <span class="literal">':'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/switchLabel.png" />
+  </div>
+  </li>
+  <li class="rule" id="forControl">
+  <h3>forControl <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">forControl</span> :  <a href="#enhancedForControl" class="rule">enhancedForControl</a> <span class="operator">|</span> <a href="#forInit" class="rule">forInit</a><span class="operator">?</span> <span class="literal">';'</span> <a href="#expression" class="rule">expression</a><span class="operator">?</span> <span class="literal">';'</span> <a href="#forUpdate" class="rule">forUpdate</a><span class="operator">?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/forControl.png" />
+  </div>
+  </li>
+  <li class="rule" id="forInit">
+  <h3>forInit <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">forInit</span> :  <a href="#localVariableDeclaration" class="rule">localVariableDeclaration</a> <span class="operator">|</span> <a href="#expressionList" class="rule">expressionList</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/forInit.png" />
+  </div>
+  </li>
+  <li class="rule" id="enhancedForControl">
+  <h3>enhancedForControl <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">enhancedForControl</span> :  <a href="#variableModifier" class="rule">variableModifier</a><span class="operator">*</span> <a href="#type" class="rule">type</a> <a href="#Identifier" class="token">Identifier</a> <span class="literal">':'</span> <a href="#expression" class="rule">expression</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/enhancedForControl.png" />
+  </div>
+  </li>
+  <li class="rule" id="forUpdate">
+  <h3>forUpdate <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">forUpdate</span> :  <a href="#expressionList" class="rule">expressionList</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/forUpdate.png" />
+  </div>
+  </li>
+  <li class="rule" id="parExpression">
+  <h3>parExpression <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">parExpression</span> :  <span class="literal">'('</span> <a href="#expression" class="rule">expression</a> <span class="literal">')'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/parExpression.png" />
+  </div>
+  </li>
+  <li class="rule" id="expressionList">
+  <h3>expressionList <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">expressionList</span> :  <a href="#expression" class="rule">expression</a> <span class="operator">(</span><span class="literal">','</span> <a href="#expression" class="rule">expression</a><span class="operator">)</span><span class="operator">*</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/expressionList.png" />
+  </div>
+  </li>
+  <li class="rule" id="statementExpression">
+  <h3>statementExpression <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">statementExpression</span> :  <a href="#expression" class="rule">expression</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/statementExpression.png" />
+  </div>
+  </li>
+  <li class="rule" id="constantExpression">
+  <h3>constantExpression <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">constantExpression</span> :  <a href="#expression" class="rule">expression</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/constantExpression.png" />
+  </div>
+  </li>
+  <li class="rule" id="expression">
+  <h3>expression <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">expression</span> :  <a href="#primary" class="rule">primary</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="literal">'.'</span> <a href="#Identifier" class="token">Identifier</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="literal">'.'</span> <span class="literal">'this'</span> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="literal">'.'</span> <span class="literal">'new'</span> <a href="#nonWildcardTypeArguments" class="rule">nonWildcardTypeArguments</a><span class="operator">?</span> <a href="#innerCreator" class="rule">innerCreator</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="literal">'.'</span> <span class="literal">'super'</span> <a href="#superSuffix" class="rule">superSuffix</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="literal">'.'</span> <a href="#explicitGenericInvocation" class="rule">explicitGenericInvocation</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="literal">'['</span> <a href="#expression" class="rule">expression</a> <span class="literal">']'</span> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="literal">'('</span> <a href="#expressionList" class="rule">expressionList</a><span class="operator">?</span> <span class="literal">')'</span> <span class="operator">|</span> <span class="literal">'new'</span> <a href="#creator" class="rule">creator</a> <span class="operator">|</span> <span class="literal">'('</span> <a href="#type" class="rule">type</a> <span class="literal">')'</span> <a href="#expression" class="rule">expression</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="operator">(</span><span class="literal">'++'</span> <span class="operator">|</span> <span class="literal">'--'</span><span class="operator">)</span> <span class="operator">|</span> <span class="operator">(</span><span class="literal">'+'</span><span class="operator">|</span><span class="literal">'-'</span><span class="operator">|</span><span class="literal">'++'</span><span class="operator">|</span><span class="literal">'--'</span><span class="operator">)</span> <a href="#expression" class="rule">expression</a> <span class="operator">|</span> <span class="operator">(</span><span class="literal">'~'</span><span class="operator">|</span><span class="literal">'!'</span><span class="operator">)</span> <a href="#expression" class="rule">expression</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="operator">(</span><span class="literal">'*'</span><span class="operator">|</span><span class="literal">'/'</span><span class="operator">|</span><span class="literal">'%'</span><span class="operator">)</span> <a href="#expression" class="rule">expression</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="operator">(</span><span class="literal">'+'</span><span class="operator">|</span><span class="literal">'-'</span><span class="operator">)</span> <a href="#expression" class="rule">expression</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="operator">(</span><span class="literal">'<'</span> <span class="literal">'<'</span> <span class="operator">|</span> <span class="literal">'>'</span> <span class="literal">'>'</span> <span class="literal">'>'</span> <span class="operator">|</span> <span class="literal">'>'</span> <span class="literal">'>'</span><span class="operator">)</span> <a href="#expression" class="rule">expression</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="operator">(</span><span class="literal">'<='</span> <span class="operator">|</span> <span class="literal">'>='</span> <span class="operator">|</span> <span class="literal">'>'</span> <span class="operator">|</span> <span class="literal">'<'</span><span class="operator">)</span> <a href="#expression" class="rule">expression</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="literal">'instanceof'</span> <a href="#type" class="rule">type</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="operator">(</span><span class="literal">'=='</span> <span class="operator">|</span> <span class="literal">'!='</span><span class="operator">)</span> <a href="#expression" class="rule">expression</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="literal">'&'</span> <a href="#expression" class="rule">expression</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="literal">'^'</span> <a href="#expression" class="rule">expression</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="literal">'|'</span> <a href="#expression" class="rule">expression</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="literal">'&&'</span> <a href="#expression" class="rule">expression</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="literal">'||'</span> <a href="#expression" class="rule">expression</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="literal">'?'</span> <a href="#expression" class="rule">expression</a> <span class="literal">':'</span> <a href="#expression" class="rule">expression</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="operator">(</span> <span class="literal">'='</span><span class="operator"><</span><a href="#assoc" class="rule">assoc</a><span class="operator">=</span><a href="#right" class="rule">right</a><span class="operator">></span> <span class="operator">|</span> <span class="literal">'+='</span><span class="operator"><</span><a href="#assoc" class="rule">assoc</a><span class="operator">=</span><a href="#right" class="rule">right</a><span class="operator">></span> <span class="operator">|</span> <span class="literal">'-='</span><span class="operator"><</span><a href="#assoc" class="rule">assoc</a><span class="operator">=</span><a href="#right" class="rule">right</a><span class="operator">></span> <span class="operator">|</span> <span class="literal">'*='</span><span class="operator"><</span><a href="#assoc" class="rule">assoc</a><span class="operator">=</span><a href="#right" class="rule">right</a><span class="operator">></span> <span class="operator">|</span> <span class="literal">'/='</span><span class="operator"><</span><a href="#assoc" class="rule">assoc</a><span class="operator">=</span><a href="#right" class="rule">right</a><span class="operator">></span> <span class="operator">|</span> <span class="literal">'&='</span><span class="operator"><</span><a href="#assoc" class="rule">assoc</a><span class="operator">=</span><a href="#right" class="rule">right</a><span class="operator">></span> <span class="operator">|</span> <span class="literal">'|='</span><span class="operator"><</span><a href="#assoc" class="rule">assoc</a><span class="operator">=</span><a href="#right" class="rule">right</a><span class="operator">></span> <span class="operator">|</span> <span class="literal">'^='</span><span class="operator"><</span><a href="#assoc" class="rule">assoc</a><span class="operator">=</span><a href="#right" class="rule">right</a><span class="operator">></span> <span class="operator">|</span> <span class="literal">'>>='</span><span class="operator"><</span><a href="#assoc" class="rule">assoc</a><span class="operator">=</span><a href="#right" class="rule">right</a><span class="operator">></span> <span class="operator">|</span> <span class="literal">'>>>='</span><span class="operator"><</span><a href="#assoc" class="rule">assoc</a><span class="operator">=</span><a href="#right" class="rule">right</a><span class="operator">></span> <span class="operator">|</span> <span class="literal">'<<='</span><span class="operator"><</span><a href="#assoc" class="rule">assoc</a><span class="operator">=</span><a href="#right" class="rule">right</a><span class="operator">></span> <span class="operator">|</span> <span class="literal">'%='</span><span class="operator"><</span><a href="#assoc" class="rule">assoc</a><span class="operator">=</span><a href="#right" class="rule">right</a><span class="operator">></span> <span class="operator">)</span> <a href="#expression" class="rule">expression</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/expression.png" />
+  </div>
+  </li>
+  <li class="rule" id="primary">
+  <h3>primary <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">primary</span> :  <span class="literal">'('</span> <a href="#expression" class="rule">expression</a> <span class="literal">')'</span> <span class="operator">|</span> <span class="literal">'this'</span> <span class="operator">|</span> <span class="literal">'super'</span> <span class="operator">|</span> <a href="#literal" class="rule">literal</a> <span class="operator">|</span> <a href="#Identifier" class="token">Identifier</a> <span class="operator">|</span> <a href="#type" class="rule">type</a> <span class="literal">'.'</span> <span class="literal">'class'</span> <span class="operator">|</span> <span class="literal">'void'</span> <span class="literal">'.'</span> <span class="literal">'class'</span> <span class="operator">|</span> <a href="#nonWildcardTypeArguments" class="rule">nonWildcardTypeArguments</a> <span class="operator">(</span><a href="#explicitGenericInvocationSuffix" class="rule">explicitGenericInvocationSuffix</a> <span class="operator">|</span> <span class="literal">'this'</span> <a href="#arguments" class="rule">arguments</a><span class="operator">)</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/primary.png" />
+  </div>
+  </li>
+  <li class="rule" id="creator">
+  <h3>creator <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">creator</span> :  <a href="#nonWildcardTypeArguments" class="rule">nonWildcardTypeArguments</a> <a href="#createdName" class="rule">createdName</a> <a href="#classCreatorRest" class="rule">classCreatorRest</a> <span class="operator">|</span> <a href="#createdName" class="rule">createdName</a> <span class="operator">(</span><a href="#arrayCreatorRest" class="rule">arrayCreatorRest</a> <span class="operator">|</span> <a href="#classCreatorRest" class="rule">classCreatorRest</a><span class="operator">)</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/creator.png" />
+  </div>
+  </li>
+  <li class="rule" id="createdName">
+  <h3>createdName <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">createdName</span> :  <a href="#Identifier" class="token">Identifier</a> <a href="#typeArgumentsOrDiamond" class="rule">typeArgumentsOrDiamond</a><span class="operator">?</span> <span class="operator">(</span><span class="literal">'.'</span> <a href="#Identifier" class="token">Identifier</a> <a href="#typeArgumentsOrDiamond" class="rule">typeArgumentsOrDiamond</a><span class="operator">?</span><span class="operator">)</span><span class="operator">*</span> <span class="operator">|</span> <a href="#primitiveType" class="rule">primitiveType</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/createdName.png" />
+  </div>
+  </li>
+  <li class="rule" id="innerCreator">
+  <h3>innerCreator <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">innerCreator</span> :  <a href="#Identifier" class="token">Identifier</a> <a href="#nonWildcardTypeArgumentsOrDiamond" class="rule">nonWildcardTypeArgumentsOrDiamond</a><span class="operator">?</span> <a href="#classCreatorRest" class="rule">classCreatorRest</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/innerCreator.png" />
+  </div>
+  </li>
+  <li class="rule" id="arrayCreatorRest">
+  <h3>arrayCreatorRest <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">arrayCreatorRest</span> :  <span class="literal">'['</span> <span class="operator">(</span> <span class="literal">']'</span> <span class="operator">(</span><span class="literal">'['</span> <span class="literal">']'</span><span class="operator">)</span><span class="operator">*</span> <a href="#arrayInitializer" class="rule">arrayInitializer</a> <span class="operator">|</span> <a href="#expression" class="rule">expression</a> <span class="literal">']'</span> <span class="operator">(</span><span class="literal">'['</span> <a href="#expression" class="rule">expression</a> <span class="literal">']'</span><span class="operator">)</span><span class="operator">*</span> <span class="operator">(</span><span class="literal">'['</span> <span class="literal">']'</span><span class="operator">)</span><span class="operator">*</span> <span class="operator">)</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/arrayCreatorRest.png" />
+  </div>
+  </li>
+  <li class="rule" id="classCreatorRest">
+  <h3>classCreatorRest <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">classCreatorRest</span> :  <a href="#arguments" class="rule">arguments</a> <a href="#classBody" class="rule">classBody</a><span class="operator">?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/classCreatorRest.png" />
+  </div>
+  </li>
+  <li class="rule" id="explicitGenericInvocation">
+  <h3>explicitGenericInvocation <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">explicitGenericInvocation</span> :  <a href="#nonWildcardTypeArguments" class="rule">nonWildcardTypeArguments</a> <a href="#explicitGenericInvocationSuffix" class="rule">explicitGenericInvocationSuffix</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/explicitGenericInvocation.png" />
+  </div>
+  </li>
+  <li class="rule" id="nonWildcardTypeArguments">
+  <h3>nonWildcardTypeArguments <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">nonWildcardTypeArguments</span> :  <span class="literal">'<'</span> <a href="#typeList" class="rule">typeList</a> <span class="literal">'>'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/nonWildcardTypeArguments.png" />
+  </div>
+  </li>
+  <li class="rule" id="typeArgumentsOrDiamond">
+  <h3>typeArgumentsOrDiamond <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">typeArgumentsOrDiamond</span> :  <span class="literal">'<'</span> <span class="literal">'>'</span> <span class="operator">|</span> <a href="#typeArguments" class="rule">typeArguments</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/typeArgumentsOrDiamond.png" />
+  </div>
+  </li>
+  <li class="rule" id="nonWildcardTypeArgumentsOrDiamond">
+  <h3>nonWildcardTypeArgumentsOrDiamond <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">nonWildcardTypeArgumentsOrDiamond</span> :  <span class="literal">'<'</span> <span class="literal">'>'</span> <span class="operator">|</span> <a href="#nonWildcardTypeArguments" class="rule">nonWildcardTypeArguments</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/nonWildcardTypeArgumentsOrDiamond.png" />
+  </div>
+  </li>
+  <li class="rule" id="superSuffix">
+  <h3>superSuffix <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">superSuffix</span> :  <a href="#arguments" class="rule">arguments</a> <span class="operator">|</span> <span class="literal">'.'</span> <a href="#Identifier" class="token">Identifier</a> <a href="#arguments" class="rule">arguments</a><span class="operator">?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/superSuffix.png" />
+  </div>
+  </li>
+  <li class="rule" id="explicitGenericInvocationSuffix">
+  <h3>explicitGenericInvocationSuffix <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">explicitGenericInvocationSuffix</span> :  <span class="literal">'super'</span> <a href="#superSuffix" class="rule">superSuffix</a> <span class="operator">|</span> <a href="#Identifier" class="token">Identifier</a> <a href="#arguments" class="rule">arguments</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/explicitGenericInvocationSuffix.png" />
+  </div>
+  </li>
+  <li class="rule" id="arguments">
+  <h3>arguments <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">arguments</span> :  <span class="literal">'('</span> <a href="#expressionList" class="rule">expressionList</a><span class="operator">?</span> <span class="literal">')'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/arguments.png" />
+  </div>
+  </li>
+  <li class="rule" id="ABSTRACT">
+  <h3>ABSTRACT <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">ABSTRACT</span> :  <span class="literal">'abstract'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/ABSTRACT.png" />
+  </div>
+  </li>
+  <li class="rule" id="ASSERT">
+  <h3>ASSERT <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">ASSERT</span> :  <span class="literal">'assert'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/ASSERT.png" />
+  </div>
+  </li>
+  <li class="rule" id="BOOLEAN">
+  <h3>BOOLEAN <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">BOOLEAN</span> :  <span class="literal">'boolean'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/BOOLEAN.png" />
+  </div>
+  </li>
+  <li class="rule" id="BREAK">
+  <h3>BREAK <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">BREAK</span> :  <span class="literal">'break'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/BREAK.png" />
+  </div>
+  </li>
+  <li class="rule" id="BYTE">
+  <h3>BYTE <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">BYTE</span> :  <span class="literal">'byte'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/BYTE.png" />
+  </div>
+  </li>
+  <li class="rule" id="CASE">
+  <h3>CASE <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">CASE</span> :  <span class="literal">'case'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/CASE.png" />
+  </div>
+  </li>
+  <li class="rule" id="CATCH">
+  <h3>CATCH <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">CATCH</span> :  <span class="literal">'catch'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/CATCH.png" />
+  </div>
+  </li>
+  <li class="rule" id="CHAR">
+  <h3>CHAR <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">CHAR</span> :  <span class="literal">'char'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/CHAR.png" />
+  </div>
+  </li>
+  <li class="rule" id="CLASS">
+  <h3>CLASS <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">CLASS</span> :  <span class="literal">'class'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/CLASS.png" />
+  </div>
+  </li>
+  <li class="rule" id="CONST">
+  <h3>CONST <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">CONST</span> :  <span class="literal">'const'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/CONST.png" />
+  </div>
+  </li>
+  <li class="rule" id="CONTINUE">
+  <h3>CONTINUE <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">CONTINUE</span> :  <span class="literal">'continue'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/CONTINUE.png" />
+  </div>
+  </li>
+  <li class="rule" id="DEFAULT">
+  <h3>DEFAULT <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">DEFAULT</span> :  <span class="literal">'default'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/DEFAULT.png" />
+  </div>
+  </li>
+  <li class="rule" id="DO">
+  <h3>DO <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">DO</span> :  <span class="literal">'do'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/DO.png" />
+  </div>
+  </li>
+  <li class="rule" id="DOUBLE">
+  <h3>DOUBLE <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">DOUBLE</span> :  <span class="literal">'double'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/DOUBLE.png" />
+  </div>
+  </li>
+  <li class="rule" id="ELSE">
+  <h3>ELSE <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">ELSE</span> :  <span class="literal">'else'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/ELSE.png" />
+  </div>
+  </li>
+  <li class="rule" id="ENUM">
+  <h3>ENUM <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">ENUM</span> :  <span class="literal">'enum'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/ENUM.png" />
+  </div>
+  </li>
+  <li class="rule" id="EXTENDS">
+  <h3>EXTENDS <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">EXTENDS</span> :  <span class="literal">'extends'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/EXTENDS.png" />
+  </div>
+  </li>
+  <li class="rule" id="FINAL">
+  <h3>FINAL <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">FINAL</span> :  <span class="literal">'final'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/FINAL.png" />
+  </div>
+  </li>
+  <li class="rule" id="FINALLY">
+  <h3>FINALLY <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">FINALLY</span> :  <span class="literal">'finally'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/FINALLY.png" />
+  </div>
+  </li>
+  <li class="rule" id="FLOAT">
+  <h3>FLOAT <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">FLOAT</span> :  <span class="literal">'float'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/FLOAT.png" />
+  </div>
+  </li>
+  <li class="rule" id="FOR">
+  <h3>FOR <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">FOR</span> :  <span class="literal">'for'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/FOR.png" />
+  </div>
+  </li>
+  <li class="rule" id="IF">
+  <h3>IF <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">IF</span> :  <span class="literal">'if'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/IF.png" />
+  </div>
+  </li>
+  <li class="rule" id="GOTO">
+  <h3>GOTO <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">GOTO</span> :  <span class="literal">'goto'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/GOTO.png" />
+  </div>
+  </li>
+  <li class="rule" id="IMPLEMENTS">
+  <h3>IMPLEMENTS <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">IMPLEMENTS</span> :  <span class="literal">'implements'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/IMPLEMENTS.png" />
+  </div>
+  </li>
+  <li class="rule" id="IMPORT">
+  <h3>IMPORT <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">IMPORT</span> :  <span class="literal">'import'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/IMPORT.png" />
+  </div>
+  </li>
+  <li class="rule" id="INSTANCEOF">
+  <h3>INSTANCEOF <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">INSTANCEOF</span> :  <span class="literal">'instanceof'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/INSTANCEOF.png" />
+  </div>
+  </li>
+  <li class="rule" id="INT">
+  <h3>INT <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">INT</span> :  <span class="literal">'int'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/INT.png" />
+  </div>
+  </li>
+  <li class="rule" id="INTERFACE">
+  <h3>INTERFACE <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">INTERFACE</span> :  <span class="literal">'interface'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/INTERFACE.png" />
+  </div>
+  </li>
+  <li class="rule" id="LONG">
+  <h3>LONG <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">LONG</span> :  <span class="literal">'long'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/LONG.png" />
+  </div>
+  </li>
+  <li class="rule" id="NATIVE">
+  <h3>NATIVE <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">NATIVE</span> :  <span class="literal">'native'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/NATIVE.png" />
+  </div>
+  </li>
+  <li class="rule" id="NEW">
+  <h3>NEW <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">NEW</span> :  <span class="literal">'new'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/NEW.png" />
+  </div>
+  </li>
+  <li class="rule" id="PACKAGE">
+  <h3>PACKAGE <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">PACKAGE</span> :  <span class="literal">'package'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/PACKAGE.png" />
+  </div>
+  </li>
+  <li class="rule" id="PRIVATE">
+  <h3>PRIVATE <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">PRIVATE</span> :  <span class="literal">'private'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/PRIVATE.png" />
+  </div>
+  </li>
+  <li class="rule" id="PROTECTED">
+  <h3>PROTECTED <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">PROTECTED</span> :  <span class="literal">'protected'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/PROTECTED.png" />
+  </div>
+  </li>
+  <li class="rule" id="PUBLIC">
+  <h3>PUBLIC <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">PUBLIC</span> :  <span class="literal">'public'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/PUBLIC.png" />
+  </div>
+  </li>
+  <li class="rule" id="RETURN">
+  <h3>RETURN <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">RETURN</span> :  <span class="literal">'return'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/RETURN.png" />
+  </div>
+  </li>
+  <li class="rule" id="SHORT">
+  <h3>SHORT <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">SHORT</span> :  <span class="literal">'short'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/SHORT.png" />
+  </div>
+  </li>
+  <li class="rule" id="STATIC">
+  <h3>STATIC <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">STATIC</span> :  <span class="literal">'static'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/STATIC.png" />
+  </div>
+  </li>
+  <li class="rule" id="STRICTFP">
+  <h3>STRICTFP <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">STRICTFP</span> :  <span class="literal">'strictfp'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/STRICTFP.png" />
+  </div>
+  </li>
+  <li class="rule" id="SUPER">
+  <h3>SUPER <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">SUPER</span> :  <span class="literal">'super'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/SUPER.png" />
+  </div>
+  </li>
+  <li class="rule" id="SWITCH">
+  <h3>SWITCH <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">SWITCH</span> :  <span class="literal">'switch'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/SWITCH.png" />
+  </div>
+  </li>
+  <li class="rule" id="SYNCHRONIZED">
+  <h3>SYNCHRONIZED <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">SYNCHRONIZED</span> :  <span class="literal">'synchronized'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/SYNCHRONIZED.png" />
+  </div>
+  </li>
+  <li class="rule" id="THIS">
+  <h3>THIS <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">THIS</span> :  <span class="literal">'this'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/THIS.png" />
+  </div>
+  </li>
+  <li class="rule" id="THROW">
+  <h3>THROW <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">THROW</span> :  <span class="literal">'throw'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/THROW.png" />
+  </div>
+  </li>
+  <li class="rule" id="THROWS">
+  <h3>THROWS <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">THROWS</span> :  <span class="literal">'throws'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/THROWS.png" />
+  </div>
+  </li>
+  <li class="rule" id="TRANSIENT">
+  <h3>TRANSIENT <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">TRANSIENT</span> :  <span class="literal">'transient'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/TRANSIENT.png" />
+  </div>
+  </li>
+  <li class="rule" id="TRY">
+  <h3>TRY <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">TRY</span> :  <span class="literal">'try'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/TRY.png" />
+  </div>
+  </li>
+  <li class="rule" id="VOID">
+  <h3>VOID <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">VOID</span> :  <span class="literal">'void'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/VOID.png" />
+  </div>
+  </li>
+  <li class="rule" id="VOLATILE">
+  <h3>VOLATILE <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">VOLATILE</span> :  <span class="literal">'volatile'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/VOLATILE.png" />
+  </div>
+  </li>
+  <li class="rule" id="WHILE">
+  <h3>WHILE <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">WHILE</span> :  <span class="literal">'while'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/WHILE.png" />
+  </div>
+  </li>
+  <li class="rule" id="IntegerLiteral">
+  <h3>IntegerLiteral <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">IntegerLiteral</span> :  <a href="#DecimalIntegerLiteral" class="token">DecimalIntegerLiteral</a> <span class="operator">|</span> <a href="#HexIntegerLiteral" class="token">HexIntegerLiteral</a> <span class="operator">|</span> <a href="#OctalIntegerLiteral" class="token">OctalIntegerLiteral</a> <span class="operator">|</span> <a href="#BinaryIntegerLiteral" class="token">BinaryIntegerLiteral</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/IntegerLiteral.png" />
+  </div>
+  </li>
+  <li class="rule" id="DecimalIntegerLiteral">
+  <h3>DecimalIntegerLiteral <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">DecimalIntegerLiteral</span> :  <a href="#DecimalNumeral" class="token">DecimalNumeral</a> <a href="#IntegerTypeSuffix" class="token">IntegerTypeSuffix</a><span class="operator">?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/DecimalIntegerLiteral.png" />
+  </div>
+  </li>
+  <li class="rule" id="HexIntegerLiteral">
+  <h3>HexIntegerLiteral <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">HexIntegerLiteral</span> :  <a href="#HexNumeral" class="token">HexNumeral</a> <a href="#IntegerTypeSuffix" class="token">IntegerTypeSuffix</a><span class="operator">?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/HexIntegerLiteral.png" />
+  </div>
+  </li>
+  <li class="rule" id="OctalIntegerLiteral">
+  <h3>OctalIntegerLiteral <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">OctalIntegerLiteral</span> :  <a href="#OctalNumeral" class="token">OctalNumeral</a> <a href="#IntegerTypeSuffix" class="token">IntegerTypeSuffix</a><span class="operator">?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/OctalIntegerLiteral.png" />
+  </div>
+  </li>
+  <li class="rule" id="BinaryIntegerLiteral">
+  <h3>BinaryIntegerLiteral <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">BinaryIntegerLiteral</span> :  <a href="#BinaryNumeral" class="token">BinaryNumeral</a> <a href="#IntegerTypeSuffix" class="token">IntegerTypeSuffix</a><span class="operator">?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/BinaryIntegerLiteral.png" />
+  </div>
+  </li>
+  <li class="rule" id="IntegerTypeSuffix">
+  <h3>IntegerTypeSuffix <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">IntegerTypeSuffix</span> :  [<span class="literal">lL</span>] ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/IntegerTypeSuffix.png" />
+  </div>
+  </li>
+  <li class="rule" id="DecimalNumeral">
+  <h3>DecimalNumeral <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">DecimalNumeral</span> :  <span class="literal">'0'</span> <span class="operator">|</span> <a href="#NonZeroDigit" class="token">NonZeroDigit</a> <span class="operator">(</span><a href="#Digits" class="token">Digits</a><span class="operator">?</span> <span class="operator">|</span> <a href="#Underscores" class="token">Underscores</a> <a href="#Digits" class="token">Digits</a><span class="operator">)</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/DecimalNumeral.png" />
+  </div>
+  </li>
+  <li class="rule" id="Digits">
+  <h3>Digits <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">Digits</span> :  <a href="#Digit" class="token">Digit</a> <span class="operator">(</span><a href="#DigitOrUnderscore" class="token">DigitOrUnderscore</a><span class="operator">*</span> <a href="#Digit" class="token">Digit</a><span class="operator">)</span><span class="operator">?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/Digits.png" />
+  </div>
+  </li>
+  <li class="rule" id="Digit">
+  <h3>Digit <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">Digit</span> :  <span class="literal">'0'</span> <span class="operator">|</span> <a href="#NonZeroDigit" class="token">NonZeroDigit</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/Digit.png" />
+  </div>
+  </li>
+  <li class="rule" id="NonZeroDigit">
+  <h3>NonZeroDigit <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">NonZeroDigit</span> :  [<span class="literal">1-9</span>] ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/NonZeroDigit.png" />
+  </div>
+  </li>
+  <li class="rule" id="DigitOrUnderscore">
+  <h3>DigitOrUnderscore <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">DigitOrUnderscore</span> :  <a href="#Digit" class="token">Digit</a> <span class="operator">|</span> <span class="literal">'_'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/DigitOrUnderscore.png" />
+  </div>
+  </li>
+  <li class="rule" id="Underscores">
+  <h3>Underscores <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">Underscores</span> :  <span class="literal">'_'</span><span class="operator">+</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/Underscores.png" />
+  </div>
+  </li>
+  <li class="rule" id="HexNumeral">
+  <h3>HexNumeral <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">HexNumeral</span> :  <span class="literal">'0'</span> [<span class="literal">xX</span>] <a href="#HexDigits" class="token">HexDigits</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/HexNumeral.png" />
+  </div>
+  </li>
+  <li class="rule" id="HexDigits">
+  <h3>HexDigits <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">HexDigits</span> :  <a href="#HexDigit" class="token">HexDigit</a> <span class="operator">(</span><a href="#HexDigitOrUnderscore" class="token">HexDigitOrUnderscore</a><span class="operator">*</span> <a href="#HexDigit" class="token">HexDigit</a><span class="operator">)</span><span class="operator">?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/HexDigits.png" />
+  </div>
+  </li>
+  <li class="rule" id="HexDigit">
+  <h3>HexDigit <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">HexDigit</span> :  [<span class="literal">0-9a-fA-F</span>] ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/HexDigit.png" />
+  </div>
+  </li>
+  <li class="rule" id="HexDigitOrUnderscore">
+  <h3>HexDigitOrUnderscore <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">HexDigitOrUnderscore</span> :  <a href="#HexDigit" class="token">HexDigit</a> <span class="operator">|</span> <span class="literal">'_'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/HexDigitOrUnderscore.png" />
+  </div>
+  </li>
+  <li class="rule" id="OctalNumeral">
+  <h3>OctalNumeral <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">OctalNumeral</span> :  <span class="literal">'0'</span> <a href="#Underscores" class="token">Underscores</a><span class="operator">?</span> <a href="#OctalDigits" class="token">OctalDigits</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/OctalNumeral.png" />
+  </div>
+  </li>
+  <li class="rule" id="OctalDigits">
+  <h3>OctalDigits <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">OctalDigits</span> :  <a href="#OctalDigit" class="token">OctalDigit</a> <span class="operator">(</span><a href="#OctalDigitOrUnderscore" class="token">OctalDigitOrUnderscore</a><span class="operator">*</span> <a href="#OctalDigit" class="token">OctalDigit</a><span class="operator">)</span><span class="operator">?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/OctalDigits.png" />
+  </div>
+  </li>
+  <li class="rule" id="OctalDigit">
+  <h3>OctalDigit <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">OctalDigit</span> :  [<span class="literal">0-7</span>] ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/OctalDigit.png" />
+  </div>
+  </li>
+  <li class="rule" id="OctalDigitOrUnderscore">
+  <h3>OctalDigitOrUnderscore <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">OctalDigitOrUnderscore</span> :  <a href="#OctalDigit" class="token">OctalDigit</a> <span class="operator">|</span> <span class="literal">'_'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/OctalDigitOrUnderscore.png" />
+  </div>
+  </li>
+  <li class="rule" id="BinaryNumeral">
+  <h3>BinaryNumeral <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">BinaryNumeral</span> :  <span class="literal">'0'</span> [<span class="literal">bB</span>] <a href="#BinaryDigits" class="token">BinaryDigits</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/BinaryNumeral.png" />
+  </div>
+  </li>
+  <li class="rule" id="BinaryDigits">
+  <h3>BinaryDigits <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">BinaryDigits</span> :  <a href="#BinaryDigit" class="token">BinaryDigit</a> <span class="operator">(</span><a href="#BinaryDigitOrUnderscore" class="token">BinaryDigitOrUnderscore</a><span class="operator">*</span> <a href="#BinaryDigit" class="token">BinaryDigit</a><span class="operator">)</span><span class="operator">?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/BinaryDigits.png" />
+  </div>
+  </li>
+  <li class="rule" id="BinaryDigit">
+  <h3>BinaryDigit <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">BinaryDigit</span> :  [<span class="literal">01</span>] ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/BinaryDigit.png" />
+  </div>
+  </li>
+  <li class="rule" id="BinaryDigitOrUnderscore">
+  <h3>BinaryDigitOrUnderscore <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">BinaryDigitOrUnderscore</span> :  <a href="#BinaryDigit" class="token">BinaryDigit</a> <span class="operator">|</span> <span class="literal">'_'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/BinaryDigitOrUnderscore.png" />
+  </div>
+  </li>
+  <li class="rule" id="FloatingPointLiteral">
+  <h3>FloatingPointLiteral <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">FloatingPointLiteral</span> :  <a href="#DecimalFloatingPointLiteral" class="token">DecimalFloatingPointLiteral</a> <span class="operator">|</span> <a href="#HexadecimalFloatingPointLiteral" class="token">HexadecimalFloatingPointLiteral</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/FloatingPointLiteral.png" />
+  </div>
+  </li>
+  <li class="rule" id="DecimalFloatingPointLiteral">
+  <h3>DecimalFloatingPointLiteral <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">DecimalFloatingPointLiteral</span> :  <a href="#Digits" class="token">Digits</a> <span class="literal">'.'</span> <a href="#Digits" class="token">Digits</a><span class="operator">?</span> <a href="#ExponentPart" class="token">ExponentPart</a><span class="operator">?</span> <a href="#FloatTypeSuffix" class="token">FloatTypeSuffix</a><span class="operator">?</span> <span class="operator">|</span> <span class="literal">'.'</span> <a href="#Digits" class="token">Digits</a> <a href="#ExponentPart" class="token">ExponentPart</a><span class="operator">?</span> <a href="#FloatTypeSuffix" class="token">FloatTypeSuffix</a><span class="operator">?</span> <span class="operator">|</span> <a href="#Digits" class="token">Digits</a> <a href="#ExponentPart" class="token">ExponentPart</a> <a href="#FloatTypeSuffix" class="token">FloatTypeSuffix</a><span class="operator">?</span> <span class="operator">|</span> <a href="#Digits" class="token">Digits</a> <a href="#FloatTypeSuffix" class="token">FloatTypeSuffix</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/DecimalFloatingPointLiteral.png" />
+  </div>
+  </li>
+  <li class="rule" id="ExponentPart">
+  <h3>ExponentPart <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">ExponentPart</span> :  <a href="#ExponentIndicator" class="token">ExponentIndicator</a> <a href="#SignedInteger" class="token">SignedInteger</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/ExponentPart.png" />
+  </div>
+  </li>
+  <li class="rule" id="ExponentIndicator">
+  <h3>ExponentIndicator <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">ExponentIndicator</span> :  [<span class="literal">eE</span>] ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/ExponentIndicator.png" />
+  </div>
+  </li>
+  <li class="rule" id="SignedInteger">
+  <h3>SignedInteger <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">SignedInteger</span> :  <a href="#Sign" class="token">Sign</a><span class="operator">?</span> <a href="#Digits" class="token">Digits</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/SignedInteger.png" />
+  </div>
+  </li>
+  <li class="rule" id="Sign">
+  <h3>Sign <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">Sign</span> :  [<span class="literal">+-</span>] ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/Sign.png" />
+  </div>
+  </li>
+  <li class="rule" id="FloatTypeSuffix">
+  <h3>FloatTypeSuffix <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">FloatTypeSuffix</span> :  [<span class="literal">fFdD</span>] ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/FloatTypeSuffix.png" />
+  </div>
+  </li>
+  <li class="rule" id="HexadecimalFloatingPointLiteral">
+  <h3>HexadecimalFloatingPointLiteral <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">HexadecimalFloatingPointLiteral</span> :  <a href="#HexSignificand" class="token">HexSignificand</a> <a href="#BinaryExponent" class="token">BinaryExponent</a> <a href="#FloatTypeSuffix" class="token">FloatTypeSuffix</a><span class="operator">?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/HexadecimalFloatingPointLiteral.png" />
+  </div>
+  </li>
+  <li class="rule" id="HexSignificand">
+  <h3>HexSignificand <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">HexSignificand</span> :  <a href="#HexNumeral" class="token">HexNumeral</a> <span class="literal">'.'</span><span class="operator">?</span> <span class="operator">|</span> <span class="literal">'0'</span> [<span class="literal">xX</span>] <a href="#HexDigits" class="token">HexDigits</a><span class="operator">?</span> <span class="literal">'.'</span> <a href="#HexDigits" class="token">HexDigits</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/HexSignificand.png" />
+  </div>
+  </li>
+  <li class="rule" id="BinaryExponent">
+  <h3>BinaryExponent <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">BinaryExponent</span> :  <a href="#BinaryExponentIndicator" class="token">BinaryExponentIndicator</a> <a href="#SignedInteger" class="token">SignedInteger</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/BinaryExponent.png" />
+  </div>
+  </li>
+  <li class="rule" id="BinaryExponentIndicator">
+  <h3>BinaryExponentIndicator <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">BinaryExponentIndicator</span> :  [<span class="literal">pP</span>] ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/BinaryExponentIndicator.png" />
+  </div>
+  </li>
+  <li class="rule" id="BooleanLiteral">
+  <h3>BooleanLiteral <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">BooleanLiteral</span> :  <span class="literal">'true'</span> <span class="operator">|</span> <span class="literal">'false'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/BooleanLiteral.png" />
+  </div>
+  </li>
+  <li class="rule" id="CharacterLiteral">
+  <h3>CharacterLiteral <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">CharacterLiteral</span> :  <span class="literal">'\''</span> <a href="#SingleCharacter" class="token">SingleCharacter</a> <span class="literal">'\''</span> <span class="operator">|</span> <span class="literal">'\''</span> <a href="#EscapeSequence" class="token">EscapeSequence</a> <span class="literal">'\''</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/CharacterLiteral.png" />
+  </div>
+  </li>
+  <li class="rule" id="SingleCharacter">
+  <h3>SingleCharacter <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">SingleCharacter</span> :  <span class="operator">~</span>[<span class="literal">'\\</span>] ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/SingleCharacter.png" />
+  </div>
+  </li>
+  <li class="rule" id="StringLiteral">
+  <h3>StringLiteral <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">StringLiteral</span> :  <span class="literal">'"'</span> <a href="#StringCharacters" class="token">StringCharacters</a><span class="operator">?</span> <span class="literal">'"'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/StringLiteral.png" />
+  </div>
+  </li>
+  <li class="rule" id="StringCharacters">
+  <h3>StringCharacters <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">StringCharacters</span> :  <a href="#StringCharacter" class="token">StringCharacter</a><span class="operator">+</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/StringCharacters.png" />
+  </div>
+  </li>
+  <li class="rule" id="StringCharacter">
+  <h3>StringCharacter <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">StringCharacter</span> :  <span class="operator">~</span>[<span class="literal">"\\</span>] <span class="operator">|</span> <a href="#EscapeSequence" class="token">EscapeSequence</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/StringCharacter.png" />
+  </div>
+  </li>
+  <li class="rule" id="EscapeSequence">
+  <h3>EscapeSequence <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">EscapeSequence</span> :  <span class="literal">'\\'</span> [<span class="literal">btnfr"'\\</span>] <span class="operator">|</span> <a href="#OctalEscape" class="token">OctalEscape</a> <span class="operator">|</span> <a href="#UnicodeEscape" class="token">UnicodeEscape</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/EscapeSequence.png" />
+  </div>
+  </li>
+  <li class="rule" id="OctalEscape">
+  <h3>OctalEscape <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">OctalEscape</span> :  <span class="literal">'\\'</span> <a href="#OctalDigit" class="token">OctalDigit</a> <span class="operator">|</span> <span class="literal">'\\'</span> <a href="#OctalDigit" class="token">OctalDigit</a> <a href="#OctalDigit" class="token">OctalDigit</a> <span class="operator">|</span> <span class="literal">'\\'</span> <a href="#ZeroToThree" class="token">ZeroToThree</a> <a href="#OctalDigit" class="token">OctalDigit</a> <a href="#OctalDigit" class="token">OctalDigit</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/OctalEscape.png" />
+  </div>
+  </li>
+  <li class="rule" id="UnicodeEscape">
+  <h3>UnicodeEscape <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">UnicodeEscape</span> :  <span class="literal">'\\'</span> <span class="literal">'u'</span> <a href="#HexDigit" class="token">HexDigit</a> <a href="#HexDigit" class="token">HexDigit</a> <a href="#HexDigit" class="token">HexDigit</a> <a href="#HexDigit" class="token">HexDigit</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/UnicodeEscape.png" />
+  </div>
+  </li>
+  <li class="rule" id="ZeroToThree">
+  <h3>ZeroToThree <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">ZeroToThree</span> :  [<span class="literal">0-3</span>] ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/ZeroToThree.png" />
+  </div>
+  </li>
+  <li class="rule" id="NullLiteral">
+  <h3>NullLiteral <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">NullLiteral</span> :  <span class="literal">'null'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/NullLiteral.png" />
+  </div>
+  </li>
+  <li class="rule" id="LPAREN">
+  <h3>LPAREN <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">LPAREN</span> :  <span class="literal">'('</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/LPAREN.png" />
+  </div>
+  </li>
+  <li class="rule" id="RPAREN">
+  <h3>RPAREN <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">RPAREN</span> :  <span class="literal">')'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/RPAREN.png" />
+  </div>
+  </li>
+  <li class="rule" id="LBRACE">
+  <h3>LBRACE <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">LBRACE</span> :  <span class="literal">'{'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/LBRACE.png" />
+  </div>
+  </li>
+  <li class="rule" id="RBRACE">
+  <h3>RBRACE <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">RBRACE</span> :  <span class="literal">'}'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/RBRACE.png" />
+  </div>
+  </li>
+  <li class="rule" id="LBRACK">
+  <h3>LBRACK <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">LBRACK</span> :  <span class="literal">'['</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/LBRACK.png" />
+  </div>
+  </li>
+  <li class="rule" id="RBRACK">
+  <h3>RBRACK <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">RBRACK</span> :  <span class="literal">']'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/RBRACK.png" />
+  </div>
+  </li>
+  <li class="rule" id="SEMI">
+  <h3>SEMI <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">SEMI</span> :  <span class="literal">';'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/SEMI.png" />
+  </div>
+  </li>
+  <li class="rule" id="COMMA">
+  <h3>COMMA <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">COMMA</span> :  <span class="literal">','</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/COMMA.png" />
+  </div>
+  </li>
+  <li class="rule" id="DOT">
+  <h3>DOT <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">DOT</span> :  <span class="literal">'.'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/DOT.png" />
+  </div>
+  </li>
+  <li class="rule" id="ASSIGN">
+  <h3>ASSIGN <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">ASSIGN</span> :  <span class="literal">'='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/ASSIGN.png" />
+  </div>
+  </li>
+  <li class="rule" id="GT">
+  <h3>GT <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">GT</span> :  <span class="literal">'>'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/GT.png" />
+  </div>
+  </li>
+  <li class="rule" id="LT">
+  <h3>LT <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">LT</span> :  <span class="literal">'<'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/LT.png" />
+  </div>
+  </li>
+  <li class="rule" id="BANG">
+  <h3>BANG <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">BANG</span> :  <span class="literal">'!'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/BANG.png" />
+  </div>
+  </li>
+  <li class="rule" id="TILDE">
+  <h3>TILDE <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">TILDE</span> :  <span class="literal">'~'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/TILDE.png" />
+  </div>
+  </li>
+  <li class="rule" id="QUESTION">
+  <h3>QUESTION <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">QUESTION</span> :  <span class="literal">'?'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/QUESTION.png" />
+  </div>
+  </li>
+  <li class="rule" id="COLON">
+  <h3>COLON <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">COLON</span> :  <span class="literal">':'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/COLON.png" />
+  </div>
+  </li>
+  <li class="rule" id="EQUAL">
+  <h3>EQUAL <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">EQUAL</span> :  <span class="literal">'=='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/EQUAL.png" />
+  </div>
+  </li>
+  <li class="rule" id="LE">
+  <h3>LE <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">LE</span> :  <span class="literal">'<='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/LE.png" />
+  </div>
+  </li>
+  <li class="rule" id="GE">
+  <h3>GE <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">GE</span> :  <span class="literal">'>='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/GE.png" />
+  </div>
+  </li>
+  <li class="rule" id="NOTEQUAL">
+  <h3>NOTEQUAL <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">NOTEQUAL</span> :  <span class="literal">'!='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/NOTEQUAL.png" />
+  </div>
+  </li>
+  <li class="rule" id="AND">
+  <h3>AND <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">AND</span> :  <span class="literal">'&&'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/AND.png" />
+  </div>
+  </li>
+  <li class="rule" id="OR">
+  <h3>OR <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">OR</span> :  <span class="literal">'||'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/OR.png" />
+  </div>
+  </li>
+  <li class="rule" id="INC">
+  <h3>INC <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">INC</span> :  <span class="literal">'++'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/INC.png" />
+  </div>
+  </li>
+  <li class="rule" id="DEC">
+  <h3>DEC <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">DEC</span> :  <span class="literal">'--'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/DEC.png" />
+  </div>
+  </li>
+  <li class="rule" id="ADD">
+  <h3>ADD <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">ADD</span> :  <span class="literal">'+'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/ADD.png" />
+  </div>
+  </li>
+  <li class="rule" id="SUB">
+  <h3>SUB <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">SUB</span> :  <span class="literal">'-'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/SUB.png" />
+  </div>
+  </li>
+  <li class="rule" id="MUL">
+  <h3>MUL <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">MUL</span> :  <span class="literal">'*'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/MUL.png" />
+  </div>
+  </li>
+  <li class="rule" id="DIV">
+  <h3>DIV <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">DIV</span> :  <span class="literal">'/'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/DIV.png" />
+  </div>
+  </li>
+  <li class="rule" id="BITAND">
+  <h3>BITAND <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">BITAND</span> :  <span class="literal">'&'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/BITAND.png" />
+  </div>
+  </li>
+  <li class="rule" id="BITOR">
+  <h3>BITOR <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">BITOR</span> :  <span class="literal">'|'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/BITOR.png" />
+  </div>
+  </li>
+  <li class="rule" id="CARET">
+  <h3>CARET <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">CARET</span> :  <span class="literal">'^'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/CARET.png" />
+  </div>
+  </li>
+  <li class="rule" id="MOD">
+  <h3>MOD <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">MOD</span> :  <span class="literal">'%'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/MOD.png" />
+  </div>
+  </li>
+  <li class="rule" id="ADD_ASSIGN">
+  <h3>ADD_ASSIGN <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">ADD_ASSIGN</span> :  <span class="literal">'+='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/ADD_ASSIGN.png" />
+  </div>
+  </li>
+  <li class="rule" id="SUB_ASSIGN">
+  <h3>SUB_ASSIGN <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">SUB_ASSIGN</span> :  <span class="literal">'-='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/SUB_ASSIGN.png" />
+  </div>
+  </li>
+  <li class="rule" id="MUL_ASSIGN">
+  <h3>MUL_ASSIGN <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">MUL_ASSIGN</span> :  <span class="literal">'*='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/MUL_ASSIGN.png" />
+  </div>
+  </li>
+  <li class="rule" id="DIV_ASSIGN">
+  <h3>DIV_ASSIGN <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">DIV_ASSIGN</span> :  <span class="literal">'/='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/DIV_ASSIGN.png" />
+  </div>
+  </li>
+  <li class="rule" id="AND_ASSIGN">
+  <h3>AND_ASSIGN <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">AND_ASSIGN</span> :  <span class="literal">'&='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/AND_ASSIGN.png" />
+  </div>
+  </li>
+  <li class="rule" id="OR_ASSIGN">
+  <h3>OR_ASSIGN <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">OR_ASSIGN</span> :  <span class="literal">'|='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/OR_ASSIGN.png" />
+  </div>
+  </li>
+  <li class="rule" id="XOR_ASSIGN">
+  <h3>XOR_ASSIGN <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">XOR_ASSIGN</span> :  <span class="literal">'^='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/XOR_ASSIGN.png" />
+  </div>
+  </li>
+  <li class="rule" id="MOD_ASSIGN">
+  <h3>MOD_ASSIGN <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">MOD_ASSIGN</span> :  <span class="literal">'%='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/MOD_ASSIGN.png" />
+  </div>
+  </li>
+  <li class="rule" id="LSHIFT_ASSIGN">
+  <h3>LSHIFT_ASSIGN <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">LSHIFT_ASSIGN</span> :  <span class="literal">'<<='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/LSHIFT_ASSIGN.png" />
+  </div>
+  </li>
+  <li class="rule" id="RSHIFT_ASSIGN">
+  <h3>RSHIFT_ASSIGN <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">RSHIFT_ASSIGN</span> :  <span class="literal">'>>='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/RSHIFT_ASSIGN.png" />
+  </div>
+  </li>
+  <li class="rule" id="URSHIFT_ASSIGN">
+  <h3>URSHIFT_ASSIGN <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">URSHIFT_ASSIGN</span> :  <span class="literal">'>>>='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/URSHIFT_ASSIGN.png" />
+  </div>
+  </li>
+  <li class="rule" id="Identifier">
+  <h3>Identifier <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">Identifier</span> :  <a href="#JavaLetter" class="token">JavaLetter</a> <a href="#JavaLetterOrDigit" class="token">JavaLetterOrDigit</a><span class="operator">*</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/Identifier.png" />
+  </div>
+  </li>
+  <li class="rule" id="JavaLetter">
+  <h3>JavaLetter <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">JavaLetter</span> :  [<span class="literal">a-zA-Z$_</span>]   <span class="operator">|</span>   <span class="operator">~</span>[<span class="literal">\u0000-\u00FF\uD800-\uDBFF</span>] <span class="operator">{Character.isJavaIdentifierStart(_input.LA(-1))}?</span> <span class="operator">|</span>   [<span class="literal">\uD800-\uDBFF</span>] [<span class="literal">\uDC00-\uDFFF</span>] <span class="operator">{Character.isJavaIdentifierStart(Character.toCodePoint((char)_input.LA(-2), (char)_input.LA(-1)))}?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/JavaLetter.png" />
+  </div>
+  </li>
+  <li class="rule" id="JavaLetterOrDigit">
+  <h3>JavaLetterOrDigit <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">JavaLetterOrDigit</span> :  [<span class="literal">a-zA-Z0-9$_</span>]   <span class="operator">|</span>   <span class="operator">~</span>[<span class="literal">\u0000-\u00FF\uD800-\uDBFF</span>] <span class="operator">{Character.isJavaIdentifierPart(_input.LA(-1))}?</span> <span class="operator">|</span>   [<span class="literal">\uD800-\uDBFF</span>] [<span class="literal">\uDC00-\uDFFF</span>] <span class="operator">{Character.isJavaIdentifierPart(Character.toCodePoint((char)_input.LA(-2), (char)_input.LA(-1)))}?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/JavaLetterOrDigit.png" />
+  </div>
+  </li>
+  <li class="rule" id="AT">
+  <h3>AT <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">AT</span> :  <span class="literal">'@'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/AT.png" />
+  </div>
+  </li>
+  <li class="rule" id="ELLIPSIS">
+  <h3>ELLIPSIS <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">ELLIPSIS</span> :  <span class="literal">'...'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/ELLIPSIS.png" />
+  </div>
+  </li>
+  <li class="rule" id="WS">
+  <h3>WS <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">WS</span> :  [<span class="literal"> \t\r\n\u000C</span>]<span class="operator">+</span> <span class="operator">-></span> <a href="#skip" class="rule">skip</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/WS.png" />
+  </div>
+  </li>
+  <li class="rule" id="COMMENT">
+  <h3>COMMENT <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">COMMENT</span> :  <span class="literal">'/*'</span> <span class="operator">.</span><span class="operator">*</span><span class="operator">?</span> <span class="literal">'*/'</span> <span class="operator">-></span> <a href="#skip" class="rule">skip</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/COMMENT.png" />
+  </div>
+  </li>
+  <li class="rule" id="LINE_COMMENT">
+  <h3>LINE_COMMENT <a class="topLink" title="Go to top" href="Javav4.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">LINE_COMMENT</span> :  <span class="literal">'//'</span> <span class="operator">~</span>[<span class="literal">\r\n</span>]<span class="operator">*</span> <span class="operator">-></span> <a href="#skip" class="rule">skip</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/LINE_COMMENT.png" />
+  </div>
+  </li>
+</ul>
+</div>
+</div>
+<footer>Generated by: <a href="https://github.com/jknack/antlr4ide">ANTLR 4 IDE</a>. Copyright (c) 2013 <a href="https://twitter.com/edgarespina">Edgar Espina</a></footer>
+</body>
+</html>
