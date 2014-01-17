@@ -2,6 +2,7 @@ package com.github.jknack.ui;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtext.documentation.impl.AbstractMultiLineCommentProvider;
+import org.eclipse.xtext.ui.editor.IXtextEditorCallback;
 import org.eclipse.xtext.ui.editor.actions.IActionContributor;
 import org.eclipse.xtext.ui.editor.folding.IFoldingRegionProvider;
 import org.eclipse.xtext.ui.editor.folding.IFoldingStructureProvider;
@@ -15,6 +16,7 @@ import com.github.jknack.console.Console;
 import com.github.jknack.generator.ToolOptionsProvider;
 import com.github.jknack.ui.console.AntlrConsoleFactory;
 import com.github.jknack.ui.console.DefaultConsole;
+import com.github.jknack.ui.editor.Antlr4NatureCallback;
 import com.github.jknack.ui.folding.Antlr4FoldingRegionProvider;
 import com.github.jknack.ui.folding.Antlr4FoldingStructureProvider;
 import com.github.jknack.ui.generator.DefaultToolOptionsProvider;
@@ -78,4 +80,8 @@ public class Antlr4UiModule extends com.github.jknack.ui.AbstractAntlr4UiModule 
     return Antlr4HoverProvider.class;
   }
 
+  @Override
+  public Class<? extends IXtextEditorCallback> bindIXtextEditorCallback() {
+    return Antlr4NatureCallback.class;
+  }
 }
