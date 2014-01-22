@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jknack/antlr4ide.png?branch=master)](https://travis-ci.org/jknack/antlr4ide)
+
 ANTLR 4 IDE
 =========
 
