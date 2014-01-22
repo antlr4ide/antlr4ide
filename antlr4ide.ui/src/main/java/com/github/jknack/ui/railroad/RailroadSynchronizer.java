@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartSite;
+import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
@@ -25,6 +26,7 @@ import com.github.jknack.ui.railroad.actions.RailroadSelectionLinker;
 import com.github.jknack.ui.railroad.trafo.Antlr4RailroadTransformer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 
 /**
  * Synchronizes the railroad diagram view with the active editor.
@@ -45,8 +47,12 @@ public class RailroadSynchronizer implements IPartListener, IXtextModelListener 
 
   private IXtextDocument lastActiveDocument;
 
+  @Inject
+  @Named(Constants.LANGUAGE_NAME)
+  private String language;
+
   public void start(final IWorkbenchPartSite site) {
-    updateView(site.getPage().getActiveEditor());
+    partActivated(site.getPage().getActiveEditor());
     site.getWorkbenchWindow().getPartService().addPartListener(this);
   }
 
@@ -57,30 +63,42 @@ public class RailroadSynchronizer implements IPartListener, IXtextModelListener 
 
   @Override
   public void partActivated(final IWorkbenchPart part) {
-    updateView(part);
+    if (part instanceof XtextEditor) {
+      boolean draw = false;
+      XtextEditor xtextEditor = (XtextEditor) part;
+      if (language.equals(xtextEditor.getLanguageName())) {
+        IXtextDocument xtextDocument = xtextEditor.getDocument();
+        draw = xtextDocument != lastActiveDocument;
+        if (draw) {
+          drawDiagram(xtextEditor, xtextDocument);
+        }
+      }
+      if (!draw) {
+        if (lastActiveDocument != null) {
+          lastActiveDocument.removeModelListener(this);
+          lastActiveDocument = null;
+        }
+        view.clearView();
+      }
+    }
   }
 
-  private void updateView(final IWorkbenchPart part) {
-    if (part instanceof XtextEditor) {
-      XtextEditor xtextEditor = (XtextEditor) part;
-      IXtextDocument xtextDocument = xtextEditor.getDocument();
-      if (xtextDocument != lastActiveDocument) {
-        selectionLinker.setXtextEditor(xtextEditor);
-        final IFigure contents = xtextDocument.readOnly(new IUnitOfWork<IFigure, XtextResource>() {
+  private void drawDiagram(final XtextEditor xtextEditor, final IXtextDocument xtextDocument) {
+    selectionLinker.setXtextEditor(xtextEditor);
+    IFigure contents = xtextDocument
+        .readOnly(new IUnitOfWork<IFigure, XtextResource>() {
           @Override
           public IFigure exec(final XtextResource resource) throws Exception {
             return createFigure(resource);
           }
         });
-        if (contents != null) {
-          view.setContents(contents);
-          if (lastActiveDocument != null) {
-            lastActiveDocument.removeModelListener(this);
-          }
-          lastActiveDocument = xtextDocument;
-          lastActiveDocument.addModelListener(this);
-        }
+    if (contents != null) {
+      view.setContents(contents);
+      if (lastActiveDocument != null) {
+        lastActiveDocument.removeModelListener(this);
       }
+      lastActiveDocument = xtextDocument;
+      lastActiveDocument.addModelListener(this);
     }
   }
 
@@ -99,8 +117,12 @@ public class RailroadSynchronizer implements IPartListener, IXtextModelListener 
 
   @Override
   public void partClosed(final IWorkbenchPart part) {
+  }
+
+  @Override
+  public void partDeactivated(final IWorkbenchPart part) {
     if (part instanceof XtextEditor) {
-      view.setContents(null);
+      view.clearView();
       if (lastActiveDocument != null) {
         lastActiveDocument.removeModelListener(this);
       }
@@ -109,16 +131,14 @@ public class RailroadSynchronizer implements IPartListener, IXtextModelListener 
   }
 
   @Override
-  public void partDeactivated(final IWorkbenchPart part) {
-  }
-
-  @Override
   public void partOpened(final IWorkbenchPart part) {
   }
 
   @Override
   public void modelChanged(final XtextResource resource) {
-    view.setContents(createFigure(resource));
+    if (language.equals(resource.getLanguageName())) {
+      view.setContents(createFigure(resource));
+    }
   }
 
 }

@@ -9,6 +9,8 @@
  *******************************************************************************/
 package com.github.jknack.ui.railroad;
 
+import java.util.List;
+
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.IFigure;
@@ -28,6 +30,7 @@ import org.eclipse.ui.part.ViewPart;
 import com.github.jknack.ui.railroad.actions.ExportToHtmlAction;
 import com.github.jknack.ui.railroad.actions.LinkWithEditorAction;
 import com.github.jknack.ui.railroad.actions.RailroadSelectionLinker;
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -111,6 +114,22 @@ public class RailroadView extends ViewPart {
         rootFigure.validate();
         contents = newContents;
         exportAction.setEnabled(newContents != null);
+      }
+    });
+  }
+
+  public void clearView() {
+    Display.getDefault().asyncExec(new Runnable() {
+      @Override
+      public void run() {
+        @SuppressWarnings("unchecked")
+        List<IFigure> children = rootFigure.getChildren();
+        if (children != null) {
+          for(IFigure child: Lists.newArrayList(children)) {
+            rootFigure.remove(child);
+          }
+        }
+        exportAction.setEnabled(false);
       }
     });
   }
