@@ -2,5 +2,3 @@ language: java
 jdk:
   - openjdk7
   - openjdk6
-install: mvn package 
-  - mvn clean cobertura:cobertura coveralls:cobertura -DdryRun=true
