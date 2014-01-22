@@ -38,6 +38,14 @@
           <configuration>
             <outputDirectory>src/generated/xtend</outputDirectory>
           </configuration>
+          <dependencies>
+            <dependency>
+              <!-- Sync Eclipse vs Maven guava version and avoid classpath issues -->
+              <groupId>com.google.guava</groupId>
+              <artifactId>guava</artifactId>
+              <version>${guava.version}</version>
+            </dependency>
+          </dependencies>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -82,6 +90,11 @@
     <tycho-version>0.19.0</tycho-version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <xtext.version>2.5.0</xtext.version>
+    <!--
+      Sync guava version used by Xtext. Force Maven to use same version as in Eclipse.
+      Avoid classpath issues :S
+    -->
+    <guava.version>10.0.1</guava.version>
     <maven.compiler.source>1.6</maven.compiler.source>
     <maven.compiler.target>1.6</maven.compiler.target>
   </properties>
