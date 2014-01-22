@@ -150,6 +150,10 @@ class Antlr4RailroadTransformer {
     }
   }
 
+  def dispatch ISegmentFigure toFigure(EObject dummy) {
+  	null
+  }
+
   def dispatch ISegmentFigure toFigure(Ebnf ebnf) {
     val body = toFigure(ebnf.body)
     factory.createEbnf(body, ebnf.operator)
