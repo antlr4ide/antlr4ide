@@ -65,20 +65,21 @@ public class AntlrGeneratorFragmentWithCustomLexer extends BaseAntlrGeneratorFra
     String absoluteParserFileName = srcGenPath + "/"
         + getFragmentHelper().getParserGrammarFileName(grammar).replace('.', '/') + ".g";
     addAntlrParam("-fo");
-    addAntlrParam(absoluteParserFileName.substring(0, absoluteParserFileName.lastIndexOf('/')));
+    addAntlrParam(absoluteParserFileName.substring(0, absoluteParserFileName.lastIndexOf('/')).replace("//", "/"));
     String[] lexerAntlrParams = getAntlrParams();
     lexerAntlrParams[lexerAntlrParams.length - 1] = absoluteLexerFileName.substring(0,
-        absoluteLexerFileName.lastIndexOf('/'));
+        absoluteLexerFileName.lastIndexOf('/')).replace("//", "/");
 
     // copy
     copy(new File(absoluteLexerFileName), new File(lexerBaseFileName + ".gxtext"));
     writeFile(absoluteLexerFileName, readFile(absoluteLexerFileName.replace("src-gen", "java")));
 
-    getAntlrTool().runWithEncodingAndParams(absoluteLexerFileName, encoding, lexerAntlrParams);
+    getAntlrTool().runWithEncodingAndParams(absoluteLexerFileName.replace("//", "/"), encoding, lexerAntlrParams);
     cleanupLexerTokensFile(lexerBaseFileName);
     addAntlrParam("-lib");
-    addAntlrParam(libPath);
-    getAntlrTool().runWithEncodingAndParams(absoluteParserFileName, encoding, getAntlrParams());
+    addAntlrParam(libPath.replace("//", "/"));
+
+    getAntlrTool().runWithEncodingAndParams(absoluteParserFileName.replace("//", "/"), encoding, getAntlrParams());
     simplifyUnorderedGroupPredicatesIfRequired(grammar, absoluteParserFileName);
     splitParserAndLexerIfEnabled(absoluteLexerFileName, absoluteParserFileName);
     suppressWarnings(absoluteLexerFileName, absoluteParserFileName);

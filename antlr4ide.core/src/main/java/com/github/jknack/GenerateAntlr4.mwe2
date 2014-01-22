@@ -8,6 +8,8 @@ var projectName = "antlr4ide.core"
 var grammarURI = "platform:/resource/${projectName}/src/main/java/com/github/jknack/Antlr4.xtext"
 var fileExtensions = "g4"
 var generateXtendStub = true
+var runtimeProject = "../${projectName}"
+var runtimeRootProject = "../antlr4ide"
 var encoding = "UTF-8"
 
 Workflow {
@@ -25,31 +27,31 @@ Workflow {
               to = "classpath:/"
       }
     	scanClassPath = true
-    	platformUri = "../"
+    	platformUri = "${runtimeProject}/.."
     }
     
     component = DirectoryCleaner {
-    	directory = "../antlr4ide.core/src/main/src-gen"
+    	directory = "${runtimeProject}/src/generated/java"
     }
     
     component = DirectoryCleaner {
-    	directory = "../antlr4ide.core/model"
+    	directory = "${runtimeProject}/model"
     }
     
     component = DirectoryCleaner {
-    	directory = "../antlr4ide.ui/src/main/src-gen"
+    	directory = "${runtimeRootProject}.ui/src/generated/java"
     }
     
     component = DirectoryCleaner {
-    	directory = "../antlr4ide.tests/src-gen"
+    	directory = "${runtimeRootProject}.tests/src/generated/java"
     }
     
     component = Generator {
       srcPath = "/src/main/java"
-      srcGenPath = "/src/main/src-gen"
-    	pathRtProject = "../antlr4ide.core"
-    	pathUiProject = "../antlr4ide.ui"
-    	pathTestProject = "../antlr4ide.tests"
+      srcGenPath = "/src/generated/java"
+    	pathRtProject = runtimeProject
+    	pathUiProject = "${runtimeRootProject}.ui"
+    	pathTestProject = "${runtimeRootProject}.tests"
     	projectNameRt = projectName
     	projectNameUi = "antlr4ide.ui"
     	encoding = encoding
@@ -63,7 +65,9 @@ Workflow {
     		fragment = grammarAccess.GrammarAccessFragment auto-inject {}
     
     		// generates Java API for the generated EPackages
-    		fragment = ecore.EMFGeneratorFragment auto-inject {}
+    		fragment = ecore.EMFGeneratorFragment auto-inject {
+    		  javaModelDirectory = "/${projectName}/src/generated/java"
+    		}
     
     		// the old serialization component
     		// fragment = parseTreeConstructor.ParseTreeConstructorFragment auto-inject {}    

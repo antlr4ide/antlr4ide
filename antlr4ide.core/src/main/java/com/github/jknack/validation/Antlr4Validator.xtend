@@ -123,7 +123,7 @@ class Antlr4Validator extends AbstractAntlr4Validator {
 
   @Check
   def parserRulesNotAllowed(ParserRule rule) {
-    val grammar = rule.getContainerOfType(Grammar) as Grammar
+    val grammar = rule.getContainerOfType(Grammar)
     if (grammar.type == GrammarType.LEXER) {
       error(
         "parser rule '" + rule.name + "' not allowed in lexer",
@@ -135,7 +135,7 @@ class Antlr4Validator extends AbstractAntlr4Validator {
 
   @Check
   def lexerRulesNotAllowed(LexerRule rule) {
-    val grammar = rule.getContainerOfType(Grammar) as Grammar
+    val grammar = rule.getContainerOfType(Grammar)
     if (grammar.type == GrammarType.PARSER) {
       error(
         "lexer rule '" + rule.name + "' not allowed in parser",

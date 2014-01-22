@@ -1,14 +1,16 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: antlr4ide.tests
+Bundle-Name: ANTLR 4 IDE Tests
 Bundle-Vendor: Edgar Espina
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.1.1.qualifier
 Bundle-SymbolicName: antlr4ide.tests; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: antlr4ide.core,
  antlr4ide.ui,
  org.eclipse.core.runtime,
+ org.eclipse.xtext.xbase,
  org.eclipse.xtext.junit4,
+ org.eclipse.xtext.xbase.junit,
  org.eclipse.ui.workbench;resolution:=optional
 Import-Package: org.apache.log4j,
  org.junit;version="4.5.0",
@@ -17,6 +19,7 @@ Import-Package: org.apache.log4j,
  org.junit.runner.notification;version="4.5.0",
  org.junit.runners;version="4.5.0",
  org.junit.runners.model;version="4.5.0",
+ org.eclipse.xtext.xbase.lib,
  org.hamcrest.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: com.github.jknack

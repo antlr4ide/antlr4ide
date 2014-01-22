@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry kind="src" path="src/main/xtend-gen"/>
-	<classpathentry kind="src" path="src/main/src-gen"/>
+  <classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/generated/java"/>
+  <classpathentry kind="src" path="src/generated/xtend"/>
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="lib" path="lib/test/junit-4.11.jar"/>

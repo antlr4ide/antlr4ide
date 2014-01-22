@@ -18,8 +18,9 @@ import java.util.jar.JarInputStream
 import java.io.FileInputStream
 import java.util.jar.Attributes
 import com.google.common.cache.CacheBuilder
-import com.google.common.cache.Cache
 import com.google.inject.Singleton
+import com.google.common.base.Function
+import com.google.common.cache.CacheLoader
 
 /**
  * Execute ANTLR Tool and generated the code.
@@ -37,10 +38,11 @@ class ToolRunner {
   private static val TOOL = "org.antlr.v4.Tool"
 
   /** Cache ANTLR distributions. */
-  private static val Cache<File, Pair<String, String>> distributions = CacheBuilder.newBuilder()
-    .build([jar |
-      version(jar)
-    ])
+  private static val CacheLoader<File, Pair<String, String>> loader = [jar |
+    version(jar)
+  ]
+  private static val Function<File, Pair<String, String>> distributions = CacheBuilder.newBuilder()
+    .build(loader)
 
   /**
    * Creates a new ToolRunner.
@@ -137,8 +139,7 @@ class ToolRunner {
 
   /** Validate an ANTLR distribution. */
   def private validate(File jar, Console console) {
-
-    val distribution = distributions.get(jar)
+    val distribution = distributions.apply(jar)
     val mainClass = distribution.key
     val version = distribution.value
 

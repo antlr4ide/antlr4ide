@@ -4,23 +4,26 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.nio.channels.FileChannel;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.eclipse.xtext.generator.parser.antlr.ex.common.AbstractAntlrGeneratorFragmentEx;
 
 public abstract class BaseAntlrGeneratorFragmentEx extends AbstractAntlrGeneratorFragmentEx {
 
+  private Logger log = Logger.getLogger(getClass());
+
   protected void copy(final File source, final File dest) {
-    System.out.println("Copying: " + source + " to " + dest);
     FileChannel sourceChannel = null;
     FileChannel destChannel = null;
     try {
+      log.info("copying: " + source.getCanonicalPath() + " to " + dest);
       sourceChannel = new FileInputStream(source).getChannel();
       destChannel = new FileOutputStream(dest).getChannel();
       destChannel.transferFrom(sourceChannel, 0, sourceChannel.size());
@@ -38,6 +41,7 @@ public abstract class BaseAntlrGeneratorFragmentEx extends AbstractAntlrGenerato
 
   protected void writeFile(final String fileName, final String data) {
     try {
+      log.info("using: " + new File(fileName).getCanonicalPath());
       PrintWriter writer = new PrintWriter(new File(fileName));
       writer.write(data);
       writer.close();
@@ -49,7 +53,8 @@ public abstract class BaseAntlrGeneratorFragmentEx extends AbstractAntlrGenerato
   protected String readFile(final String fileName) {
     BufferedReader br = null;
     try {
-      br = new BufferedReader(new FileReader(fileName));
+      br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(
+          "InternalAntlr4Lexer.g")));
       StringBuilder sb = new StringBuilder();
       String line = br.readLine();
 

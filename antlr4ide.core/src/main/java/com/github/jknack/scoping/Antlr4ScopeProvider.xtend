@@ -29,7 +29,7 @@ class Antlr4ScopeProvider extends AbstractDeclarativeScopeProvider {
 
   override getScope(EObject context, EReference reference) {
     val candidate = context.getContainerOfType(Rule)
-    if (candidate instanceof Rule) {
+    if (candidate != null) {
       return scopeFor(candidate)
     }
     return super.getScope(context, reference);

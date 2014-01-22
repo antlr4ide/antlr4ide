@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.github.jknack</groupId>
     <artifactId>antlr4ide</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.1-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -22,67 +22,81 @@
         <configuration>
           <filesets>
             <fileset>
-              <directory>${basedir}/src-gen</directory>
+              <directory>${basedir/src/generated/java</directory>
             </fileset>
             <fileset>
-              <directory>${basedir}/xtend-gen</directory>
+              <directory>${basedir}/src/generated/xtend</directory>
             </fileset>
             <!-- clean ui plugin as well -->
             <fileset>
-              <directory>${basedir}/../antlr4ide.ui/src-gen</directory>
+              <directory>${basedir}/../antlr4ide.ui/src/generated/java</directory>
             </fileset>
             <fileset>
-              <directory>${basedir}/../antlr4ide.ui/xtend-gen</directory>
+              <directory>${basedir}/../antlr4ide.ui/src/generated/xtend</directory>
             </fileset>
             <!-- clean test fragment as well -->
             <fileset>
-              <directory>${basedir}/../antlr4ide.tests/src-gen</directory>
+              <directory>${basedir}/../antlr4ide.tests/src/generated/java</directory>
             </fileset>
             <fileset>
-              <directory>${basedir}/../antlr4ide.tests/xtend-gen</directory>
+              <directory>${basedir}/../antlr4ide.tests/src/generated/xtend</directory>
             </fileset>
           </filesets>
         </configuration>
       </plugin>
 
+      <!--
+          Mwe2 steps:
+          * Compile custom fragment (bc mwe2 MUST run on generate-sources phase)
+          * Copy custom lexer file *.g
+          * Invoke mwe2
+      -->
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.7</version>
         <executions>
           <execution>
             <phase>generate-sources</phase>
+            <configuration>
+              <target>
+                <property name="cp" refid="maven.compile.classpath"/>
+                <property name="workDir" value="${project.basedir}"/>
+                <property name="javac" value="${java.home}${file.separator}..${file.separator}bin${file.separator}javac"/>
+                <property name="output" value="${project.build.outputDirectory}"/>
+                <property name="source" value="src${file.separator}main${file.separator}java"/>
+
+                <mkdir dir="${output}"/>
+                <javac srcdir="${source}"
+                    fork="true"
+                    destdir="${output}"
+                    executable="${javac}"
+                    includes="**/*GeneratorFragment*.java"
+                    source="1.6"
+                    target="1.6"
+                    classpath="${cp}" />
+
+                <copy todir="${output}" verbose="true">
+                  <fileset dir="${source}" includes="**/*.g" />
+                </copy>
+
+                <exec executable="java" dir="${workDir}">
+                  <arg value="-cp"/>
+                  <arg value="${cp}"/>
+                  <arg value="org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher"/>
+                  <arg value="${workDir}${file.separator}${source}${file.separator}com${file.separator}github${file.separator}jknack${file.separator}GenerateAntlr4.mwe2" />
+                  <arg value="-p" />
+                  <arg value="runtimeProject=${workDir}" />
+                </exec>
+              </target>
+            </configuration>
             <goals>
-              <goal>java</goal>
+              <goal>run</goal>
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <includeProjectDependencies>false</includeProjectDependencies>
-          <includePluginDependencies>true</includePluginDependencies>
-          <mainClass>org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher</mainClass>
-          <arguments>
-            <argument>file://${project.basedir}/src/com/github/jknack/GenerateAntlr4.mwe2</argument>
-          </arguments>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.eclipse.xtext</groupId>
-            <artifactId>org.eclipse.xtext.xtext</artifactId>
-            <version>${xtext.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.eclipse.xtext</groupId>
-            <artifactId>org.eclipse.xtext.xbase</artifactId>
-            <version>${xtext.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.eclipse.xtext</groupId>
-            <artifactId>org.eclipse.xtext.xbase.lib</artifactId>
-            <version>${xtext.version}</version>
-          </dependency>
-        </dependencies>
       </plugin>
+
       <plugin>
         <groupId>org.eclipse.xtend</groupId>
         <artifactId>xtend-maven-plugin</artifactId>

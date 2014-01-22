@@ -271,7 +271,7 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
         ]
       }
     ]
-    val grammar = EcoreUtil2.getContainerOfType(object, Grammar) as Grammar
+    val grammar = EcoreUtil2.getContainerOfType(object, Grammar)
     val options = grammar.prequels.findFirst[it instanceof Options] as Options
     val langOption = if(options != null) options.options.findFirst[it.name == "language"]
     val language = if(langOption == null)
@@ -355,7 +355,7 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
     val expr = object.args
     if (expr != null) {
       val ref = expr.ref
-      if (ref instanceof Mode || ref instanceof ModeOrLexerRule) {
+      if (ref instanceof ModeOrLexerRule) {
         highlightObjectAtFeature(acceptor, expr, "ref", MODE)
       } else if (ref instanceof LexerRule) {
         highlightObjectAtFeature(acceptor, expr, "ref", TOKEN)
