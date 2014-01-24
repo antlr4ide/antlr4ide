@@ -50,18 +50,24 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.7</version>
         <executions>
           <execution>
             <phase>generate-sources</phase>
             <configuration>
               <target>
+                <property name="antlr-generator" value="${antlr-generator}" />
                 <property name="cp" refid="maven.compile.classpath" />
                 <property name="workDir" value="${project.basedir}" />
                 <property name="javac"
                   value="${java.home}${file.separator}..${file.separator}bin${file.separator}javac" />
                 <property name="output" value="${project.build.outputDirectory}" />
                 <property name="source" value="src${file.separator}main${file.separator}java" />
+                <property name="antlr4.jar" value="${antlr4.jar}" />
+
+                <mkdir dir="${workDir}/lib" />
+                <get src="http://www.antlr.org/download/${antlr4.jar}" dest="${workDir}/lib/${antlr4.jar}" usetimestamp="true" skipexisting="true" />
+
+                <get src="http://download.itemis.com/${antlr-generator}" dest=".${antlr-generator}" usetimestamp="true" skipexisting="true" />
 
                 <mkdir dir="${output}" />
                 <javac srcdir="${source}" fork="true" destdir="${output}" executable="${javac}"

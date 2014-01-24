@@ -19,6 +19,12 @@
   <build>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>1.7</version>
+        </plugin>
+
         <!-- xtend-maven-plugin is in pluginManagement instead of in plugins so that it doesn't run before 
           the exec-maven-plugin's *.mwe2 gen; this way we can list it after. -->
         <plugin>
@@ -90,13 +96,14 @@
     <tycho-version>0.19.0</tycho-version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <xtext.version>2.5.0</xtext.version>
-    <!--
-      Sync guava version used by Xtext. Force Maven to use same version as in Eclipse.
-      Avoid classpath issues :S
-    -->
+    <!-- Sync guava version used by Xtext. Force Maven to use same version as in Eclipse. Avoid classpath 
+      issues :S -->
     <guava.version>10.0.1</guava.version>
     <maven.compiler.source>1.6</maven.compiler.source>
     <maven.compiler.target>1.6</maven.compiler.target>
+
+    <antlr-generator>antlr-generator-3.2.0.jar</antlr-generator>
+    <antlr4.jar>antlr-4.1-complete.jar</antlr4.jar>
   </properties>
 
   <repositories>

@@ -36,7 +36,7 @@ class Antlr4Generator implements IGenerator {
   Console console
 
   /** Workspace root. */
-  @Inject
+  @Inject(optional = true)
   IWorkspaceRoot workspaceRoot
 
   /**

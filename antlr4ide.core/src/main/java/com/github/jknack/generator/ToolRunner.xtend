@@ -17,15 +17,14 @@ import com.github.jknack.console.Console
 import java.util.jar.JarInputStream
 import java.io.FileInputStream
 import java.util.jar.Attributes
-import com.google.common.cache.CacheBuilder
 import com.google.inject.Singleton
-import com.google.common.base.Function
-import com.google.common.cache.CacheLoader
+import java.util.Map
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Execute ANTLR Tool and generated the code.
  */
- @Singleton
+@Singleton
 class ToolRunner {
 
   /** The core bundle. */
@@ -38,11 +37,7 @@ class ToolRunner {
   private static val TOOL = "org.antlr.v4.Tool"
 
   /** Cache ANTLR distributions. */
-  private static val CacheLoader<File, Pair<String, String>> loader = [jar |
-    version(jar)
-  ]
-  private static val Function<File, Pair<String, String>> distributions = CacheBuilder.newBuilder()
-    .build(loader)
+  private static val Map<File, Pair<String, String>> distributions = new ConcurrentHashMap<File, Pair<String, String>>()
 
   /**
    * Creates a new ToolRunner.
@@ -126,20 +121,26 @@ class ToolRunner {
   }
 
   def static private version(File jar) {
-    if (jar.exists && jar.name.endsWith(".jar")) {
-      val jarJar = new JarInputStream(new FileInputStream(jar))
-      val attributes = jarJar.manifest.mainAttributes
-      val version = attributes.get(new Attributes.Name("Implementation-Version")) + ""
-      val mainClass = attributes.get(new Attributes.Name("Main-Class")) + ""
-      jarJar.close
-      return mainClass -> version
+    var distribution = distributions.get(jar)
+    if (distribution == null) {
+      if (jar.exists && jar.name.endsWith(".jar")) {
+        val jarJar = new JarInputStream(new FileInputStream(jar))
+        val attributes = jarJar.manifest.mainAttributes
+        val version = attributes.get(new Attributes.Name("Implementation-Version")) + ""
+        val mainClass = attributes.get(new Attributes.Name("Main-Class")) + ""
+        jarJar.close
+        distribution = mainClass -> version
+      } else {
+        distribution = "" -> ""
+      }
+      distributions.put(jar, distribution)
     }
-    return "" -> ""
+    return distribution
   }
 
   /** Validate an ANTLR distribution. */
   def private validate(File jar, Console console) {
-    val distribution = distributions.apply(jar)
+    val distribution = version(jar)
     val mainClass = distribution.key
     val version = distribution.value
 
