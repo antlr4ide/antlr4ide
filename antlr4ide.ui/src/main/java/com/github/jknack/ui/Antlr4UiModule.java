@@ -1,18 +1,28 @@
 package com.github.jknack.ui;
 
+import java.util.Set;
+
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtext.documentation.impl.AbstractMultiLineCommentProvider;
+import org.eclipse.xtext.resource.containers.IAllContainersState;
 import org.eclipse.xtext.ui.editor.IXtextEditorCallback;
 import org.eclipse.xtext.ui.editor.actions.IActionContributor;
 import org.eclipse.xtext.ui.editor.folding.IFoldingRegionProvider;
 import org.eclipse.xtext.ui.editor.folding.IFoldingStructureProvider;
 import org.eclipse.xtext.ui.editor.hover.IEObjectHoverProvider;
+import org.eclipse.xtext.ui.editor.model.IResourceForEditorInputFactory;
+import org.eclipse.xtext.ui.editor.model.ResourceForIEditorInputFactory;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.AbstractAntlrTokenToAttributeIdMapper;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.IHighlightingConfiguration;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.ISemanticHighlightingCalculator;
+import org.eclipse.xtext.ui.resource.IResourceSetProvider;
+import org.eclipse.xtext.ui.resource.IStorage2UriMapperJdtExtensions;
+import org.eclipse.xtext.ui.resource.SimpleResourceSetProvider;
+import org.eclipse.xtext.ui.wizard.IProjectCreator;
 
 import com.github.jknack.console.Console;
+import com.github.jknack.generator.CodeGeneratorListener;
 import com.github.jknack.generator.ToolOptionsProvider;
 import com.github.jknack.ui.console.AntlrConsoleFactory;
 import com.github.jknack.ui.console.DefaultConsole;
@@ -20,14 +30,22 @@ import com.github.jknack.ui.editor.Antlr4NatureCallback;
 import com.github.jknack.ui.folding.Antlr4FoldingRegionProvider;
 import com.github.jknack.ui.folding.Antlr4FoldingStructureProvider;
 import com.github.jknack.ui.generator.DefaultToolOptionsProvider;
+import com.github.jknack.ui.generator.RefreshProjectProcessor;
+import com.github.jknack.ui.generator.TodoListProcessor;
 import com.github.jknack.ui.highlighting.AntlrHighlightingCalculator;
 import com.github.jknack.ui.highlighting.AntlrHighlightingConfiguration;
 import com.github.jknack.ui.highlighting.ShowWhitespaceCharactersActionContributor;
 import com.github.jknack.ui.highlighting.TokenToAttributeIdMapper;
 import com.github.jknack.ui.labeling.Antlr4HoverProvider;
 import com.github.jknack.ui.preferences.BuildPreferenceStoreInitializer;
+import com.github.jknack.ui.wizard.JdtFreeProjectCreator;
+import com.google.common.collect.Sets;
 import com.google.inject.Binder;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Provides;
 import com.google.inject.name.Names;
+import com.google.inject.util.Providers;
 
 /**
  * Use this class to register components to be used within the IDE.
@@ -58,6 +76,15 @@ public class Antlr4UiModule extends com.github.jknack.ui.AbstractAntlr4UiModule 
     binder.bind(IActionContributor.class).annotatedWith(Names.named("Show Whitespace"))
         .to(ShowWhitespaceCharactersActionContributor.class);
 
+    binder.bind(TodoListProcessor.class);
+    binder.bind(RefreshProjectProcessor.class);
+  }
+
+  @Provides
+  @Inject
+  public Set<CodeGeneratorListener> codeGeneratorListeners(final TodoListProcessor todoProcessor,
+      final RefreshProjectProcessor refreshProjectProcessor) {
+    return Sets.<CodeGeneratorListener> newHashSet(todoProcessor, refreshProjectProcessor);
   }
 
   public Class<? extends AbstractAntlrTokenToAttributeIdMapper> bindAntlrTokenToAttributeIdMapper() {
@@ -83,5 +110,33 @@ public class Antlr4UiModule extends com.github.jknack.ui.AbstractAntlr4UiModule 
   @Override
   public Class<? extends IXtextEditorCallback> bindIXtextEditorCallback() {
     return Antlr4NatureCallback.class;
+  }
+
+  // prevent JDT dependencies, see https://bugs.eclipse.org/bugs/show_bug.cgi?id=404322
+  @Override
+  public Class<? extends IResourceForEditorInputFactory> bindIResourceForEditorInputFactory() {
+    return ResourceForIEditorInputFactory.class;
+  }
+
+  @Override
+  public Class<? extends IResourceSetProvider> bindIResourceSetProvider() {
+    return SimpleResourceSetProvider.class;
+  }
+
+  @Override
+  public Provider<IAllContainersState> provideIAllContainersState() {
+    return org.eclipse.xtext.ui.shared.Access.getWorkspaceProjectsState();
+  }
+
+  // FIXME: due to "Xtext based editor does not start since 2.5 without JDT installed",
+  // https://bugs.eclipse.org/bugs/show_bug.cgi?id=424455
+  public void configureIStorage2UriMapperJdtExtensions(final Binder binder) {
+    binder.bind(IStorage2UriMapperJdtExtensions.class).toProvider(
+        Providers.of((IStorage2UriMapperJdtExtensions) null));
+  }
+
+  @Override
+  public Class<? extends IProjectCreator> bindIProjectCreator() {
+    return JdtFreeProjectCreator.class;
   }
 }

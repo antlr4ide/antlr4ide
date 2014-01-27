@@ -1,0 +1,20 @@
+«IMPORT com::github::jknack::ui::wizard»
+
+«DEFINE main FOR Antlr4ProjectInfo»
+«EXPAND model FOR this»
+«ENDDEFINE»
+
+«DEFINE model FOR Antlr4ProjectInfo»
+«FILE "Hello.g4"-»
+/**
+ * Define a grammar called Hello
+ */
+grammar Hello;
+r  : 'hello' ID ;         // match keyword hello followed by an identifier
+
+ID : [a-z]+ ;             // match lower-case identifiers
+
+WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines
+
+«ENDFILE»
+«ENDDEFINE»

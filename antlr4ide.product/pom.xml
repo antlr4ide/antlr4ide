@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <groupId>com.github.jknack</groupId>
+    <artifactId>antlr4ide</artifactId>
+    <version>0.1.1-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>antlr4ide.product</artifactId>
+  <packaging>eclipse-repository</packaging>
+
+  <name>ANTLRv4 IDE - Standalone</name>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-director-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>materialize-products</id>
+            <goals>
+              <goal>materialize-products</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- remove org.eclipse.jdt.ui and build zips after that -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <configuration>
+              <target>
+                <property name="output" value="${project.build.directory}${file.separator}products" />
+                <property name="product.dir" value="${output}${file.separator}antlr4ide" />
+
+                <property name="linux.dir" value="${product.dir}${file.separator}linux" />
+                <property name="linux.gtk.dir" value="${linux.dir}${file.separator}gtk" />
+                <property name="linux.x86.dir" value="${linux.gtk.dir}${file.separator}x86" />
+                <property name="linux.x86_64.dir" value="${linux.gtk.dir}${file.separator}x86_64" />
+
+                <property name="win32.dir" value="${product.dir}${file.separator}win32${file.separator}win32" />
+                <property name="win.x86.dir" value="${win32.dir}${file.separator}x86" />
+                <property name="win.x86_64.dir" value="${win32.dir}${file.separator}x86_64" />
+
+                <property name="macosx.dir" value="${product.dir}${file.separator}macosx${file.separator}cocoa" />
+                <property name="macosx.x86_64.dir" value="${macosx.dir}${file.separator}x86_64" />
+
+                <delete verbose="true">
+                  <fileset dir="${output}">
+                    <include name="**/org.eclipse.jdt.ui*.jar" />
+                    <include name="**/org.eclipse.emf.ecore.editor*.jar" />
+                  </fileset>
+                </delete>
+
+                <echo file="${linux.x86.dir}${file.separator}antlr4ide.sh">
+#!/bin/bash
+UBUNTU_MENUPROXY=0
+LIBOVERLAY_SCROLLBAR=0
+export UBUNTU_MENUPROXY LIBOVERLAY_SCROLLBAR
+GTK_IM_MODULE=xim ./antlr4ide $*
+                </echo>
+                <chmod file="${linux.x86.dir}${file.separator}antlr4ide.sh" perm="ugo+rx"/>
+                <zip destfile="${output}${file.separator}antlr4ide-linux.gtk.x86.zip">
+                  <zipfileset dir="${linux.x86.dir}" prefix="antlr4ide"/>
+                </zip>
+                <echo file="${linux.x86_64.dir}${file.separator}antlr4ide.sh">
+#!/bin/bash
+UBUNTU_MENUPROXY=0
+LIBOVERLAY_SCROLLBAR=0
+export UBUNTU_MENUPROXY LIBOVERLAY_SCROLLBAR
+GTK_IM_MODULE=xim ./antlr4ide $*
+                </echo>
+                <chmod file="${linux.x86_64.dir}${file.separator}antlr4ide.sh" perm="ugo+rx"/>
+                <zip destfile="${output}${file.separator}antlr4ide-linux.gtk.x86_64.zip">
+                  <zipfileset dir="${linux.x86_64.dir}" prefix="antlr4ide"/>
+                </zip>
+
+                <zip destfile="${output}${file.separator}antlr4ide-windows.x86.zip">
+                  <zipfileset dir="${win.x86.dir}" prefix="antlr4ide"/>
+                </zip>
+                <zip destfile="${output}${file.separator}antlr4ide-windows.x86_64.zip">
+                  <zipfileset dir="${win.x86_64.dir}" prefix="antlr4ide"/>
+                </zip>
+
+                <zip destfile="${output}${file.separator}antlr4ide-macosx.x86_64.zip">
+                  <zipfileset dir="${macosx.x86_64.dir}" prefix="antlr4ide"/>
+                </zip>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+</project>

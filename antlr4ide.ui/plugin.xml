@@ -73,6 +73,7 @@
             name="Syntax Coloring">
             <keywordReference id="com.github.jknack.ui.keyword_Antlr4"/>
         </page>
+        <!-- Depends on JDT :S
         <page
             category="com.github.jknack.Antlr4"
             class="com.github.jknack.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.templates.XtextTemplatePreferencePage"
@@ -80,6 +81,7 @@
             name="Templates">
             <keywordReference id="com.github.jknack.ui.keyword_Antlr4"/>
         </page>
+        -->
     </extension>
     <extension
             point="org.eclipse.ui.propertyPages">
@@ -164,22 +166,22 @@
 
 	<!-- marker definitions for com.github.jknack.Antlr4 -->
 	<extension
-	        id="antlr4.check.fast"
-	        name="Antlr4 Problem"
+	        id="com.github.jknack.ui.antlr4.check.fast"
+	        name="ANTLR Problem"
 	        point="org.eclipse.core.resources.markers">
 	    <super type="org.eclipse.xtext.ui.check.fast"/>
 	    <persistent value="true"/>
 	</extension>
 	<extension
-	        id="antlr4.check.normal"
-	        name="Antlr4 Problem"
+	        id="com.github.jknack.ui.antlr4.check.normal"
+	        name="ANTLR Problem"
 	        point="org.eclipse.core.resources.markers">
 	    <super type="org.eclipse.xtext.ui.check.normal"/>
 	    <persistent value="true"/>
 	</extension>
 	<extension
-	        id="antlr4.check.expensive"
-	        name="Antlr4 Problem"
+	        id="com.github.jknack.ui.antlr4.check.expensive"
+	        name="ANTLR Problem"
 	        point="org.eclipse.core.resources.markers">
 	    <super type="org.eclipse.xtext.ui.check.expensive"/>
 	    <persistent value="true"/>
@@ -396,5 +398,26 @@
       <initializer
             class="com.github.jknack.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.ui.railroad.RailroadViewPreferences">
       </initializer>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="org.eclipse.ui.Basic"
+            class="com.github.jknack.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.ui.wizard.Antlr4NewProjectWizard"
+            icon="icons/g.png"
+            id="com.github.jknack.ui.wizard.Antlr4NewProjectWizard"
+            name="ANTLR Project"
+            project="true">
+      </wizard>
+   </extension>
+   
+   <extension
+         id="antlr4ide.marker.Antlr4Task"
+         name="ANTLR TODO"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.taskmarker">
+      </super>
    </extension>
 </plugin>

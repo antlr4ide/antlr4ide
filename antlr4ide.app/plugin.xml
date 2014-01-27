@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="product"
+         name="ANTLRv4 IDE"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.ui.ide.workbench"
+            name="ANTLRv4 IDE">
+         <property
+               name="appName"
+               value="ANTLRv4 IDE">
+         </property>
+         <property
+               name="aboutImage"
+               value="about.png">
+         </property>
+         <property
+               name="aboutText"
+               value="ANTLRv4 IDE">
+         </property>
+         <property
+               name="windowImages"
+               value="16x16.gif,32x32.gif,48x48.gif,eclipse16.png,eclipse32.png">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="DD4814">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="7,225,320,20">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="2,210,446,10">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+        <property
+            name="cssTheme"
+            value="org.eclipse.e4.ui.css.theme.e4_classic">
+        </property>
+        <property
+            name="applicationCSSResources"
+            value="platform:/plugin/org.eclipse.platform/images/">
+        </property>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="com.github.jknack.antlr.ui.Antlr4Perspective"
+            icon="icons/perspective.png"
+            id="com.github.jknack.Antlr4.perspective"
+            name="ANTLR">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.ui.resourcePerspective">
+         <hiddenMenuItem
+               id="antlr4ide.app.hiddenMenuItem1">
+         </hiddenMenuItem>
+         <hiddenToolBarItem
+               id="antlr4ide.app.hiddenToolBarItem1">
+         </hiddenToolBarItem>
+      </perspectiveExtension>
+   </extension>
+
+</plugin>

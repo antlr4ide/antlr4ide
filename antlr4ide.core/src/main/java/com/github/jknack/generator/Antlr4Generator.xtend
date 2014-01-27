@@ -6,14 +6,13 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.core.runtime.Path
 import com.google.inject.Inject
 import org.eclipse.core.resources.IWorkspaceRoot
-import org.eclipse.core.runtime.NullProgressMonitor
-import org.eclipse.core.resources.IResource
 import org.eclipse.core.resources.IFile
 import org.eclipse.core.runtime.Status
 import com.github.jknack.console.Console
 import static com.google.common.base.Preconditions.*
 import org.eclipse.debug.core.DebugPlugin
 import com.github.jknack.launch.AntlrToolLaunchConstants
+import java.util.Set
 
 /**
  * Generate code by executing ANTLR Tool. The code is generated on saved for valid grammars.
@@ -26,6 +25,9 @@ class Antlr4Generator implements IGenerator {
   /** The tool runner. */
   @Inject
   ToolRunner tool
+
+  @Inject
+  Set<CodeGeneratorListener> listeners
 
   /** The tools option provider. */
   @Inject
@@ -115,24 +117,11 @@ class Antlr4Generator implements IGenerator {
     checkNotNull(file)
     checkNotNull(options)
 
-    val project = file.project
-    val monitor = new NullProgressMonitor()
+    listeners.forEach[it.beforeProcess(file, options)]
 
     tool.run(file, options, console)
 
-    project.refreshLocal(IResource.DEPTH_INFINITE, monitor)
-    val output = options.output(file)
-    if (project.exists(output.relative)) {
-      val folder = project.getFolder(output.relative)
-
-      /**
-       * Mark files as derived
-       */
-      folder.accept [ generated |
-        generated.setDerived(options.derived, monitor)
-        return true
-      ]
-    }
+    listeners.forEach[it.afterProcess(file, options)]
   }
 
 }
