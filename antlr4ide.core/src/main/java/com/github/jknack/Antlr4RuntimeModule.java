@@ -8,7 +8,6 @@ import org.eclipse.xtext.naming.IQualifiedNameProvider;
 
 import com.github.jknack.antlr4.Antlr4Factory;
 import com.github.jknack.generator.Antlr4OutputConfigurationProvider;
-import com.github.jknack.generator.ToolRunner;
 import com.github.jknack.launch.AntlrToolLaunchConfigurationDelegate;
 import com.github.jknack.scoping.Antlr4NameProvider;
 import com.github.jknack.validation.Antlr4MissingReferenceMessageProvider;
@@ -32,8 +31,6 @@ public class Antlr4RuntimeModule extends com.github.jknack.AbstractAntlr4Runtime
    */
   void configureLocal(final Binder binder) {
     checkNotNull(binder);
-
-    binder.bind(ToolRunner.class).toInstance(new ToolRunner(Activator.bundle));
 
     binder.bind(Antlr4Factory.class).toInstance(Antlr4Factory.eINSTANCE);
 

@@ -17,7 +17,9 @@ class ToolOptions {
 
   public static val BUILD_VISITOR = "antlr4.visitor"
 
-  public static val BUILD_ANTLR_TOOL = "antlr4.antlrTool"
+  public static val BUILD_TOOL_PATH = "antlr4.antlrToolPath"
+
+  public static val BUILD_ANTLR_TOOLS = "antlr4.antlrRegisteredTools"
 
   public static val BUILD_ENCODING = "antlr4.encoding"
 

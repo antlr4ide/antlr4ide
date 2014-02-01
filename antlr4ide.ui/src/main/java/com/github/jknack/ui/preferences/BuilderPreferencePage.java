@@ -19,6 +19,7 @@ import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.builder.DerivedResourceCleanerJob;
 import org.eclipse.xtext.builder.EclipseOutputConfigurationProvider;
+import org.eclipse.xtext.ui.IImageHelper;
 import org.eclipse.xtext.ui.editor.preferences.PreferenceStoreAccessImpl;
 import org.eclipse.xtext.ui.preferences.OptionsConfigurationBlock;
 import org.eclipse.xtext.ui.preferences.PropertyAndPreferencePage;
@@ -35,10 +36,16 @@ import com.google.inject.name.Named;
 @SuppressWarnings("restriction")
 public class BuilderPreferencePage extends PropertyAndPreferencePage {
   private OptionsConfigurationBlock builderConfigurationBlock;
+
   private EclipseOutputConfigurationProvider configurationProvider;
+
   private String languageName;
+
   private PreferenceStoreAccessImpl preferenceStoreAccessImpl;
+
   private Provider<DerivedResourceCleanerJob> cleanerProvider;
+
+  private IImageHelper imageHelper;
 
   @Inject
   public void setCleanerProvider(final Provider<DerivedResourceCleanerJob> cleanerProvider) {
@@ -61,13 +68,18 @@ public class BuilderPreferencePage extends PropertyAndPreferencePage {
     this.preferenceStoreAccessImpl = preferenceStoreAccessImpl;
   }
 
+  @Inject
+  public void setImageHelper(final IImageHelper imageHelper) {
+    this.imageHelper = imageHelper;
+  }
+
   @Override
   public void createControl(final Composite parent) {
     IWorkbenchPreferenceContainer container = (IWorkbenchPreferenceContainer) getContainer();
     IPreferenceStore preferenceStore = preferenceStoreAccessImpl
         .getWritablePreferenceStore(getProject());
     builderConfigurationBlock = new BuilderConfigurationBlock(getProject(), preferenceStore,
-        configurationProvider, container);
+        configurationProvider, container, imageHelper);
     builderConfigurationBlock.setStatusChangeListener(getNewStatusChangedListener());
     super.createControl(parent);
   }

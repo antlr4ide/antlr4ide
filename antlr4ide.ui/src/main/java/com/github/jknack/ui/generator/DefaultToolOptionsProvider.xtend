@@ -7,6 +7,7 @@ import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess
 import com.github.jknack.generator.ToolOptions
 import org.eclipse.jface.preference.IPreferenceStore
 import org.eclipse.core.resources.IFile
+import com.github.jknack.generator.Distributions
 
 class DefaultToolOptionsProvider implements ToolOptionsProvider {
 
@@ -22,7 +23,9 @@ class DefaultToolOptionsProvider implements ToolOptionsProvider {
     val output = configurationProvider.getOutputConfigurations(project).last
 
     return new ToolOptions => [
-      antlrTool = getString(ToolOptions.BUILD_ANTLR_TOOL, store, "embedded")
+      antlrTool = getString(ToolOptions.BUILD_TOOL_PATH, store,
+        Distributions.defaultDistribution.value
+      )
       outputDirectory = output.outputDirectory
       listener = getBoolean(ToolOptions.BUILD_LISTENER, store, true)
       visitor = getBoolean(ToolOptions.BUILD_VISITOR, store, false)
