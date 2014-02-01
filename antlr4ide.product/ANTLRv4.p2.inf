@@ -1,0 +1,3 @@
+instructions.configure=\
+  addRepository(type:0,location:http${#58}//github.com/jknack/antlr4ide/raw/master/site/0.1.0/);\
+  addRepository(type:1,location:http${#58}//github.com/jknack/antlr4ide/raw/master/site/0.1.0/);
