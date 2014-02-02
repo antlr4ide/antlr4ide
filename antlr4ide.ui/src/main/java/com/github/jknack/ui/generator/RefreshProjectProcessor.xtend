@@ -5,8 +5,11 @@ import org.eclipse.core.resources.IFile
 import org.eclipse.core.runtime.NullProgressMonitor
 import org.eclipse.core.resources.IResource
 import com.github.jknack.generator.ToolOptions
+import com.google.common.base.Function
 
 class RefreshProjectProcessor implements CodeGeneratorListener {
+
+  static val ROOT = #[".", "./", ".\\"]
 
   override beforeProcess(IFile file, ToolOptions options) {
   }
@@ -14,17 +17,28 @@ class RefreshProjectProcessor implements CodeGeneratorListener {
   override afterProcess(IFile file, ToolOptions options) {
     val project = file.project
     val monitor = new NullProgressMonitor
-    
+
     project.refreshLocal(IResource.DEPTH_INFINITE, monitor)
     val output = options.output(file)
-    if (project.exists(output.relative)) {
-      val folder = project.getFolder(output.relative)
+    val relative = output.relative
+    if (project.exists(relative)) {
+      val container = if (ROOT.contains(relative.toString))
+          project
+        else
+          project.getFolder(output.relative)
 
       /**
        * Mark files as derived
        */
-      folder.accept [ generated |
-        generated.setDerived(options.derived, monitor)
+      val Function<IResource, String> fileName = [
+        it.location.removeFileExtension.lastSegment.toLowerCase
+      ]
+      val fname = fileName.apply(file)
+      container.accept [ generated |
+        val gname = fileName.apply(generated)
+        if (gname.startsWith(fname) && !generated.name.endsWith(".g4")) {
+          generated.setDerived(options.derived, monitor)
+        }
         return true
       ]
     }
