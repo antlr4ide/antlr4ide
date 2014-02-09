@@ -80,7 +80,7 @@ class Antlr4ScopeProvider extends AbstractDeclarativeScopeProvider {
   /**
    * Extract scopes from a tokenVocab.
    */
-  def void scopeFor(TokenVocab tokenVocab, List<EObject> scopes) {
+  def private void scopeFor(TokenVocab tokenVocab, List<EObject> scopes) {
     val grammar = tokenVocab.importURI;
     if (grammar != null) {
       lexerRules(grammar, scopes);
@@ -138,11 +138,12 @@ class Antlr4ScopeProvider extends AbstractDeclarativeScopeProvider {
   /**
    * Collect lexer rules from a grammar and/or grammar modes.
    */
-  def lexerRules(Grammar grammar, List<EObject> scopes) {
+  private def lexerRules(Grammar grammar, List<EObject> scopes) {
     scopes.addAll(grammar.rules.filter(LexerRule))
 
-    if (grammar.modes != null) {
-      for (mode : grammar.modes) {
+    val modes = grammar.modes
+    if (modes != null) {
+      for (mode : modes) {
         scopes.add(mode)
         scopes.addAll(mode.rules.filter(LexerRule))
       }

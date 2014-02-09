@@ -10,13 +10,10 @@ import com.github.jknack.antlr4.V3Tokens
 import com.github.jknack.antlr4.GrammarType
 import com.github.jknack.antlr4.LexerRule
 import com.github.jknack.antlr4.LabeledAlt
-import org.eclipse.emf.ecore.util.EcoreUtil
 import com.github.jknack.antlr4.V3Token
 import com.github.jknack.antlr4.EmptyTokens
 import com.github.jknack.antlr4.Antlr4Package
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
 import com.github.jknack.antlr4.V4Tokens
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure3
 import com.google.common.base.Splitter
 import com.google.common.base.CharMatcher
 import com.github.jknack.antlr4.ActionElement
@@ -33,8 +30,8 @@ import com.github.jknack.antlr4.Options
 import com.github.jknack.antlr4.Imports
 import com.github.jknack.antlr4.ElementOptions
 import com.github.jknack.antlr4.ElementOption
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure2
 import com.github.jknack.antlr4.Wildcard
+import com.github.jknack.antlr4.V4Token
 
 /**
  * Custom validation rules. 
@@ -84,13 +81,13 @@ class Antlr4Validator extends AbstractAntlr4Validator {
   def checkActionRedefinition(Grammar grammar) {
     val Set<String> actions = newHashSet()
 
-    grammar.prequels.filter[it instanceof GrammarAction].forEach [ it |
-      val action = it as GrammarAction
-      if (!actions.add(action.name)) {
+    grammar.prequels.filter(GrammarAction).forEach [
+      val name = it.name
+      if (!actions.add(name)) {
         error(
-          "redefinition of '" + action.name + "' action",
-          action,
-          action.eClass.getEStructuralFeature("name")
+          "redefinition of '" + name + "' action",
+          it,
+          it.eClass.getEStructuralFeature("name")
         )
       }
     ]
@@ -111,13 +108,15 @@ class Antlr4Validator extends AbstractAntlr4Validator {
   @Check
   def modeWithoutRules(Mode mode) {
     val grammar = mode.eContainer as Grammar
-    val rules = mode.rules.filter[!it.fragment]
-    if (grammar.type == GrammarType.LEXER && rules.empty) {
-      error(
-        "lexer mode '" + mode.id + "' must contain at least one non-fragment rule",
-        mode,
-        mode.eClass.getEStructuralFeature("id")
-      )
+    if (grammar.type == GrammarType.LEXER) {
+      val rules = mode.rules.filter[!fragment]
+      if (rules.empty) {
+        error(
+          "lexer mode '" + mode.id + "' must contain at least one non-fragment rule",
+          mode,
+          mode.eClass.getEStructuralFeature("id")
+        )
+      }
     }
   }
 
@@ -149,18 +148,18 @@ class Antlr4Validator extends AbstractAntlr4Validator {
   def repeatedPrequel(Grammar grammar) {
     val Set<String> prequels = newHashSet()
     for (prequel : grammar.prequels) {
-      if (!prequels.add(prequel.eClass.name)) {
-        val keyword = switch (prequel) {
-          Options: "options"
-          V4Tokens: "tokens"
-          V3Tokens: "tokens"
-          Imports: "import"
-        }
+      val label = switch (prequel) {
+        Options: "options"
+        V4Tokens: "tokens"
+        V3Tokens: "tokens"
+        Imports: "import"
+      }
+      if (!prequels.add(label)) {
         error(
-          "repeated grammar prequel spec: '" + keyword + "'; please merge",
+          "repeated grammar prequel spec: '" + label + "'; please merge",
           prequel,
           0,
-          keyword.length
+          label.length
         )
       }
     }
@@ -170,10 +169,11 @@ class Antlr4Validator extends AbstractAntlr4Validator {
   def checkRuleRedefinition(Grammar grammar) {
     val Set<String> rules = newHashSet()
 
-    val Procedure1<Rule> fn = [ rule |
-      if (!rules.add(rule.name)) {
+    val fn = [ Rule rule |
+      val name = rule.name
+      if (!rules.add(name)) {
         error(
-          "rule '" + rule.name + "' redefinition",
+          "rule '" + name + "' redefinition",
           rule,
           rule.eClass.getEStructuralFeature("name")
         )
@@ -188,9 +188,10 @@ class Antlr4Validator extends AbstractAntlr4Validator {
 
   @Check
   def unsupportedOption(Option option) {
-    if (!OPTIONS.contains(option.name)) {
+    val name = option.name
+    if (!OPTIONS.contains(name)) {
       warning(
-        "unsupported option '" + option.name + "'",
+        "unsupported option '" + name + "'",
         option,
         option.eClass.getEStructuralFeature("name")
       )
@@ -199,78 +200,68 @@ class Antlr4Validator extends AbstractAntlr4Validator {
 
   @Check
   def checkDuplicatedToken(Grammar grammar) {
-    val Procedure3<EObject, String, String> fn = [ source, name, value |
-      warning(
-        "token name '" + value + "' is already defined",
-        source,
-        source.eClass.getEStructuralFeature(name)
-      )
-    ]
-
     val Set<String> rules = newHashSet()
 
-    grammar.rules.filter[it instanceof LexerRule].forEach[it|rules.add(it.name)]
+    val fn = [ EObject source, String name, String value |
+      if (!rules.add(value)) {
+        warning(
+          "token name '" + value + "' is already defined",
+          source,
+          source.eClass.getEStructuralFeature(name)
+        )
+      }
+    ]
 
-    grammar.prequels.filter[it instanceof V3Tokens].forEach [ it |
-      (it as V3Tokens).tokens.forEach [ it |
-        if (!rules.add(it.id)) {
-          fn.apply(it, "id", it.id)
-        }
+    grammar.rules.filter[it instanceof LexerRule].forEach[rules.add(it.name)]
+
+    val prequels = grammar.prequels
+    prequels.filter(V3Tokens).forEach [
+      it.tokens.forEach [
+        fn.apply(it, "id", it.id)
       ]
     ]
 
-    grammar.prequels.filter[it instanceof V4Tokens].forEach [ it |
-      (it as V4Tokens).tokens.forEach [ it |
-        if (!rules.add(it.name)) {
-          fn.apply(it, "name", it.name)
-        }
+    prequels.filter(V4Tokens).forEach [
+      it.tokens.forEach [
+        fn.apply(it, "name", it.name)
       ]
     ]
   }
 
   @Check
-  def checkTokenName(Grammar grammar) {
-    val Procedure3<EObject, String, String> fn = [ source, name, value |
+  def tokenNamesMustStartWithUppercaseLetter(V3Token token) {
+    tokenNamesMustStartWithUppercaseLetter(token, "id", token.id)
+  }
+
+  @Check
+  def tokenNamesMustStartWithUppercaseLetter(V4Token token) {
+    tokenNamesMustStartWithUppercaseLetter(token, "name", token.name)
+  }
+
+  private def tokenNamesMustStartWithUppercaseLetter(EObject token, String name, String value) {
+    if (Character.isLowerCase(value.charAt(0))) {
       error(
         "token names must start with an uppercase letter: " + value,
-        source,
-        source.eClass.getEStructuralFeature(name)
+        token,
+        token.eClass.getEStructuralFeature(name)
       )
-    ]
-
-    grammar.prequels.filter[it instanceof V3Tokens].forEach [ it |
-      (it as V3Tokens).tokens.forEach [ it |
-        if (Character.isLowerCase(it.id.charAt(0))) {
-          fn.apply(it, "id", it.id)
-        }
-      ]
-    ]
-
-    grammar.prequels.filter[it instanceof V4Tokens].forEach [ it |
-      (it as V4Tokens).tokens.forEach [ it |
-        if (Character.isLowerCase(it.name.charAt(0))) {
-          fn.apply(it, "name", it.name)
-        }
-      ]
-    ]
+    }
   }
 
   @Check
   def checkElementOptions(ElementOptions options) {
-    val Procedure2<ElementOption, Set<String>> validator = [ option, validOptions |
-      var String feature
-      val name = if (option.qualifiedId == null) {
-          feature = "id"
-          option.id
+    val validator = [ ElementOption option, Set<String> validOptions |
+      val qualifiedId = option.qualifiedId
+      val feature = if (qualifiedId == null) {
+          "id" -> option.id
         } else {
-          feature = "qualifiedId"
-          option.qualifiedId.name.join(".")
+          "qualifiedId" -> qualifiedId.name.join(".")
         }
-      if (!validOptions.contains(name)) {
+      if (!validOptions.contains(feature.value)) {
         warning(
-          "unknown option: " + name,
+          "unknown option: " + feature.value,
           option,
-          option.eClass.getEStructuralFeature(feature)
+          option.eClass.getEStructuralFeature(feature.key)
         )
       }
     ]
@@ -281,40 +272,43 @@ class Antlr4Validator extends AbstractAntlr4Validator {
       ActionElement: SEMPRED_OPTIONS
       default: newHashSet()
     }
-    options.options.forEach [ option |
-      validator.apply(option, validOptions)
-    ]
+    if (validOptions.size > 0) {
+      options.options.forEach [
+        validator.apply(it, validOptions)
+      ]
+    }
   }
 
   def private Set<String> locals(ParserRule rule) {
     val scope = new StringBuilder
-    val Procedure1<String> append = [ content |
-      if (content != null) {
-        scope.append(content, 1, content.length - 1).append(" ")
+    val append = [ String it |
+      if (it != null) {
+        scope.append(it, 1, it.length - 1).append(" ")
       }
     ]
     append.apply(rule.args)
 
-    if (rule.^return != null) {
-      append.apply(rule.^return.body)
+    val returns = rule.^return
+    if (returns != null) {
+      append.apply(returns.body)
     }
 
-    if(rule.locals != null) append.apply(rule.locals.body)
+    val locals = rule.locals
+    if(locals != null) append.apply(locals.body)
 
     // local vars and/or lexer rules
-    rule.body.eAllContents.filter[it instanceof LabeledElement || it instanceof Terminal].forEach [ it |
+    rule.body.eAllContents.filter[it instanceof LabeledElement || it instanceof Terminal].forEach [
       if (it instanceof LabeledElement) {
         scope.append(it.name).append(" ")
       } else if (it instanceof Terminal) {
-        if (it.reference instanceof LexerRule) {
-          scope.append((it.reference as LexerRule ).name).append(" ")
+        val reference = it.reference
+        if (reference instanceof LexerRule) {
+          scope.append(reference.name).append(" ")
         }
       }
     ]
 
-    newHashSet(
-      Splitter.on(CharMatcher.anyOf(" ,;\r\n\t=")).trimResults.omitEmptyStrings.split(scope)
-    )
+    Splitter.on(CharMatcher.anyOf(" ,;\r\n\t=")).trimResults.omitEmptyStrings.split(scope).toSet
   }
 
   private def checkAttributeReference(Set<String> locals, EObject action, String body) {
@@ -340,16 +334,10 @@ class Antlr4Validator extends AbstractAntlr4Validator {
 
   @Check
   def checkUnknownAttribute(Grammar grammar) {
-    val rules = grammar.rules.filter[it instanceof ParserRule]
-
-    rules.forEach [ it |
-      val rule = it as ParserRule
-      val locals = locals(rule)
+    grammar.rules.filter(ParserRule).forEach [
+      val locals = locals(it)
       // iterate over actions
-      val actions = rule.body.eAllContents.filter [
-        it instanceof ActionElement || it instanceof ActionOption
-      ]
-      actions.forEach [ it |
+      it.body.eAllContents.forEach [
         if (it instanceof ActionElement) {
           checkAttributeReference(locals, it, it.body)
         } else if (it instanceof ActionOption) {
@@ -360,22 +348,24 @@ class Antlr4Validator extends AbstractAntlr4Validator {
   }
 
   @Check
-  def checkRuleRef(RuleRef ref) {
+  def checkRuleParameters(RuleRef ref) {
     val rule = ref.reference
-    if (rule.args != null && ref.args == null) {
-      error(
-        "missing arguments(s) on rule reference: " + rule.name,
-        ref,
-        ref.eClass.getEStructuralFeature("reference")
-      )
-    }
-
-    if (rule.args == null && ref.args != null) {
-      error(
-        "rule '" + rule.name + "' has no defined parameters",
-        ref,
-        ref.eClass.getEStructuralFeature("args")
-      )
+    if (rule.args != null) {
+      if (ref.args == null) {
+        error(
+          "missing arguments(s) on rule reference: " + rule.name,
+          ref,
+          ref.eClass.getEStructuralFeature("reference")
+        )
+      }
+    } else {
+      if (ref.args != null) {
+        error(
+          "rule '" + rule.name + "' has no defined parameters",
+          ref,
+          ref.eClass.getEStructuralFeature("args")
+        )
+      }
     }
   }
 
@@ -404,10 +394,11 @@ class Antlr4Validator extends AbstractAntlr4Validator {
 
   @Check
   def v3Token(V3Token token) {
-    if (token.value != null && token.value.length > 0) {
+    val value = token.value
+    if (value != null && value.length > 0) {
       error(
         "assignments in tokens{} are not supported in ANTLR 4; use lexical rule '" + token.id + ": " +
-          token.value + "' instead",
+          value + "' instead",
         token,
         token.eClass.getEStructuralFeature("id")
       )
@@ -416,12 +407,8 @@ class Antlr4Validator extends AbstractAntlr4Validator {
 
   @Check
   def emptyTokens(EmptyTokens tokens) {
-    warning(
-      "empty tokens",
-      tokens,
-      0,
-      "tokens".length
-    )
+    val grammar = tokens.eContainer as Grammar
+    warning("grammar '" + grammar.name + "' has no tokens", tokens, 0, "tokens".length)
   }
 
   @Check
@@ -448,7 +435,7 @@ class Antlr4Validator extends AbstractAntlr4Validator {
 
   @Check
   def nameConflict(LabeledAlt labeledAlt) {
-    val grammar = EcoreUtil.getRootContainer(labeledAlt) as Grammar
+    val grammar = labeledAlt.rootContainer as Grammar
     val name = labeledAlt.label
     if (grammar.rules.exists[it.name == name]) {
       error(
@@ -462,7 +449,7 @@ class Antlr4Validator extends AbstractAntlr4Validator {
   private def nameConflict(String name, EObject source) {
     if (keywords.contains(name)) {
       error(
-        "symbol '" + name + "'conflicts with generated code in target language or runtime",
+        "symbol '" + name + "' conflicts with generated code in target language or runtime",
         source,
         source.eClass.getEStructuralFeature("name")
       )
@@ -484,7 +471,7 @@ class Antlr4Validator extends AbstractAntlr4Validator {
   }
 
   // Java conflicts
-  private static final Set<String> keywords = newHashSet(
+  static val keywords = newHashSet(
     "rule",
     "parserRule",
     "abstract",

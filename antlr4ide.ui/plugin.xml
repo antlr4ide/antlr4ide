@@ -341,6 +341,15 @@
           label="ANTLR Console">
     </consoleFactory>
   </extension>
+  <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+    <launchConfigurationType
+       id="com.github.jknack.Antlr4.tool"
+       name="ANTLR"
+       delegate="com.github.jknack.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.ui.launch.Antlr4ToolLaunchConfigurationDelegate"
+       category="org.eclipse.ui.externaltools"
+       modes= "run">
+   </launchConfigurationType>
+  </extension>
   <extension
         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
     <launchConfigurationTypeImage

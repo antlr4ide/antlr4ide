@@ -10,7 +10,7 @@ import org.eclipse.swt.layout.GridData
 import org.eclipse.swt.layout.GridLayout
 import org.eclipse.swt.widgets.Text
 import org.eclipse.swt.events.ModifyListener
-import com.github.jknack.launch.AntlrToolLaunchConstants
+import com.github.jknack.generator.LaunchConstants
 import org.eclipse.core.resources.IFile
 import org.eclipse.ui.PlatformUI
 import org.eclipse.ui.IWorkbenchPage
@@ -85,27 +85,27 @@ class MainTab extends AbstractLaunchConfigurationTab {
   }
 
   override initializeFrom(ILaunchConfiguration config) {
-    fGrammarText.setText(config.getAttribute(AntlrToolLaunchConstants.GRAMMAR, ""))
+    fGrammarText.setText(config.getAttribute(LaunchConstants.GRAMMAR, ""))
 
-    fArgsText.setText(config.getAttribute(AntlrToolLaunchConstants.ARGUMENTS, ""))
+    fArgsText.setText(config.getAttribute(LaunchConstants.ARGUMENTS, ""))
 
-    fVmArgsText.setText(config.getAttribute(AntlrToolLaunchConstants.VM_ARGUMENTS, ""))
+    fVmArgsText.setText(config.getAttribute(LaunchConstants.VM_ARGUMENTS, ""))
   }
 
   override performApply(ILaunchConfigurationWorkingCopy workingCopy) {
-    workingCopy.setAttribute(AntlrToolLaunchConstants.GRAMMAR, fGrammarText.text)
+    workingCopy.setAttribute(LaunchConstants.GRAMMAR, fGrammarText.text)
 
-    workingCopy.setAttribute(AntlrToolLaunchConstants.ARGUMENTS, fArgsText.text)
+    workingCopy.setAttribute(LaunchConstants.ARGUMENTS, fArgsText.text)
 
-    workingCopy.setAttribute(AntlrToolLaunchConstants.VM_ARGUMENTS, fVmArgsText.text)
+    workingCopy.setAttribute(LaunchConstants.VM_ARGUMENTS, fVmArgsText.text)
   }
 
   override setDefaults(ILaunchConfigurationWorkingCopy workingCopy) {
     val file = context
     if (file != null) {
-      workingCopy.setAttribute(AntlrToolLaunchConstants.GRAMMAR, file.fullPath.toOSString)
+      workingCopy.setAttribute(LaunchConstants.GRAMMAR, file.fullPath.toOSString)
       workingCopy.setAttribute(
-        AntlrToolLaunchConstants.ARGUMENTS,
+        LaunchConstants.ARGUMENTS,
         optionsProvider.options(file).defaults.join(" ")
       )
     }

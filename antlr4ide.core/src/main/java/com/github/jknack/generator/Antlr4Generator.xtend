@@ -10,9 +10,9 @@ import org.eclipse.core.resources.IFile
 import org.eclipse.core.runtime.Status
 import com.github.jknack.console.Console
 import static com.google.common.base.Preconditions.*
-import org.eclipse.debug.core.DebugPlugin
-import com.github.jknack.launch.AntlrToolLaunchConstants
+import com.github.jknack.generator.LaunchConstants
 import java.util.Set
+import org.eclipse.debug.core.ILaunchManager
 
 /**
  * Generate code by executing ANTLR Tool. The code is generated on saved for valid grammars.
@@ -24,22 +24,32 @@ class Antlr4Generator implements IGenerator {
 
   /** The tool runner. */
   @Inject
-  ToolRunner tool
+  @Property
+  ToolRunner toolRunner
 
   @Inject
+  @Property
   Set<CodeGeneratorListener> listeners
 
   /** The tools option provider. */
   @Inject
+  @Property
   ToolOptionsProvider optionsProvider
 
   /** Console. */
   @Inject
+  @Property
   Console console
 
   /** Workspace root. */
-  @Inject(optional = true)
+  @Inject
+  @Property
   IWorkspaceRoot workspaceRoot
+
+  /** Launch manager. */
+  @Inject
+  @Property
+  ILaunchManager launchManager
 
   /**
    * Executed by Xtext when the ANTLR Tool is activated and the underlying resource is valid.
@@ -48,8 +58,14 @@ class Antlr4Generator implements IGenerator {
    * @param resource The underlying resource.
    * @param fsa The Xtext file system access (not used).
    */
-  override void doGenerate(Resource resource, IFileSystemAccess fsa) {
+  override doGenerate(Resource resource, IFileSystemAccess fsa) {
     checkNotNull(resource)
+    checkNotNull(fsa)
+    checkNotNull(toolRunner)
+    checkNotNull(listeners)
+    checkNotNull(optionsProvider)
+    checkNotNull(console)
+    checkNotNull(workspaceRoot)
     val file = workspaceRoot.getFile(new Path(resource.getURI().toPlatformString(true)))
     doGenerate(file, options(file, optionsProvider.options(file)))
   }
@@ -59,13 +75,12 @@ class Antlr4Generator implements IGenerator {
    * exists, the defaults options will be used it.
    */
   private def options(IFile file, ToolOptions defaults) {
-    val manager = DebugPlugin.^default.launchManager
     val grammar = file.fullPath.toOSString
-    val configType = manager.getLaunchConfigurationType(AntlrToolLaunchConstants.ID)
-    var configurations = manager.getLaunchConfigurations(configType)
+    val configType = launchManager.getLaunchConfigurationType(LaunchConstants.LAUNCH_ID)
+    var configurations = launchManager.getLaunchConfigurations(configType)
 
     val existing = configurations.filter [ launch |
-      if (grammar == launch.getAttribute(AntlrToolLaunchConstants.GRAMMAR, "")) {
+      if (grammar == launch.getAttribute(LaunchConstants.GRAMMAR, "")) {
         return true
       }
       return false
@@ -75,7 +90,7 @@ class Antlr4Generator implements IGenerator {
 
       // launch existing
       val config = existing.head
-      val args = config.getAttribute(AntlrToolLaunchConstants.ARGUMENTS, "")
+      val args = config.getAttribute(LaunchConstants.ARGUMENTS, "")
       val options = ToolOptions.parse(args) [ message |
         console.error(message)
       ]
@@ -119,7 +134,7 @@ class Antlr4Generator implements IGenerator {
 
     listeners.forEach[it.beforeProcess(file, options)]
 
-    tool.run(file, options, console)
+    toolRunner.run(file, options, console)
 
     listeners.forEach[it.afterProcess(file, options)]
   }

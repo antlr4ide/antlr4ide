@@ -1,4 +1,4 @@
-package com.github.jknack.launch
+package com.github.jknack.ui.launch
 
 import com.github.jknack.generator.Antlr4Generator
 import com.github.jknack.generator.ToolOptionsProvider
@@ -11,35 +11,36 @@ import org.eclipse.debug.core.ILaunchConfiguration
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate
 import com.github.jknack.generator.ToolOptions
 import com.github.jknack.console.Console
+import com.github.jknack.generator.LaunchConstants
 
 /**
  * The ANTLR Tool launch configuration delegate, part of the launch API of Eclipse.
  */
-class AntlrToolLaunchConfigurationDelegate extends LaunchConfigurationDelegate {
+class Antlr4ToolLaunchConfigurationDelegate extends LaunchConfigurationDelegate {
 
   /** The code generator. */
   @Inject
-  static Antlr4Generator generator
+  Antlr4Generator generator
 
   /** The workspace root. */
   @Inject
-  static IWorkspaceRoot workspaceRoot
+  IWorkspaceRoot workspaceRoot
 
   /** The tool options provider. */
   @Inject
-  static ToolOptionsProvider optionsProvider
+  ToolOptionsProvider optionsProvider
 
   /** The console. */
   @Inject
-  static Console console
+  Console console
 
   /**
    * Launch ANTLR.
    */
   override launch(ILaunchConfiguration config, String mode, ILaunch launch, IProgressMonitor monitor) {
-    val path = Path.fromOSString(config.getAttribute(AntlrToolLaunchConstants.GRAMMAR, ""))
-    val args = config.getAttribute(AntlrToolLaunchConstants.ARGUMENTS, "")
-    val vmArgs = config.getAttribute(AntlrToolLaunchConstants.VM_ARGUMENTS, "")
+    val path = Path.fromOSString(config.getAttribute(LaunchConstants.GRAMMAR, ""))
+    val args = config.getAttribute(LaunchConstants.ARGUMENTS, "")
+    val vmArgs = config.getAttribute(LaunchConstants.VM_ARGUMENTS, "")
     val file = workspaceRoot.getFile(path)
     val defaults = optionsProvider.options(file)
     val options = ToolOptions.parse(args) [ message |

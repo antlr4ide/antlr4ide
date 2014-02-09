@@ -220,7 +220,7 @@ class BuilderConfigurationBlock extends OptionsConfigurationBlock {
       val selectionIndex = table.selectionIndex
       if (selectionIndex > 0) {
         val packages = Lists.newArrayList(packageViewer.input as Collection<Pair<String, String>>)
-        val removed = packages.remove(selectionIndex)
+        packages.remove(selectionIndex)
 
         // update UI
         packageViewer.input = Sets.newLinkedHashSet(packages)

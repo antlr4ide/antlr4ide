@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.easymock.EasyMock;
 import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.debug.core.ILaunchManager;
 
 import com.github.jknack.console.Console;
 import com.github.jknack.generator.CodeGeneratorListener;
@@ -20,6 +21,8 @@ public class Antlr4RuntimeTestModule extends Antlr4RuntimeModule {
 
   public static Console console = EasyMock.createMock(Console.class);
 
+  public static ILaunchManager launchManager = EasyMock.createMock(ILaunchManager.class);
+
   @Override
   public void configure(final Binder binder) {
     super.configure(binder);
@@ -28,10 +31,16 @@ public class Antlr4RuntimeTestModule extends Antlr4RuntimeModule {
     binder.bind(ToolOptionsProvider.class).toInstance(optionsProvider);
 
     binder.bind(Console.class).toInstance(console);
+
   }
 
   @Provides
   public Set<CodeGeneratorListener> codeGeneratorListeners() {
     return Sets.<CodeGeneratorListener> newHashSet();
+  }
+
+  @Override
+  protected ILaunchManager getLaunchManager() {
+    return launchManager;
   }
 }

@@ -1,9 +1,9 @@
-package com.github.jknack.launch
+package com.github.jknack.generator
 
 /**
  * Launch attributes.
  */
-interface AntlrToolLaunchConstants {
+interface LaunchConstants {
 
   /**
    * Specify the grammar path. The path must be relative to the workspace root and must be in the OS format.
@@ -22,5 +22,5 @@ interface AntlrToolLaunchConstants {
   val VM_ARGUMENTS = "antlr4.vmArguments"
 
   /** Launch ID. */
-  val ID = "com.github.jknack.Antlr4.tool"
+  val LAUNCH_ID = "com.github.jknack.Antlr4.tool"
 }

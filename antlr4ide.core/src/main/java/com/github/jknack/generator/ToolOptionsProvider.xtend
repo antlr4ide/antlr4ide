@@ -7,8 +7,10 @@ import org.eclipse.core.resources.IFile
  */
 interface ToolOptionsProvider {
 
+  /** Included ANTLR-4.x version. */
   val VERSION = "4.1"
 
+  /** Name of the included distribution. */
   val DEFAULT_TOOL = "antlr-" + VERSION + "-complete.jar"
 
   /** The name of the ANTLR Tool class. */

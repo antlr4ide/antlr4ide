@@ -7,9 +7,13 @@ import org.eclipse.core.runtime.IPath
 import java.util.Set
 import java.util.List
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
+import com.google.common.base.Preconditions
 
 /**
  * ANTLR Tool options.
+ *
+ * @Statefull
+ * @NotThreadSafe
  */
 class ToolOptions {
 
@@ -63,6 +67,15 @@ class ToolOptions {
 
   boolean outputSet = false
 
+  /**
+   * Produces output options like absolute, workspace relative output directory and package name.
+   * It tries to detect/guess a package's name for files under <code>src/main/antlr4</code>,
+   * <code>src/main/java</code> or <code>src</code>. Any sub-directory under those paths will be
+   * append them to the package's name and output folder. This more ore less mimics what the
+   * antlr4-maven-plugin does Java.
+   *
+   * @return Absolute, workspace relative output folders and package's name for file. 
+   */
   def output(IFile file) {
     val project = file.project
     val projectPath = project.location
@@ -140,7 +153,15 @@ class ToolOptions {
     return options
   }
 
+  /**
+   * See https://theantlrguy.atlassian.net/wiki/display/ANTLR4/ANTLR+Tool+Command+Line+Options
+   *
+   * @param file A *.g4 file. Can't be null.
+   * @return ANTLR Tool commands.
+   */
   def command(IFile file) {
+    Preconditions.checkNotNull(file)
+
     var listener = "-listener"
     if (!this.listener) {
       listener = "-no-listener"
@@ -191,6 +212,10 @@ class ToolOptions {
     return options
   }
 
+  /**
+   * Parse arguments and creates a new ToolOptions instance.
+   * See https://theantlrguy.atlassian.net/wiki/display/ANTLR4/ANTLR+Tool+Command+Line+Options
+   */
   def static parse(String args, Procedure1<String> err) {
     val options = args.split("\\s+")
     val optionsWithValue = newHashSet("-o", "-lib", "-encoding", "-message-format", "-package")

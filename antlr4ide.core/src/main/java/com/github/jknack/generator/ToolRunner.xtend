@@ -11,6 +11,7 @@ import org.eclipse.core.runtime.QualifiedName
 import java.util.Set
 import com.github.jknack.console.Console
 import com.google.inject.Singleton
+import java.util.List
 
 /**
  * Execute ANTLR Tool and generated the code.
@@ -32,23 +33,24 @@ class ToolRunner {
   def run(IFile file, ToolOptions options, Console console) {
     val startBuild = System.currentTimeMillis();
 
-    val parentPath = file.parent + File.separator
+    val fileName = file.name
+    val parentPath = file.fullPath.toOSString + File.separator
 
     // classpath
     val cp = classpath(options.antlrTool, console)
 
     // boot args
-    val Set<String> bootArgs = newLinkedHashSet("java")
+    val List<String> bootArgs = newArrayList("java")
     bootArgs.addAll(options.vmArguments)
-    bootArgs.addAll("-cp", cp.join(File.pathSeparator), ToolOptionsProvider.TOOL, file.name)
+    bootArgs.addAll("-cp", cp.join(File.pathSeparator), ToolOptionsProvider.TOOL, fileName)
 
     // tool args
-    val localOptions = options.command(file)
+    val toolArgs = options.command(file)
 
     // full command
-    val String[] command = bootArgs + localOptions
+    val String[] command = bootArgs + toolArgs
 
-    console.info(file.name + " " + localOptions.join(" "))
+    console.info("%s %s", fileName, toolArgs.join(" "))
     cleanupResources(file)
     val process = new ProcessBuilder(command).directory(file.parent.location.toFile).start
 
@@ -90,24 +92,24 @@ class ToolRunner {
     console.info("Total time: %s %s(s)\n", time, timeunit)
 
     // find out dependencies
-    postProcess(file, bootArgs + #["-depend"] + localOptions, console)
+    postProcess(file, bootArgs + #["-depend"] + toolArgs, console)
   }
 
   /** Validate an ANTLR distribution. */
   def private validate(File jar, Console console) {
     val distribution = Distributions.get(jar)
-    val mainClass = distribution.key
-    val version = distribution.value
+    val version = distribution.key
 
-    if (mainClass != "") {
-      console.info("ANTLR Tool v" + version + " (" + jar + ")")
+    if (version != "") {
+      console.info("ANTLR Tool v%s (%s)", version, jar)
       return true
     } else {
-      console.error("error: Couldn't load '%s' from '%s'", ToolOptionsProvider.TOOL, jar)
-      console.error(
-        "error: Please visit http://www.antlr.org/download.html and download " +
-          "'antlr-4.x-complete.jar'")
-      console.error("warning: falling back to 'embedded'")
+      if (jar.exists) {
+        console.error("error: couldn't load '%s' from '%s'", ToolOptionsProvider.TOOL, jar)
+      } else {
+        console.error("error: file not found '%s'", jar)
+      }
+      console.error("warning: fallback to default distribution: '%s' ", version)
       return false
     }
   }
@@ -138,7 +140,11 @@ class ToolRunner {
     process.destroy
 
     // save generated files
-    file.setPersistentProperty(GENERATED_FILES, generatedFiles.join(File.pathSeparator))
+    if (generatedFiles.size > 0) {
+      file.setPersistentProperty(GENERATED_FILES, generatedFiles.join(File.pathSeparator))
+    } else {
+      file.setPersistentProperty(GENERATED_FILES, null)
+    }
   }
 
   /**
@@ -197,18 +203,10 @@ class ToolRunner {
    * Creates the ANTLR Tool classpath.
    */
   private def classpath(String path, Console console) {
-    val fallback = Distributions.defaultDistribution
     var jar = new File(path)
-    if (!jar.exists) {
-      if (path != fallback.value) {
-        console.error(
-          "error: File not found %s, please go to Window > Preferences > ANTLR 4 > Tool and " +
-            "review the JAR path", path)
-        console.error("warning: falling back to '%s'", fallback.key)
-      }
-    }
 
     if (!jar.exists || !validate(jar, console)) {
+      val fallback = Distributions.defaultDistribution
       jar = new File(fallback.value)
 
       // revalidate

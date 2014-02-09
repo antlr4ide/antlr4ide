@@ -36,7 +36,8 @@ class RefreshProjectProcessor implements CodeGeneratorListener {
       val fname = fileName.apply(file)
       container.accept [ generated |
         val gname = fileName.apply(generated)
-        if (gname.startsWith(fname) && !generated.name.endsWith(".g4")) {
+        // TODO: make me stronger
+        if (file.name != generated.name && gname.startsWith(fname)) {
           generated.setDerived(options.derived, monitor)
         }
         return true
