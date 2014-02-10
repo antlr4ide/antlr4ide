@@ -1,0 +1,738 @@
+grammar com.github.jknack.antlr4ide.Antlr4 hidden(WS, ML_COMMENT, SL_COMMENT)
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+generate antlr4 "http://www.github.com/jknack/antlr4ide/Antlr4"
+
+/** Grammar */
+Grammar
+  :
+    type=GrammarType? 'grammar' name=Id ';'
+
+    prequels+=PrequelConstruct*
+
+    rules+=Rule*
+
+    modes+=Mode*
+  ;
+
+enum GrammarType
+  :
+     DEFAULT='___default_hack_'
+  |  LEXER='lexer'
+  |  PARSER='parser'
+  |  TREE='tree'
+  ;
+
+// This is the list of all constructs that can be declared before
+// the set of rules that compose the grammar, and is invoked 0..n
+// times by the grammarPrequel rule.
+PrequelConstruct
+        : // A list of options that affect analysis and/or code generation
+      Options
+
+    | // A list of grammars to which this grammar will delegate certain
+      // parts of the parsing sequence - a set of imported grammars
+      Imports
+
+    | // The declaration of any token types we need that are not already
+      // specified by a preceeding grammar, such as when a parser declares
+      // imaginary tokens with which to construct the AST, or a rewriting
+      // tree parser adds further imaginary tokens to ones defined in a prior
+      // {tree} parser.
+      Tokens
+
+    | // A declaration of language target implemented constructs. All such
+      // action sections start with '@' and are given to the language target's
+      // StringTemplate group. For instance @parser::header and @lexer::header
+      // are gathered here.
+      GrammarAction
+    ;
+
+/** Options */
+Options
+  :
+    {Options}
+    keyword=OPTIONS_SPEC (options+=Option ';')* '}'
+  ;
+
+Option
+  :
+    TokenVocab
+  | name=Id '=' value=OptionValue
+  ;
+
+TokenVocab
+  :
+    name=TOKEN_VOCAB '=' importURI=[Grammar|Id]
+  ;
+
+OptionValue
+  :
+    QualifiedOption
+  | StringOption
+  | ActionOption
+  | IntOption
+  ;
+
+QualifiedOption
+  :
+    value=QualifiedId
+  ;
+
+StringOption
+  :
+    value=STRING
+  ;
+
+ActionOption
+  :
+    value=ACTION
+  ;
+
+IntOption
+  :
+    value=INT
+  ;
+
+
+/** Imports */
+Imports:
+  keyword='import' imports+=Import (',' imports+=Import)* ';'
+  ;
+
+Import
+  :
+    alias=Id '=' importURI=[Grammar|Id]
+  | importURI=[Grammar|Id]
+  ;
+
+/** Tokens */
+Tokens
+  :
+    V4Tokens
+  | EmptyTokens
+  | V3Tokens
+  ;
+
+V4Tokens
+  :
+    keyword=TOKENS_SPEC tokens+=V4Token (',' tokens+=V4Token)* '}'
+  ;
+
+V4Token
+  :
+    name=Id
+  ;
+
+EmptyTokens
+  :
+    {EmptyTokens} keyword=TOKENS_SPEC '}'
+  ;
+
+V3Tokens
+  :
+    keyword=TOKENS_SPEC tokens+=V3Token+ '}'
+  ;
+
+V3Token
+  :
+    id=Id ('=' value=STRING)? ';'
+  ;
+
+/** Grammar Actions */
+GrammarAction
+  :
+    atSymbol='@' (scope=ActionScope colonSymbol='::')? name=Id action=ACTION
+  ;
+
+ActionScope
+  :
+    'parser'
+  | 'lexer'
+  | 'tree'
+  | Id
+  ;
+
+Mode
+  :
+    'mode' id=Id ';'
+    rules+=LexerRule*
+  ;
+
+/** Rules */
+Rule
+  :
+    ParserRule
+  | LexerRule
+  ;
+
+/** Parser Rules */
+ParserRule
+  :
+    name=RULE_REF
+
+    args=ARG_OR_CHARSET?
+
+    return=Return?
+
+    throws=Exceptions?
+
+    locals=LocalVars?
+
+    prequels+=RulePrequel*
+
+    COLON
+
+    body=RuleBlock
+
+    caught=ExceptionGroup
+    semicolonSymbol=';'
+  ;
+
+// Many language targets support exceptions and the rule will
+// generally be able to throw the language target equivalent
+// of a recognition exception. The grammar programmar can
+// specify a list of exceptions to catch or a generic catch all
+// and the target language code generation template is
+// responsible for generating code that makes sense.
+ExceptionGroup
+    :
+      {ExceptionGroup} handlers+=ExceptionHandler* finally=FinallyClause?
+    ;
+
+// Specifies a handler for a particular type of exception
+// thrown by a rule
+ExceptionHandler
+  :
+    'catch' exception=ARG_OR_CHARSET body=ACTION
+  ;
+
+FinallyClause
+  : 'finally' body=ACTION
+  ;
+
+Return
+  :
+    'returns' body=ARG_OR_CHARSET
+  ;
+
+Exceptions
+  :
+    'throws' exceptions+=QualifiedId (',' exceptions+=QualifiedId)*
+  ;
+
+LocalVars
+  :
+    'locals' body=ARG_OR_CHARSET
+  ;
+
+RulePrequel
+  :
+    Options
+  | RuleAction
+  ;
+
+RuleAction
+  :
+    atSymbol='@' name=Id body=ACTION
+  ;
+
+RuleBlock
+  :
+    body=RuleAltList
+  ;
+
+RuleAltList
+  :
+    alternatives+=LabeledAlt ('|' alternatives+=LabeledAlt)*
+  ;
+
+LabeledAlt
+  :
+    body=Alternative (poundSymbol='#' label=Id)?
+  ;
+
+Alternative
+  :
+    {Alternative}
+    options=ElementOptions?
+    elements+=Element*
+  ;
+
+Element
+  :
+    body=LabeledElement operator=EbnfSuffix?
+  | body=Atom operator=EbnfSuffix?
+  | body=Ebnf
+  | body=ActionElement
+  ;
+
+// A block of grammar structure optionally followed by standard EBNF
+// notation, or ANTLR specific notation. I.E. ? + ^ and so on
+Ebnf
+    : body=Block
+      // And now we see if we have any of the optional suffixs and rewrite
+      // the AST for this rule accordingly
+      operator=EbnfSuffix?
+    ;
+
+ActionElement
+  :
+    body=ACTION options=ElementOptions?
+  ;
+
+LabeledElement
+  :
+    name=Id ('=' | '+=')
+      (
+        body=Atom
+      | body=Block
+      )
+  ;
+
+EbnfSuffix
+  :
+    operator='?' nongreedy='?'?
+  | operator='*' nongreedy='?'?
+  | operator='+' nongreedy='?'?
+  ;
+
+// -------------
+// Grammar Block
+//
+// Anywhere where an element is valid, the grammar may start a new block
+// of alts by surrounding that block with ( ). A new block may also have a set
+// of options, which apply only to that block.
+//
+Block
+  :
+    '('
+        ( options=Options? actions+=RuleAction* COLON )?
+        body=AltList
+    ')'
+  ;
+
+AltList
+  :
+    alternatives+=Alternative ('|' alternatives+=Alternative)*
+  ;
+
+Atom
+  :
+    body=Range  // Range x..y - only valid in lexers
+  | body=Terminal
+  | body=RuleRef
+  | body=NotSet
+  | body=Wildcard
+  ;
+
+RuleRef
+  :
+    reference=[ParserRule|RULE_REF] args=ARG_OR_CHARSET? options=ElementOptions?
+  ;
+
+ElementOptions
+    :
+      {ElementOptions} begin='<' (options+=ElementOption (',' options+=ElementOption)*)? end='>'
+    ;
+
+Range
+  :
+    from=STRING '..' to=STRING
+  ;
+
+Terminal
+  :
+    reference=[TokenRef|TOKEN_REF] options=ElementOptions?
+  | literal=STRING options=ElementOptions?
+  | literal='EOF'
+  ;
+
+TokenRef
+  :
+    V3Token
+  | V4Token
+  | LexerRule
+  ;
+
+// --------------------
+// Inverted element set
+//
+// A set of characters (in a lexer) or terminal tokens, if a parser,
+// that are then used to create the inverse set of them.
+NotSet
+  : '~' body=SetElement
+  | '~' body=BlockSet
+  ;
+
+BlockSet
+    :
+      '(' elements+=SetElement ('|' elements+=SetElement)* ')'
+    ;
+
+SetElement
+  :
+    tokenRef=TOKEN_REF
+  | stringLiteral=STRING
+  | range=Range
+  | charSet=ARG_OR_CHARSET
+  ;
+
+Wildcard
+  :
+    dot='.' options=ElementOptions?
+  ;
+
+// When used with elements we can specify what the tree node type can
+// be and also assign settings of various options  (which we do not check here)
+ElementOption
+    : // This format indicates the default element option
+      qualifiedId=QualifiedId
+    | id=Id assign='=' value=OptionValue
+    ;
+
+/** Lexer Rule */
+LexerRule
+  :
+    ^fragment?='fragment'?
+    name=TOKEN_REF COLON body=LexerRuleBlock? semicolonSymbol=';'
+  ;
+
+LexerRuleBlock
+  :
+    body=LexerAltList
+  ;
+
+LexerAltList
+  :
+    alternatives+=LexerAlt ('|' alternatives+=LexerAlt)*
+  ;
+
+LexerAlt
+  :
+    element=LexerElements
+    commands=LexerCommands?
+  ;
+
+LexerElements
+  :
+    elements+=LexerElement+
+  ;
+
+LexerElement
+  :
+    body=LabeledLexerElement operator=EbnfSuffix?
+  | body=LexerAtom operator=EbnfSuffix?
+  | body=LexerBlock operator=EbnfSuffix?
+  | body=ActionElement
+  ;
+
+LabeledLexerElement
+  :
+    label=Id ('='|'+=')
+    (
+      body=LexerAtom
+    | body=LexerBlock
+    )
+  ;
+
+LexerAtom
+  :
+    body=Range  // Range x..y - only valid in lexers
+  | body=Terminal
+  | body=RuleRef
+  | body=NotSet
+  | body=Wildcard
+  | body=LexerCharSet
+  ;
+
+LexerCharSet
+  :
+    body=ARG_OR_CHARSET
+  ;
+
+LexerBlock
+  :
+    '('
+        ( options=Options COLON )?
+        body=LexerAltList
+    ')'
+    ;
+
+// channel=HIDDEN, skip, more, mode(INSIDE), push(INSIDE), pop
+LexerCommands
+  :
+    keyword=RARROW commands+=LexerCommand (',' commands+=LexerCommand)*
+  ;
+
+LexerCommand
+  :
+    name=LexerCommandName '(' args=LexerCommandExpr ')'
+  | name=LexerCommandName
+  ;
+
+LexerCommandName
+  :
+    'mode'
+  | Id
+  ;
+
+LexerCommandExpr
+  :
+    ref=[ModeOrLexerRule|Id]
+  | value=INT
+  ;
+
+ModeOrLexerRule
+  :
+    Mode
+  | LexerRule
+  ;
+
+/** ID */
+QualifiedId
+  :
+    name+=Id ('.' name+=Id)*
+  ;
+
+Id
+  :
+  TOKEN_REF
+  | RULE_REF
+  ;
+
+/** tokenVocab */
+terminal
+TOKEN_VOCAB: 'tokenVocab';
+
+/** COLON */
+terminal
+COLON: ':';
+
+/** -> */
+terminal
+RARROW: '->';
+
+/** Options */
+terminal
+OPTIONS_SPEC
+  :
+  'options' WSNLCHARS* '{'
+  ;
+
+/** Tokens */
+terminal
+TOKENS_SPEC
+  :
+  'tokens' WSNLCHARS* '{'
+  ;
+
+/** IDS */
+terminal
+RULE_REF
+  :
+  'a'..'z'
+  NAME_CHAR*
+  ;
+
+terminal
+TOKEN_REF
+  :
+  'A'..'Z'
+  NAME_CHAR*
+  ;
+
+/** Allow unicode rule/token names */
+terminal
+fragment
+NAME_CHAR
+  :   NAME_START_CHAR
+  |   '0'..'9'
+  |   '_'
+  |   '\u00B7'
+  |   '\u0300'..'\u036F'
+  |   '\u203F'..'\u2040'
+  ;
+
+terminal
+fragment
+NAME_START_CHAR
+  :   'A'..'Z' | 'a'..'z'
+  |   '\u00C0'..'\u00D6'
+  |   '\u00D8'..'\u00F6'
+  |   '\u00F8'..'\u02FF'
+  |   '\u0370'..'\u037D'
+  |   '\u037F'..'\u1FFF'
+  |   '\u200C'..'\u200D'
+  |   '\u2070'..'\u218F'
+  |   '\u2C00'..'\u2FEF'
+  |   '\u3001'..'\uD7FF'
+  |   '\uF900'..'\uFDCF'
+  |   '\uFDF0'..'\uFFFD'
+  ; // ignores | ['\u10000-'\uEFFFF] ;
+
+/** Integer literal */
+terminal
+INT
+returns ecore::EInt
+  :
+    ('0'..'9')+
+  ;
+
+/** String literal */
+terminal
+STRING
+  :
+  '\'' LITERAL_CHAR* '\''
+  ;
+
+terminal
+fragment
+LITERAL_CHAR
+  :
+  ESC
+  |
+  !(
+    '\''
+    | '\\'
+   )
+  ;
+
+terminal
+fragment
+ESC
+  :
+  '\\'
+  (
+    'n'
+    | 'r'
+    | 't'
+    | 'b'
+    | 'f'
+    | '"'
+    | '\''
+    | '\\'
+    | '>'
+    | 'u' XDIGIT XDIGIT XDIGIT XDIGIT
+    | . // unknown, leave as it is
+  )
+  ;
+
+terminal
+fragment
+XDIGIT
+  :
+  '0'..'9'
+  | 'a'..'f'
+  | 'A'..'F'
+  ;
+
+/** Language action (a.k.a language code) */
+terminal ACTION: NESTED_ACTION;
+
+terminal fragment NESTED_ACTION: '___nested_action_';
+
+terminal
+fragment
+ACTION_STRING_LITERAL
+  :
+  '"'
+  (
+    ACTION_ESC
+  |
+    !('\\' | '"')
+  )*
+  '"'
+  ;
+
+terminal
+fragment
+ACTION_CHAR_LITERAL
+  :
+  '\''
+  (
+    ACTION_ESC
+  |
+    !('\\' | '\'')
+  )*
+  '\''
+  ;
+
+// Within literal strings and characters that are not part of the ANTLR
+// syntax, we must allow for escaped character sequences so that we do not
+// inadvertantly recognize the end of a string or character when the terminating
+// delimiter has been escaped.
+terminal
+fragment
+ACTION_ESC
+  : '\\' .
+  ;
+
+/** Argument action (a.k.a language code) */
+terminal
+ARG_OR_CHARSET
+  :
+    '[' ARG_ACTION
+  |
+    LEXER_CHAR_SET
+  ;
+
+terminal fragment LEXER_CHAR_SET: '___lexer_char_set_';
+
+// --------------
+// Argument specs
+//
+// Certain argument lists, such as those specifying call parameters
+// to a rule invocation, or input parameters to a rule specification
+// are contained within square brackets. In the lexer we consume them
+// all at once and sort them out later in the grammar analysis.
+//
+terminal
+fragment
+ARG_ACTION
+  :
+   '['
+   (
+      ARG_ACTION
+
+   | ACTION_STRING_LITERAL
+
+   | ACTION_CHAR_LITERAL
+
+   | !('['|']')
+   )*
+    ']'
+  ;
+
+/** Comments */
+terminal
+SL_COMMENT
+  :
+  '//'
+  !(
+    '\r'
+    | '\n'
+   )*
+  '\r'? '\n'
+  ;
+
+terminal
+ML_COMMENT
+  :
+  '/*' -> '*/'
+  ;
+
+/** White spaces */
+terminal
+WS
+  :
+  (
+    ' '
+    | '\t'
+    | '\f'
+    | '\r'? '\n'
+  )+
+  ;
+
+terminal fragment WSNLCHARS: ' ' | '\t' | '\f' | '\n' | '\r';

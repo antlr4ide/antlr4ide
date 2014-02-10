@@ -5,8 +5,8 @@
 
   <extension point="org.eclipse.emf.ecore.generated_package">
     <package 
-       uri = "http://www.github.com/jknack/Antlr4" 
-       class = "com.github.jknack.antlr4.Antlr4Package"
+       uri = "http://www.github.com/jknack/antlr4ide/Antlr4" 
+       class = "com.github.jknack.antlr4ide.antlr4.Antlr4Package"
        genModel = "model/generated/Antlr4.genmodel" />
   </extension>
 

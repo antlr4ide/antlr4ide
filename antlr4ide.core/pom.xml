@@ -82,7 +82,7 @@
                   <arg value="${cp}" />
                   <arg value="org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher" />
                   <arg
-                    value="${workDir}${file.separator}${source}${file.separator}com${file.separator}github${file.separator}jknack${file.separator}GenerateAntlr4.mwe2" />
+                    value="${workDir}${file.separator}${source}${file.separator}com${file.separator}github${file.separator}jknack${file.separator}antlr4ide${file.separator}GenerateAntlr4.mwe2" />
                   <arg value="-p" />
                   <arg value="runtimeProject=${workDir}" />
                 </exec>
