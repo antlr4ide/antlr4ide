@@ -5,13 +5,13 @@ import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.InjectWith
 import javax.inject.Inject
 import org.eclipse.xtext.junit4.util.ParseHelper
-import com.github.jknack.antlr4ide.antlr4.Grammar
+import com.github.jknack.antlr4ide.lang.Grammar
 import org.junit.Test
 import static org.junit.Assert.*
 import com.github.jknack.antlr4ide.Antlr4TestInjectorProvider
-import com.github.jknack.antlr4ide.antlr4.GrammarType
-import com.github.jknack.antlr4ide.antlr4.Options
-import com.github.jknack.antlr4ide.antlr4.QualifiedOption
+import com.github.jknack.antlr4ide.lang.GrammarType
+import com.github.jknack.antlr4ide.lang.Options
+import com.github.jknack.antlr4ide.lang.QualifiedOption
 
 @RunWith(XtextRunner)
 @InjectWith(Antlr4TestInjectorProvider)

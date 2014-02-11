@@ -6,7 +6,7 @@ import org.eclipse.xtext.validation.Issue
 import com.github.jknack.antlr4ide.validation.Antlr4Validator
 
 import static extension org.eclipse.xtext.EcoreUtil2.*
-import com.github.jknack.antlr4ide.antlr4.Rule
+import com.github.jknack.antlr4ide.lang.Rule
 import org.eclipse.xtext.diagnostics.Diagnostic
 import static extension org.eclipse.xtext.nodemodel.util.NodeModelUtils.*
 

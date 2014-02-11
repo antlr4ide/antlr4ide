@@ -199,7 +199,7 @@ class BuilderConfigurationBlock extends OptionsConfigurationBlock {
         val distribution = Distributions.get(new File(file))
         if (distribution.key != "") {
           val packages = Lists.newArrayList(packageViewer.input as Collection<Pair<String, String>>)
-          packages.add(distribution.value -> file)
+          packages.add(distribution.key -> file)
           packageViewer.input = Sets.newLinkedHashSet(packages)
           setValue(ToolOptions.BUILD_ANTLR_TOOLS, Distributions.toString(packages).toString)
         } else {

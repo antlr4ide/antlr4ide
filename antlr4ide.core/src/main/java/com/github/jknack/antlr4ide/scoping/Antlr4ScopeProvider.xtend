@@ -1,21 +1,21 @@
 package com.github.jknack.antlr4ide.scoping
 
 import org.eclipse.xtext.scoping.IScope
-import com.github.jknack.antlr4ide.antlr4.Grammar
+import com.github.jknack.antlr4ide.lang.Grammar
 import org.eclipse.emf.ecore.EReference
 import com.google.common.collect.Lists
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.emf.ecore.EObject
-import com.github.jknack.antlr4ide.antlr4.Imports
-import com.github.jknack.antlr4ide.antlr4.Rule
-import com.github.jknack.antlr4ide.antlr4.ParserRule
-import com.github.jknack.antlr4ide.antlr4.LexerRule
+import com.github.jknack.antlr4ide.lang.Imports
+import com.github.jknack.antlr4ide.lang.Rule
+import com.github.jknack.antlr4ide.lang.ParserRule
+import com.github.jknack.antlr4ide.lang.LexerRule
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
 import java.util.List
-import com.github.jknack.antlr4ide.antlr4.V3Tokens
-import com.github.jknack.antlr4ide.antlr4.V4Tokens
-import com.github.jknack.antlr4ide.antlr4.Options
-import com.github.jknack.antlr4ide.antlr4.TokenVocab
+import com.github.jknack.antlr4ide.lang.V3Tokens
+import com.github.jknack.antlr4ide.lang.V4Tokens
+import com.github.jknack.antlr4ide.lang.Options
+import com.github.jknack.antlr4ide.lang.TokenVocab
 import static extension org.eclipse.xtext.EcoreUtil2.*
 
 /**

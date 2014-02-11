@@ -64,41 +64,25 @@ public class RailroadSynchronizer implements IPartListener, IXtextModelListener 
   @Override
   public void partActivated(final IWorkbenchPart part) {
     if (part instanceof XtextEditor) {
-      boolean draw = false;
       XtextEditor xtextEditor = (XtextEditor) part;
-      if (language.equals(xtextEditor.getLanguageName())) {
-        IXtextDocument xtextDocument = xtextEditor.getDocument();
-        draw = xtextDocument != lastActiveDocument;
-        if (draw) {
-          drawDiagram(xtextEditor, xtextDocument);
-        }
-      }
-      if (!draw) {
-        if (lastActiveDocument != null) {
-          lastActiveDocument.removeModelListener(this);
-          lastActiveDocument = null;
-        }
-        view.clearView();
-      }
-    }
-  }
-
-  private void drawDiagram(final XtextEditor xtextEditor, final IXtextDocument xtextDocument) {
-    selectionLinker.setXtextEditor(xtextEditor);
-    IFigure contents = xtextDocument
-        .readOnly(new IUnitOfWork<IFigure, XtextResource>() {
+      IXtextDocument xtextDocument = xtextEditor.getDocument();
+      if (xtextDocument != lastActiveDocument) {
+        selectionLinker.setXtextEditor(xtextEditor);
+        final IFigure contents = xtextDocument.readOnly(new IUnitOfWork<IFigure, XtextResource>() {
           @Override
           public IFigure exec(final XtextResource resource) throws Exception {
             return createFigure(resource);
           }
         });
-    if (contents != null) {
-      view.setContents(contents);
-      if (lastActiveDocument != null) {
-        lastActiveDocument.removeModelListener(this);
+        if (contents != null) {
+          view.setContents(contents);
+          if (lastActiveDocument != null) {
+            lastActiveDocument.removeModelListener(this);
+          }
+          lastActiveDocument = xtextDocument;
+          lastActiveDocument.addModelListener(this);
+        }
       }
-      lastActiveDocument = xtextDocument;
-      lastActiveDocument.addModelListener(this);
     }
   }
 
@@ -117,10 +101,6 @@ public class RailroadSynchronizer implements IPartListener, IXtextModelListener 
 
   @Override
   public void partClosed(final IWorkbenchPart part) {
-  }
-
-  @Override
-  public void partDeactivated(final IWorkbenchPart part) {
     if (part instanceof XtextEditor) {
       view.clearView();
       if (lastActiveDocument != null) {
@@ -128,6 +108,10 @@ public class RailroadSynchronizer implements IPartListener, IXtextModelListener 
       }
       lastActiveDocument = null;
     }
+  }
+
+  @Override
+  public void partDeactivated(final IWorkbenchPart part) {
   }
 
   @Override

@@ -22,6 +22,7 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.ui.editor.IURIEditorOpener;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 
@@ -32,11 +33,14 @@ import com.github.jknack.antlr4ide.ui.railroad.figures.IEObjectReferer;
 import com.github.jknack.antlr4ide.ui.railroad.figures.ISelectable;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 
 @Singleton
 public class RailroadSelectionLinker implements IPropertyChangeListener {
 
-  private static final String XTEXT_LANGUAGE_NAME = "com.github.jknack.Antlr4";
+  @Inject
+  @Named(Constants.LANGUAGE_NAME)
+  private String language;
 
   @Inject
   private IURIEditorOpener uriEditorOpener;
@@ -192,7 +196,7 @@ public class RailroadSelectionLinker implements IPropertyChangeListener {
     if (currentEditor != null) {
       removeTextSelectionListener(currentEditor);
     }
-    if (XTEXT_LANGUAGE_NAME.equals(xtextEditor.getLanguageName())) {
+    if (language.equals(xtextEditor.getLanguageName())) {
       currentEditor = xtextEditor;
       ISelectionProvider selectionProvider = xtextEditor.getSelectionProvider();
       if (selectionProvider instanceof IPostSelectionProvider) {

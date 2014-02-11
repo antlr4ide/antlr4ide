@@ -7,9 +7,9 @@ import org.eclipse.xtext.ui.editor.folding.FoldedPosition
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.ui.editor.folding.IFoldingRegionAcceptor
 import org.eclipse.xtext.util.ITextRegion
-import com.github.jknack.antlr4ide.antlr4.Rule
-import com.github.jknack.antlr4ide.antlr4.PrequelConstruct
-import com.github.jknack.antlr4ide.antlr4.RuleAction
+import com.github.jknack.antlr4ide.lang.Rule
+import com.github.jknack.antlr4ide.lang.PrequelConstruct
+import com.github.jknack.antlr4ide.lang.RuleAction
 
 /**
  * Customize default folding by adding a region type to each folded region.

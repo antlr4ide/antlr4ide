@@ -3,17 +3,17 @@ package com.github.jknack.antlr4ide.ui.labeling
 import org.eclipse.xtext.ui.editor.hover.html.DefaultEObjectHoverProvider
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
-import com.github.jknack.antlr4ide.antlr4.Grammar
-import com.github.jknack.antlr4ide.antlr4.RuleRef
-import com.github.jknack.antlr4ide.antlr4.Terminal
-import com.github.jknack.antlr4ide.antlr4.LexerRule
-import com.github.jknack.antlr4ide.antlr4.V3Token
-import com.github.jknack.antlr4ide.antlr4.V4Token
-import com.github.jknack.antlr4ide.antlr4.ParserRule
+import com.github.jknack.antlr4ide.lang.Grammar
+import com.github.jknack.antlr4ide.lang.RuleRef
+import com.github.jknack.antlr4ide.lang.Terminal
+import com.github.jknack.antlr4ide.lang.LexerRule
+import com.github.jknack.antlr4ide.lang.V3Token
+import com.github.jknack.antlr4ide.lang.V4Token
+import com.github.jknack.antlr4ide.lang.ParserRule
 import org.eclipse.xtext.nodemodel.INode
 import org.eclipse.xtext.nodemodel.ILeafNode
 import org.eclipse.xtext.nodemodel.ICompositeNode
-import com.github.jknack.antlr4ide.antlr4.Rule
+import com.github.jknack.antlr4ide.lang.Rule
 
 class Antlr4HoverProvider extends DefaultEObjectHoverProvider {
 

@@ -1,37 +1,37 @@
 package com.github.jknack.antlr4ide.validation
 
-import com.github.jknack.antlr4ide.antlr4.Grammar
-import com.github.jknack.antlr4ide.antlr4.ParserRule
-import com.github.jknack.antlr4ide.antlr4.Rule
+import com.github.jknack.antlr4ide.lang.Grammar
+import com.github.jknack.antlr4ide.lang.ParserRule
+import com.github.jknack.antlr4ide.lang.Rule
 import java.util.Set
 import org.eclipse.xtext.validation.Check
 import org.eclipse.emf.ecore.EObject
-import com.github.jknack.antlr4ide.antlr4.V3Tokens
-import com.github.jknack.antlr4ide.antlr4.GrammarType
-import com.github.jknack.antlr4ide.antlr4.LexerRule
-import com.github.jknack.antlr4ide.antlr4.LabeledAlt
-import com.github.jknack.antlr4ide.antlr4.V3Token
-import com.github.jknack.antlr4ide.antlr4.EmptyTokens
-import com.github.jknack.antlr4ide.antlr4.Antlr4Package
-import com.github.jknack.antlr4ide.antlr4.V4Tokens
+import com.github.jknack.antlr4ide.lang.V3Tokens
+import com.github.jknack.antlr4ide.lang.GrammarType
+import com.github.jknack.antlr4ide.lang.LexerRule
+import com.github.jknack.antlr4ide.lang.LabeledAlt
+import com.github.jknack.antlr4ide.lang.V3Token
+import com.github.jknack.antlr4ide.lang.EmptyTokens
+import com.github.jknack.antlr4ide.lang.LangPackage
+import com.github.jknack.antlr4ide.lang.V4Tokens
 import com.google.common.base.Splitter
 import com.google.common.base.CharMatcher
-import com.github.jknack.antlr4ide.antlr4.ActionElement
+import com.github.jknack.antlr4ide.lang.ActionElement
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
-import com.github.jknack.antlr4ide.antlr4.ActionOption
-import com.github.jknack.antlr4ide.antlr4.Option
-import com.github.jknack.antlr4ide.antlr4.LabeledElement
-import com.github.jknack.antlr4ide.antlr4.Terminal
-import com.github.jknack.antlr4ide.antlr4.RuleRef
-import com.github.jknack.antlr4ide.antlr4.GrammarAction
-import com.github.jknack.antlr4ide.antlr4.Mode
+import com.github.jknack.antlr4ide.lang.ActionOption
+import com.github.jknack.antlr4ide.lang.Option
+import com.github.jknack.antlr4ide.lang.LabeledElement
+import com.github.jknack.antlr4ide.lang.Terminal
+import com.github.jknack.antlr4ide.lang.RuleRef
+import com.github.jknack.antlr4ide.lang.GrammarAction
+import com.github.jknack.antlr4ide.lang.Mode
 import static extension org.eclipse.xtext.EcoreUtil2.*
-import com.github.jknack.antlr4ide.antlr4.Options
-import com.github.jknack.antlr4ide.antlr4.Imports
-import com.github.jknack.antlr4ide.antlr4.ElementOptions
-import com.github.jknack.antlr4ide.antlr4.ElementOption
-import com.github.jknack.antlr4ide.antlr4.Wildcard
-import com.github.jknack.antlr4ide.antlr4.V4Token
+import com.github.jknack.antlr4ide.lang.Options
+import com.github.jknack.antlr4ide.lang.Imports
+import com.github.jknack.antlr4ide.lang.ElementOptions
+import com.github.jknack.antlr4ide.lang.ElementOption
+import com.github.jknack.antlr4ide.lang.Wildcard
+import com.github.jknack.antlr4ide.lang.V4Token
 import com.github.jknack.antlr4ide.validation.AbstractAntlr4Validator
 
 /**
@@ -59,7 +59,7 @@ class Antlr4Validator extends AbstractAntlr4Validator {
     if (filename != name) {
       error(
         "grammar name '" + name + "' and file name '" + resource.lastSegment + "' differ",
-        Antlr4Package.Literals.GRAMMAR__NAME,
+        LangPackage.Literals.GRAMMAR__NAME,
         GRAMMAR_NAME_DIFFER,
         name,
         filename

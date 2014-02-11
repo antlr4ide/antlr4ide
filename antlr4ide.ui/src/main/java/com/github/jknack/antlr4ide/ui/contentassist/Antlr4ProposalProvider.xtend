@@ -10,7 +10,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.Assignment
 import javax.inject.Inject
 import org.eclipse.xtext.ui.IImageHelper
-import com.github.jknack.antlr4ide.antlr4.Grammar
+import com.github.jknack.antlr4ide.lang.Grammar
 import com.github.jknack.antlr4ide.validation.Antlr4Validator
 
 /**

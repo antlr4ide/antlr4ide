@@ -8,8 +8,8 @@ import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.linking.ILinkingDiagnosticMessageProvider;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 
-import com.github.jknack.antlr4ide.antlr4.Antlr4Factory;
 import com.github.jknack.antlr4ide.generator.Antlr4OutputConfigurationProvider;
+import com.github.jknack.antlr4ide.lang.LangFactory;
 import com.github.jknack.antlr4ide.scoping.Antlr4NameProvider;
 import com.github.jknack.antlr4ide.validation.Antlr4MissingReferenceMessageProvider;
 import com.google.inject.Binder;
@@ -25,7 +25,7 @@ public class Antlr4RuntimeModule extends com.github.jknack.antlr4ide.AbstractAnt
 
     super.configure(binder);
 
-    binder.bind(Antlr4Factory.class).toInstance(Antlr4Factory.eINSTANCE);
+    binder.bind(LangFactory.class).toInstance(LangFactory.eINSTANCE);
 
     binder.bind(ILinkingDiagnosticMessageProvider.Extended.class)
         .to(Antlr4MissingReferenceMessageProvider.class);

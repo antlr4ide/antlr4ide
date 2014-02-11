@@ -17,13 +17,13 @@ import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.linking.ILinkingDiagnosticMessageProvider.ILinkingDiagnosticContext;
 import org.junit.Test;
 
-import com.github.jknack.antlr4ide.antlr4.Grammar;
-import com.github.jknack.antlr4ide.antlr4.Import;
-import com.github.jknack.antlr4ide.antlr4.LexerCommand;
-import com.github.jknack.antlr4ide.antlr4.LexerCommands;
-import com.github.jknack.antlr4ide.antlr4.LexerRule;
-import com.github.jknack.antlr4ide.antlr4.ParserRule;
-import com.github.jknack.antlr4ide.antlr4.RuleRef;
+import com.github.jknack.antlr4ide.lang.Grammar;
+import com.github.jknack.antlr4ide.lang.Import;
+import com.github.jknack.antlr4ide.lang.LexerCommand;
+import com.github.jknack.antlr4ide.lang.LexerCommands;
+import com.github.jknack.antlr4ide.lang.LexerRule;
+import com.github.jknack.antlr4ide.lang.ParserRule;
+import com.github.jknack.antlr4ide.lang.RuleRef;
 import com.google.common.collect.Sets;
 
 public class Antlr4MissingReferenceMessageProviderTest {

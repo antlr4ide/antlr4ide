@@ -154,7 +154,7 @@
     <maven.compiler.target>1.6</maven.compiler.target>
 
     <antlr-generator>antlr-generator-3.2.0.jar</antlr-generator>
-    <antlr4.jar>antlr-4.1-complete.jar</antlr4.jar>
+    <antlr4.jar>antlr-4.2-complete.jar</antlr4.jar>
     <powermock-version>1.5.4</powermock-version>
   </properties>
 

@@ -7,9 +7,9 @@ import org.eclipse.xtext.diagnostics.DiagnosticMessage
 import static org.eclipse.xtext.diagnostics.Severity.*
 import static org.eclipse.xtext.diagnostics.Diagnostic.*
 import static extension org.eclipse.xtext.EcoreUtil2.*
-import com.github.jknack.antlr4ide.antlr4.Rule
-import com.github.jknack.antlr4ide.antlr4.ParserRule
-import com.github.jknack.antlr4ide.antlr4.LexerCommands
+import com.github.jknack.antlr4ide.lang.Rule
+import com.github.jknack.antlr4ide.lang.ParserRule
+import com.github.jknack.antlr4ide.lang.LexerCommands
 
 /**
  * Customize undefined messages of missing references. It provides messages for missing rules,

@@ -1,13 +1,13 @@
 package com.github.jknack.antlr4ide.ui.outline
 
-import com.github.jknack.antlr4ide.antlr4.RuleBlock
-import com.github.jknack.antlr4ide.antlr4.LexerRuleBlock
-import com.github.jknack.antlr4ide.antlr4.Option
-import com.github.jknack.antlr4ide.antlr4.V3Token
-import com.github.jknack.antlr4ide.antlr4.V4Token
-import com.github.jknack.antlr4ide.antlr4.Import
+import com.github.jknack.antlr4ide.lang.RuleBlock
+import com.github.jknack.antlr4ide.lang.LexerRuleBlock
+import com.github.jknack.antlr4ide.lang.Option
+import com.github.jknack.antlr4ide.lang.V3Token
+import com.github.jknack.antlr4ide.lang.V4Token
+import com.github.jknack.antlr4ide.lang.Import
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
-import com.github.jknack.antlr4ide.antlr4.Grammar
+import com.github.jknack.antlr4ide.lang.Grammar
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
 
 /**
@@ -55,7 +55,7 @@ class Antlr4OutlineTreeProvider extends DefaultOutlineTreeProvider {
     return true
   }
 
-  def _isLeaf(com.github.jknack.antlr4ide.antlr4.Exceptions exceptions) {
+  def _isLeaf(com.github.jknack.antlr4ide.lang.Exceptions exceptions) {
     return true
   }
 }

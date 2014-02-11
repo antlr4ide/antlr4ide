@@ -5,12 +5,12 @@ import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.InjectWith
 import javax.inject.Inject
 import org.eclipse.xtext.junit4.util.ParseHelper
-import com.github.jknack.antlr4ide.antlr4.Grammar
+import com.github.jknack.antlr4ide.lang.Grammar
 import org.junit.Test
 import static org.junit.Assert.*
 import com.github.jknack.antlr4ide.Antlr4TestInjectorProvider
 import static extension org.eclipse.xtext.EcoreUtil2.*
-import com.github.jknack.antlr4ide.antlr4.LexerCharSet
+import com.github.jknack.antlr4ide.lang.LexerCharSet
 
 @RunWith(XtextRunner)
 @InjectWith(Antlr4TestInjectorProvider)

@@ -15,7 +15,7 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.LayoutManager;
 import org.eclipse.draw2d.ToolbarLayout;
 
-import com.github.jknack.antlr4ide.antlr4.Grammar;
+import com.github.jknack.antlr4ide.lang.Grammar;
 
 /**
  * The railroad diagram figure. A railroad diagram consists of {@link RailroadTrack}s

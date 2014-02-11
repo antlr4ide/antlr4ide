@@ -11,7 +11,7 @@
             default="true"
             extensions="g4"
             icon="icons/g.png"
-            id="com.github.jknack.Antlr4"
+            id="com.github.jknack.antlr4ide.Antlr4"
             name="ANTLR 4 Editor">
         </editor>
     </extension>
@@ -22,37 +22,37 @@
             commandId="org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclaration">
             <activeWhen>
                 <reference
-                    definitionId="com.github.jknack.Antlr4.Editor.opened">
+                    definitionId="com.github.jknack.antlr4ide.Antlr4.Editor.opened">
                 </reference>
             </activeWhen>
         </handler>
         <handler
             class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.handler.ValidateActionHandler"
-            commandId="com.github.jknack.Antlr4.validate">
+            commandId="com.github.jknack.antlr4ide.Antlr4.validate">
          <activeWhen>
             <reference
-                    definitionId="com.github.jknack.Antlr4.Editor.opened">
+                    definitionId="com.github.jknack.antlr4ide.Antlr4.Editor.opened">
             </reference>
          </activeWhen>
-      	</handler>
+        </handler>
     </extension>
     <extension point="org.eclipse.core.expressions.definitions">
-        <definition id="com.github.jknack.Antlr4.Editor.opened">
+        <definition id="com.github.jknack.antlr4ide.Antlr4.Editor.opened">
             <and>
                 <reference definitionId="isActiveEditorAnInstanceOfXtextEditor"/>
                 <with variable="activeEditor">
                     <test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName" 
-                        value="com.github.jknack.Antlr4" 
+                        value="com.github.jknack.antlr4ide.Antlr4" 
                         forcePluginActivation="true"/>
                 </with>        
             </and>
         </definition>
-        <definition id="com.github.jknack.Antlr4.XtextEditor.opened">
+        <definition id="com.github.jknack.antlr4ide.Antlr4.XtextEditor.opened">
             <and>
                 <reference definitionId="isXtextEditorActive"/>
                 <with variable="activeEditor">
                     <test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName" 
-                        value="com.github.jknack.Antlr4" 
+                        value="com.github.jknack.antlr4ide.Antlr4" 
                         forcePluginActivation="true"/>
                 </with>        
             </and>
@@ -62,22 +62,22 @@
             point="org.eclipse.ui.preferencePages">
         <page
             class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
-            id="com.github.jknack.Antlr4"
+            id="com.github.jknack.antlr4ide.Antlr4"
             name="ANTLR 4">
             <keywordReference id="com.github.jknack.antlr4ide.ui.keyword_Antlr4"/>
         </page>
         <page
-            category="com.github.jknack.Antlr4"
+            category="com.github.jknack.antlr4ide.Antlr4"
             class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.syntaxcoloring.SyntaxColoringPreferencePage"
-            id="com.github.jknack.Antlr4.coloring"
+            id="com.github.jknack.antlr4ide.Antlr4.coloring"
             name="Syntax Coloring">
             <keywordReference id="com.github.jknack.antlr4ide.ui.keyword_Antlr4"/>
         </page>
         <!-- Depends on JDT :S
         <page
-            category="com.github.jknack.Antlr4"
+            category="com.github.jknack.antlr4ide.Antlr4"
             class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.templates.XtextTemplatePreferencePage"
-            id="com.github.jknack.Antlr4.templates"
+            id="com.github.jknack.antlr4ide.Antlr4.templates"
             name="Templates">
             <keywordReference id="com.github.jknack.antlr4ide.ui.keyword_Antlr4"/>
         </page>
@@ -87,13 +87,13 @@
             point="org.eclipse.ui.propertyPages">
         <page
             class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
-            id="com.github.jknack.Antlr4"
+            id="com.github.jknack.antlr4ide.Antlr4"
             name="ANTLR 4">
             <keywordReference id="com.github.jknack.antlr4ide.ui.keyword_Antlr4"/>
             <enabledWhen>
               <adapt type="org.eclipse.core.resources.IProject"/>
-            </enabledWhen>
-            <filter name="projectNature" value="org.eclipse.xtext.ui.shared.xtextNature"/>
+      </enabledWhen>
+          <filter name="projectNature" value="org.eclipse.xtext.ui.shared.xtextNature"/>
         </page>
     </extension>
     <extension
@@ -106,7 +106,7 @@
          point="org.eclipse.ui.commands">
       <command
             description="Trigger expensive validation"
-            id="com.github.jknack.Antlr4.validate"
+            id="com.github.jknack.antlr4ide.Antlr4.validate"
             name="Validate">
       </command>
     </extension>
@@ -114,34 +114,34 @@
         <menuContribution
             locationURI="popup:#TextEditorContext?after=group.edit">
              <command
-                 commandId="com.github.jknack.Antlr4.validate"
+                 commandId="com.github.jknack.antlr4ide.Antlr4.validate"
                  style="push"
                  tooltip="Trigger expensive validation">
             <visibleWhen checkEnabled="false">
                 <reference
-                    definitionId="com.github.jknack.Antlr4.Editor.opened">
+                    definitionId="com.github.jknack.antlr4ide.Antlr4.Editor.opened">
                 </reference>
             </visibleWhen>
-         </command>
+         </command>  
          </menuContribution>
     </extension>
     <extension point="org.eclipse.ui.menus">
-		<menuContribution locationURI="popup:#TextEditorContext?endof=group.find">
-			<command commandId="org.eclipse.xtext.ui.editor.FindReferences">
-				<visibleWhen checkEnabled="false">
-                	<reference definitionId="com.github.jknack.Antlr4.Editor.opened">
-                	</reference>
-            	</visibleWhen>
-			</command>
-		</menuContribution>
-	</extension>
-	<extension point="org.eclipse.ui.handlers">
-	    <handler
+    <menuContribution locationURI="popup:#TextEditorContext?endof=group.find">
+      <command commandId="org.eclipse.xtext.ui.editor.FindReferences">
+        <visibleWhen checkEnabled="false">
+                  <reference definitionId="com.github.jknack.antlr4ide.Antlr4.Editor.opened">
+                  </reference>
+              </visibleWhen>
+      </command>
+    </menuContribution>
+  </extension>
+  <extension point="org.eclipse.ui.handlers">
+      <handler
             class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.findrefs.FindReferencesHandler"
             commandId="org.eclipse.xtext.ui.editor.FindReferences">
             <activeWhen>
                 <reference
-                    definitionId="com.github.jknack.Antlr4.Editor.opened">
+                    definitionId="com.github.jknack.antlr4ide.Antlr4.Editor.opened">
                 </reference>
             </activeWhen>
         </handler>
@@ -149,14 +149,14 @@
 
 <!-- adding resource factories -->
 
-	<extension
-		point="org.eclipse.emf.ecore.extension_parser">
-		<parser
-			class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
-			type="g4">
-		</parser>
-	</extension>
-	<extension point="org.eclipse.xtext.extension_resourceServiceProvider">
+  <extension
+    point="org.eclipse.emf.ecore.extension_parser">
+    <parser
+      class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
+      type="g4">
+    </parser>
+  </extension>
+  <extension point="org.eclipse.xtext.extension_resourceServiceProvider">
         <resourceServiceProvider
             class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
             uriExtension="g4">
@@ -164,28 +164,28 @@
     </extension>
 
 
-	<!-- marker definitions for com.github.jknack.Antlr4 -->
-	<extension
-	        id="com.github.jknack.antlr4ide.ui.antlr4.check.fast"
-	        name="ANTLR Problem"
-	        point="org.eclipse.core.resources.markers">
-	    <super type="org.eclipse.xtext.ui.check.fast"/>
-	    <persistent value="true"/>
-	</extension>
-	<extension
-	        id="com.github.jknack.antlr4ide.ui.antlr4.check.normal"
-	        name="ANTLR Problem"
-	        point="org.eclipse.core.resources.markers">
-	    <super type="org.eclipse.xtext.ui.check.normal"/>
-	    <persistent value="true"/>
-	</extension>
-	<extension
-	        id="com.github.jknack.antlr4ide.ui.antlr4.check.expensive"
-	        name="ANTLR Problem"
-	        point="org.eclipse.core.resources.markers">
-	    <super type="org.eclipse.xtext.ui.check.expensive"/>
-	    <persistent value="true"/>
-	</extension>
+  <!-- marker definitions for com.github.jknack.antlr4ide.Antlr4 -->
+  <extension
+          id="antlr4.check.fast"
+          name="ANTLR Problem"
+          point="org.eclipse.core.resources.markers">
+      <super type="org.eclipse.xtext.ui.check.fast"/>
+      <persistent value="true"/>
+  </extension>
+  <extension
+          id="antlr4.check.normal"
+          name="ANTLR Problem"
+          point="org.eclipse.core.resources.markers">
+      <super type="org.eclipse.xtext.ui.check.normal"/>
+      <persistent value="true"/>
+  </extension>
+  <extension
+          id="antlr4.check.expensive"
+          name="ANTLR Problem"
+          point="org.eclipse.core.resources.markers">
+      <super type="org.eclipse.xtext.ui.check.expensive"/>
+      <persistent value="true"/>
+  </extension>
 
    <extension
          point="org.eclipse.xtext.builder.participant">
@@ -196,62 +196,62 @@
    <extension
             point="org.eclipse.ui.preferencePages">
         <page
-            category="com.github.jknack.Antlr4"
-            class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.antlr4ide.ui.preferences.BuilderPreferencePage"
-            id="com.github.jknack.Antlr4.compiler.preferencePage"
-            name="Tool">
+            category="com.github.jknack.antlr4ide.Antlr4"
+            class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+            id="com.github.jknack.antlr4ide.Antlr4.compiler.preferencePage"
+            name="Compiler">
             <keywordReference id="com.github.jknack.antlr4ide.ui.keyword_Antlr4"/>
         </page>
     </extension>
     <extension
             point="org.eclipse.ui.propertyPages">
         <page
-            category="com.github.jknack.Antlr4"
-            class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.antlr4ide.ui.preferences.BuilderPreferencePage"
-            id="com.github.jknack.Antlr4.compiler.propertyPage"
+            category="com.github.jknack.antlr4ide.Antlr4"
+            class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+            id="com.github.jknack.antlr4ide.Antlr4.compiler.propertyPage"
             name="Tool">
             <keywordReference id="com.github.jknack.antlr4ide.ui.keyword_Antlr4"/>
             <enabledWhen>
-	            <adapt type="org.eclipse.core.resources.IProject"/>
-			</enabledWhen>
-	        <filter name="projectNature" value="org.eclipse.xtext.ui.shared.xtextNature"/>
+              <adapt type="org.eclipse.core.resources.IProject"/>
+      </enabledWhen>
+          <filter name="projectNature" value="org.eclipse.xtext.ui.shared.xtextNature"/>
         </page>
     </extension>
 
-	<!-- Quick Outline -->
-	<extension
-		point="org.eclipse.ui.handlers">
-		<handler 
-			class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.outline.quickoutline.ShowQuickOutlineActionHandler"
-			commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline">
-			<activeWhen>
-				<reference
-					definitionId="com.github.jknack.Antlr4.Editor.opened">
-				</reference>
-			</activeWhen>
-		</handler>
-	</extension>
-	<extension
-		point="org.eclipse.ui.commands">
-		<command
-			description="Open the quick outline."
-			id="org.eclipse.xtext.ui.editor.outline.QuickOutline"
-			name="Quick Outline">
-		</command>
-	</extension>
-	<extension point="org.eclipse.ui.menus">
-		<menuContribution
-			locationURI="popup:#TextEditorContext?after=group.open">
-			<command commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline"
-				style="push"
-				tooltip="Open Quick Outline">
-				<visibleWhen checkEnabled="false">
-					<reference definitionId="com.github.jknack.Antlr4.Editor.opened"/>
-				</visibleWhen>
-			</command>
-		</menuContribution>
-	</extension>
-    <!-- quickfix marker resolution generator for com.github.jknack.Antlr4 -->
+  <!-- Quick Outline -->
+  <extension
+    point="org.eclipse.ui.handlers">
+    <handler 
+      class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.outline.quickoutline.ShowQuickOutlineActionHandler"
+      commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline">
+      <activeWhen>
+        <reference
+          definitionId="com.github.jknack.antlr4ide.Antlr4.Editor.opened">
+        </reference>
+      </activeWhen>
+    </handler>
+  </extension>
+  <extension
+    point="org.eclipse.ui.commands">
+    <command
+      description="Open the quick outline."
+      id="org.eclipse.xtext.ui.editor.outline.QuickOutline"
+      name="Quick Outline">
+    </command>
+  </extension>
+  <extension point="org.eclipse.ui.menus">
+    <menuContribution
+      locationURI="popup:#TextEditorContext?after=group.open">
+      <command commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline"
+        style="push"
+        tooltip="Open Quick Outline">
+        <visibleWhen checkEnabled="false">
+          <reference definitionId="com.github.jknack.antlr4ide.Antlr4.Editor.opened"/>
+        </visibleWhen>
+      </command>
+    </menuContribution>
+  </extension>
+    <!-- quickfix marker resolution generator for com.github.jknack.antlr4ide.Antlr4 -->
     <extension
             point="org.eclipse.ui.ide.markerResolution">
         <markerResolutionGenerator
@@ -279,18 +279,18 @@
             </attribute>
         </markerResolutionGenerator>
     </extension>
-   	<!-- Rename Refactoring -->
-	<extension point="org.eclipse.ui.handlers">
-		<handler 
-			class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.DefaultRenameElementHandler"
-			commandId="org.eclipse.xtext.ui.refactoring.RenameElement">
-			<activeWhen>
-				<reference
-					definitionId="com.github.jknack.Antlr4.Editor.opened">
-				</reference>
-			</activeWhen>
-		</handler>
-	</extension>
+    <!-- Rename Refactoring -->
+  <extension point="org.eclipse.ui.handlers">
+    <handler 
+      class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.DefaultRenameElementHandler"
+      commandId="org.eclipse.xtext.ui.refactoring.RenameElement">
+      <activeWhen>
+        <reference
+          definitionId="com.github.jknack.antlr4ide.Antlr4.Editor.opened">
+        </reference>
+      </activeWhen>
+    </handler>
+  </extension>
     <extension point="org.eclipse.ui.menus">
          <menuContribution
             locationURI="popup:#TextEditorContext?after=group.edit">
@@ -298,42 +298,53 @@
                style="push">
             <visibleWhen checkEnabled="false">
                <reference
-                     definitionId="com.github.jknack.Antlr4.Editor.opened">
+                     definitionId="com.github.jknack.antlr4ide.Antlr4.Editor.opened">
                </reference>
             </visibleWhen>
          </command>
       </menuContribution>
    </extension>
    <extension point="org.eclipse.ui.preferencePages">
-	    <page
-	        category="com.github.jknack.Antlr4"
-	        class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.RefactoringPreferencePage"
-	        id="com.github.jknack.Antlr4.refactoring"
-	        name="Refactoring">
-	        <keywordReference id="com.github.jknack.antlr4ide.ui.keyword_Antlr4"/>
-	    </page>
-	</extension>
+      <page
+          category="com.github.jknack.antlr4ide.Antlr4"
+          class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.RefactoringPreferencePage"
+          id="com.github.jknack.antlr4ide.Antlr4.refactoring"
+          name="Refactoring">
+          <keywordReference id="com.github.jknack.antlr4ide.ui.keyword_Antlr4"/>
+      </page>
+  </extension>
 
   <extension point="org.eclipse.compare.contentViewers">
-    <viewer id="com.github.jknack.Antlr4.compare.contentViewers"
+    <viewer id="com.github.jknack.antlr4ide.Antlr4.compare.contentViewers"
             class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
             extensions="g4">
     </viewer>
   </extension>
   <extension point="org.eclipse.compare.contentMergeViewers">
-    <viewer id="com.github.jknack.Antlr4.compare.contentMergeViewers"
+    <viewer id="com.github.jknack.antlr4ide.Antlr4.compare.contentMergeViewers"
             class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
             extensions="g4" label="ANTLR 4 Compare">
      </viewer>
   </extension>
   <extension point="org.eclipse.ui.editors.documentProviders">
-    <provider id="com.github.jknack.Antlr4.editors.documentProviders"
+    <provider id="com.github.jknack.antlr4ide.Antlr4.editors.documentProviders"
             class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
             extensions="g4">
     </provider>
   </extension>
 
-  <extension
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="org.eclipse.xtext.projectwiz"
+            class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.antlr4ide.ui.wizard.Antlr4NewProjectWizard"
+            id="com.github.jknack.antlr4ide.ui.wizard.Antlr4NewProjectWizard"
+            name="ANTLR 4 Project"
+            project="true">
+      </wizard>
+   </extension>
+
+   <extension
        point="org.eclipse.ui.console.consoleFactories">
     <consoleFactory
           class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.antlr4ide.ui.console.AntlrConsoleFactory"
@@ -407,26 +418,5 @@
       <initializer
             class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.antlr4ide.ui.railroad.RailroadViewPreferences">
       </initializer>
-   </extension>
-
-   <extension
-         point="org.eclipse.ui.newWizards">
-      <wizard
-            category="org.eclipse.ui.Basic"
-            class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.antlr4ide.ui.wizard.Antlr4NewProjectWizard"
-            icon="icons/g.png"
-            id="com.github.jknack.antlr4ide.ui.wizard.Antlr4NewProjectWizard"
-            name="ANTLR Project"
-            project="true">
-      </wizard>
-   </extension>
-   
-   <extension
-         id="antlr4ide.marker.Antlr4Task"
-         name="ANTLR TODO"
-         point="org.eclipse.core.resources.markers">
-      <super
-            type="org.eclipse.core.resources.taskmarker">
-      </super>
    </extension>
 </plugin>

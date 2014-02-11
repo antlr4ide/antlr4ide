@@ -1,28 +1,28 @@
 package com.github.jknack.antlr4ide.ui.labeling
 
 import com.google.inject.Inject
-import com.github.jknack.antlr4ide.antlr4.Options
-import com.github.jknack.antlr4ide.antlr4.Option
-import com.github.jknack.antlr4ide.antlr4.Tokens
-import com.github.jknack.antlr4ide.antlr4.V3Token
-import com.github.jknack.antlr4ide.antlr4.V4Token
-import com.github.jknack.antlr4ide.antlr4.Import
-import com.github.jknack.antlr4ide.antlr4.Imports
-import com.github.jknack.antlr4ide.antlr4.ParserRule
-import com.github.jknack.antlr4ide.antlr4.RuleAction
-import com.github.jknack.antlr4ide.antlr4.LexerRule
+import com.github.jknack.antlr4ide.lang.Options
+import com.github.jknack.antlr4ide.lang.Option
+import com.github.jknack.antlr4ide.lang.Tokens
+import com.github.jknack.antlr4ide.lang.V3Token
+import com.github.jknack.antlr4ide.lang.V4Token
+import com.github.jknack.antlr4ide.lang.Import
+import com.github.jknack.antlr4ide.lang.Imports
+import com.github.jknack.antlr4ide.lang.ParserRule
+import com.github.jknack.antlr4ide.lang.RuleAction
+import com.github.jknack.antlr4ide.lang.LexerRule
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.util.FeatureMap
-import com.github.jknack.antlr4ide.antlr4.RuleBlock
-import com.github.jknack.antlr4ide.antlr4.LexerRuleBlock
-import com.github.jknack.antlr4ide.antlr4.ExceptionGroup
-import com.github.jknack.antlr4ide.antlr4.TokenVocab
-import com.github.jknack.antlr4ide.antlr4.LocalVars
-import com.github.jknack.antlr4ide.antlr4.Mode
-import com.github.jknack.antlr4ide.antlr4.GrammarAction
+import com.github.jknack.antlr4ide.lang.RuleBlock
+import com.github.jknack.antlr4ide.lang.LexerRuleBlock
+import com.github.jknack.antlr4ide.lang.ExceptionGroup
+import com.github.jknack.antlr4ide.lang.TokenVocab
+import com.github.jknack.antlr4ide.lang.LocalVars
+import com.github.jknack.antlr4ide.lang.Mode
+import com.github.jknack.antlr4ide.lang.GrammarAction
 
 /**
  * Provides labels for a EObjects.
@@ -106,7 +106,7 @@ class Antlr4LabelProvider extends org.eclipse.xtext.ui.label.DefaultEObjectLabel
     null
   }
 
-  def text(com.github.jknack.antlr4ide.antlr4.Exceptions empty) {
+  def text(com.github.jknack.antlr4ide.lang.Exceptions empty) {
     null
   }
 

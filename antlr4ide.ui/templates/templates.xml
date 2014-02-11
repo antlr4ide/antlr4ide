@@ -3,7 +3,7 @@
   <template name="options"
     description="Options spec"
     id="options"
-    context="com.github.jknack.Antlr4.PrequelConstruct"
+    context="com.github.jknack.antlr4ide.Antlr4.PrequelConstruct"
     enabled="true"
     autoinsert="true">options {
   ${cursor}
@@ -12,7 +12,7 @@
   <template name="tokens"
     description="Tokens spec"
     id="tokens"
-    context="com.github.jknack.Antlr4.PrequelConstruct"
+    context="com.github.jknack.antlr4ide.Antlr4.PrequelConstruct"
     enabled="true"
     autoinsert="true">tokens {
   ${cursor}
@@ -21,7 +21,7 @@
   <template name="header"
     description="Header action"
     id="header"
-    context="com.github.jknack.Antlr4.PrequelConstruct"
+    context="com.github.jknack.antlr4ide.Antlr4.PrequelConstruct"
     enabled="true"
     autoinsert="true">@header {
   ${cursor}
@@ -29,7 +29,7 @@
   <template name="members"
     description="Member action"
     id="members"
-    context="com.github.jknack.Antlr4.PrequelConstruct"
+    context="com.github.jknack.antlr4ide.Antlr4.PrequelConstruct"
     enabled="true"
     autoinsert="true">@members {
   ${cursor}
@@ -37,7 +37,7 @@
  <template name="rule"
     description="New parser rule"
     id="rule"
-    context="com.github.jknack.Antlr4.Rule"
+    context="com.github.jknack.antlr4ide.Antlr4.Rule"
     enabled="true"
     autoinsert="true">${parserRule}
 :
@@ -47,7 +47,7 @@
   <template name="rule"
     description="New token rule"
     id="tokenRule"
-    context="com.github.jknack.Antlr4.Rule"
+    context="com.github.jknack.antlr4ide.Antlr4.Rule"
     enabled="true"
     autoinsert="true">${TOKEN_RULE}
 :
@@ -57,7 +57,7 @@
   <template name="HEX_LITERAL"
     description="Hexadecimal Literal"
     id="hexLiteral"
-    context="com.github.jknack.Antlr4.Rule"
+    context="com.github.jknack.antlr4ide.Antlr4.Rule"
     enabled="true"
     autoinsert="true">fragment
 ${HEX_LITERAL}
@@ -68,7 +68,7 @@ ${HEX_LITERAL}
   <template name="ID"
     description="Identifier"
     id="id"
-    context="com.github.jknack.Antlr4.Rule"
+    context="com.github.jknack.antlr4ide.Antlr4.Rule"
     enabled="true"
     autoinsert="true">${ID}
 :
@@ -78,7 +78,7 @@ ${HEX_LITERAL}
   <template name="LETTER"
     description="Letter"
     id="letter"
-    context="com.github.jknack.Antlr4.Rule"
+    context="com.github.jknack.antlr4ide.Antlr4.Rule"
     enabled="true"
     autoinsert="true">fragment
 ${LETTER}
@@ -89,7 +89,7 @@ ${LETTER}
   <template name="DIGIT"
     description="Digit"
     id="digit"
-    context="com.github.jknack.Antlr4.Rule"
+    context="com.github.jknack.antlr4ide.Antlr4.Rule"
     enabled="true"
     autoinsert="true">fragment
 ${DIGIT}
@@ -100,7 +100,7 @@ ${DIGIT}
   <template name="INT"
     description="Integer"
     id="int"
-    context="com.github.jknack.Antlr4.Rule"
+    context="com.github.jknack.antlr4ide.Antlr4.Rule"
     enabled="true"
     autoinsert="true">${INT}
 :
@@ -110,7 +110,7 @@ ${DIGIT}
   <template name="WS"
     description="Whitespaces"
     id="whitespaces"
-    context="com.github.jknack.Antlr4.Rule"
+    context="com.github.jknack.antlr4ide.Antlr4.Rule"
     enabled="true"
     autoinsert="true">${WS}
 :
@@ -120,7 +120,7 @@ ${DIGIT}
   <template name="NL"
     description="New line"
     id="newline"
-    context="com.github.jknack.Antlr4.Rule"
+    context="com.github.jknack.antlr4ide.Antlr4.Rule"
     enabled="true"
     autoinsert="true">${NL}
 :
@@ -130,7 +130,7 @@ ${DIGIT}
   <template name="STRING"
     description="Double quotes string literal"
     id="string"
-    context="com.github.jknack.Antlr4.Rule"
+    context="com.github.jknack.antlr4ide.Antlr4.Rule"
     enabled="true"
     autoinsert="true">${STRING}
 :
@@ -140,7 +140,7 @@ ${DIGIT}
   <template name="STRING"
     description="Single quotes string literal"
     id="chars"
-    context="com.github.jknack.Antlr4.Rule"
+    context="com.github.jknack.antlr4ide.Antlr4.Rule"
     enabled="true"
     autoinsert="true">${STRING}
 :
@@ -150,7 +150,7 @@ ${DIGIT}
   <template name="COMMENT"
     description="Multi-line comment"
     id="comment"
-    context="com.github.jknack.Antlr4.Rule"
+    context="com.github.jknack.antlr4ide.Antlr4.Rule"
     enabled="true"
     autoinsert="true">${COMMENT}
 :
@@ -160,7 +160,7 @@ ${DIGIT}
   <template name="SL_COMMENT"
     description="Single line comment"
     id="singleLineComment"
-    context="com.github.jknack.Antlr4.Rule"
+    context="com.github.jknack.antlr4ide.Antlr4.Rule"
     enabled="true"
     autoinsert="true">${SL_COMMENT}
 :

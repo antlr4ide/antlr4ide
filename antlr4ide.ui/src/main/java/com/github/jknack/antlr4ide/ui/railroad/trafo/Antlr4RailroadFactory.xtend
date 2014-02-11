@@ -1,8 +1,8 @@
 package com.github.jknack.antlr4ide.ui.railroad.trafo
 
-import com.github.jknack.antlr4ide.antlr4.EbnfSuffix
-import com.github.jknack.antlr4ide.antlr4.Grammar
-import com.github.jknack.antlr4ide.antlr4.Rule
+import com.github.jknack.antlr4ide.lang.EbnfSuffix
+import com.github.jknack.antlr4ide.lang.Grammar
+import com.github.jknack.antlr4ide.lang.Rule
 import com.github.jknack.antlr4ide.ui.railroad.figures.CompartmentSegment
 import com.github.jknack.antlr4ide.ui.railroad.figures.ISegmentFigure
 import com.github.jknack.antlr4ide.ui.railroad.figures.LoopSegment

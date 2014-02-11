@@ -22,37 +22,37 @@ import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.github.jknack.antlr4ide.antlr4.ActionElement;
-import com.github.jknack.antlr4ide.antlr4.ActionOption;
-import com.github.jknack.antlr4ide.antlr4.Antlr4Package;
-import com.github.jknack.antlr4ide.antlr4.ElementOption;
-import com.github.jknack.antlr4ide.antlr4.ElementOptions;
-import com.github.jknack.antlr4ide.antlr4.EmptyTokens;
-import com.github.jknack.antlr4ide.antlr4.Grammar;
-import com.github.jknack.antlr4ide.antlr4.GrammarAction;
-import com.github.jknack.antlr4ide.antlr4.GrammarType;
-import com.github.jknack.antlr4ide.antlr4.Imports;
-import com.github.jknack.antlr4ide.antlr4.LabeledAlt;
-import com.github.jknack.antlr4ide.antlr4.LabeledElement;
-import com.github.jknack.antlr4ide.antlr4.LexerRule;
-import com.github.jknack.antlr4ide.antlr4.LocalVars;
-import com.github.jknack.antlr4ide.antlr4.Mode;
-import com.github.jknack.antlr4ide.antlr4.NotSet;
-import com.github.jknack.antlr4ide.antlr4.Option;
-import com.github.jknack.antlr4ide.antlr4.Options;
-import com.github.jknack.antlr4ide.antlr4.ParserRule;
-import com.github.jknack.antlr4ide.antlr4.PrequelConstruct;
-import com.github.jknack.antlr4ide.antlr4.QualifiedId;
-import com.github.jknack.antlr4ide.antlr4.Return;
-import com.github.jknack.antlr4ide.antlr4.Rule;
-import com.github.jknack.antlr4ide.antlr4.RuleBlock;
-import com.github.jknack.antlr4ide.antlr4.RuleRef;
-import com.github.jknack.antlr4ide.antlr4.Terminal;
-import com.github.jknack.antlr4ide.antlr4.V3Token;
-import com.github.jknack.antlr4ide.antlr4.V3Tokens;
-import com.github.jknack.antlr4ide.antlr4.V4Token;
-import com.github.jknack.antlr4ide.antlr4.V4Tokens;
-import com.github.jknack.antlr4ide.antlr4.Wildcard;
+import com.github.jknack.antlr4ide.lang.ActionElement;
+import com.github.jknack.antlr4ide.lang.ActionOption;
+import com.github.jknack.antlr4ide.lang.ElementOption;
+import com.github.jknack.antlr4ide.lang.ElementOptions;
+import com.github.jknack.antlr4ide.lang.EmptyTokens;
+import com.github.jknack.antlr4ide.lang.Grammar;
+import com.github.jknack.antlr4ide.lang.GrammarAction;
+import com.github.jknack.antlr4ide.lang.GrammarType;
+import com.github.jknack.antlr4ide.lang.Imports;
+import com.github.jknack.antlr4ide.lang.LabeledAlt;
+import com.github.jknack.antlr4ide.lang.LabeledElement;
+import com.github.jknack.antlr4ide.lang.LangPackage;
+import com.github.jknack.antlr4ide.lang.LexerRule;
+import com.github.jknack.antlr4ide.lang.LocalVars;
+import com.github.jknack.antlr4ide.lang.Mode;
+import com.github.jknack.antlr4ide.lang.NotSet;
+import com.github.jknack.antlr4ide.lang.Option;
+import com.github.jknack.antlr4ide.lang.Options;
+import com.github.jknack.antlr4ide.lang.ParserRule;
+import com.github.jknack.antlr4ide.lang.PrequelConstruct;
+import com.github.jknack.antlr4ide.lang.QualifiedId;
+import com.github.jknack.antlr4ide.lang.Return;
+import com.github.jknack.antlr4ide.lang.Rule;
+import com.github.jknack.antlr4ide.lang.RuleBlock;
+import com.github.jknack.antlr4ide.lang.RuleRef;
+import com.github.jknack.antlr4ide.lang.Terminal;
+import com.github.jknack.antlr4ide.lang.V3Token;
+import com.github.jknack.antlr4ide.lang.V3Tokens;
+import com.github.jknack.antlr4ide.lang.V4Token;
+import com.github.jknack.antlr4ide.lang.V4Tokens;
+import com.github.jknack.antlr4ide.lang.Wildcard;
 import com.google.common.collect.Sets;
 
 @RunWith(PowerMockRunner.class)
@@ -72,7 +72,7 @@ public class Antlr4ValidatorTest {
     expect(resource.getURI()).andReturn(uri);
 
     PowerMock.expectPrivate(validator, "error", "grammar name 'H' and file name 'G.g4' differ",
-        Antlr4Package.Literals.GRAMMAR__NAME, Antlr4Validator.GRAMMAR_NAME_DIFFER, "H", "G");
+        LangPackage.Literals.GRAMMAR__NAME, Antlr4Validator.GRAMMAR_NAME_DIFFER, "H", "G");
 
     Object[] mocks = {grammar, resource, validator };
 

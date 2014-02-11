@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.DirectoryDialog
 import com.github.jknack.antlr4ide.ui.railroad.figures.RailroadTrack
 import org.eclipse.core.runtime.Path
 import com.github.jknack.antlr4ide.ui.railroad.figures.AbstractSegmentFigure
-import com.github.jknack.antlr4ide.antlr4.Grammar
+import com.github.jknack.antlr4ide.lang.Grammar
 import com.google.common.io.Files
 import com.google.common.base.Charsets
 import com.github.jknack.antlr4ide.ui.labeling.Antlr4HoverProvider
