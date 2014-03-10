@@ -84,7 +84,8 @@ class Antlr4Validator extends AbstractAntlr4Validator {
 
     grammar.prequels.filter(GrammarAction).forEach [
       val name = it.name
-      if (!actions.add(name)) {
+      val qname = it.scope + "::" + name
+      if (!actions.add(qname)) {
         error(
           "redefinition of '" + name + "' action",
           it,

@@ -258,7 +258,7 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
     String body) {
     val Set<Pair<Integer, Integer>> sections = newHashSet()
     val Procedure2<Pattern, String> highlighter = [ pattern, type |
-      val matcher = pattern.matcher(body)
+      val matcher = pattern.matcher(body?: "")
       while (matcher.find) {
         highlightObjectAtFeature(acceptor, object, featureName, type) [ region |
           val offset = region.offset + matcher.start

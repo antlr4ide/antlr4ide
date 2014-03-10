@@ -120,8 +120,10 @@ public class Antlr4ValidatorTest {
 
     expect(grammar.getPrequels()).andReturn(prequels);
 
+    expect(action1.getScope()).andReturn(null);
     expect(action1.getName()).andReturn("members");
 
+    expect(action2.getScope()).andReturn(null);
     expect(action2.getName()).andReturn("members");
     expect(action2.eClass()).andReturn(eClass);
     expect(eClass.getEStructuralFeature("name")).andReturn(feature);
