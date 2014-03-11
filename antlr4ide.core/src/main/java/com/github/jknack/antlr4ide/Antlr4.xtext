@@ -480,14 +480,16 @@ LexerCommandName
 
 LexerCommandExpr
   :
-    ref=[ModeOrLexerRule|Id]
+    ref=[LexerCommandArg|Id]
   | value=INT
   ;
 
-ModeOrLexerRule
+LexerCommandArg
   :
     Mode
   | LexerRule
+  | V3Token
+  | V4Token
   ;
 
 /** ID */

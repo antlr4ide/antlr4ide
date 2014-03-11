@@ -167,6 +167,10 @@ class Antlr4RailroadTransformer {
     rule.name
   }
 
+  def dispatch String nameOf(EObject object) {
+    "<missing>"
+  }
+
   def dispatch String nameOf(V3Token token) {
     token.id
   }

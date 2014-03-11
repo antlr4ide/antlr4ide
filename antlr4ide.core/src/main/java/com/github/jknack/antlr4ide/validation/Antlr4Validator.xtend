@@ -33,6 +33,8 @@ import com.github.jknack.antlr4ide.lang.ElementOption
 import com.github.jknack.antlr4ide.lang.Wildcard
 import com.github.jknack.antlr4ide.lang.V4Token
 import com.github.jknack.antlr4ide.validation.AbstractAntlr4Validator
+import com.github.jknack.antlr4ide.lang.LexerCommand
+import com.google.common.collect.Sets
 
 /**
  * Custom validation rules. 
@@ -50,6 +52,18 @@ class Antlr4Validator extends AbstractAntlr4Validator {
   public static val RULEREF_OPTIONS = newHashSet("fail")
 
   public static val TOKEN_OPTIONS = newHashSet("assoc")
+
+  /**
+   * Default modes in ANTLRv4.
+   */
+  public static val MODES = newHashSet("DEFAULT_MODE", "MORE", "SKIP", "HIDDEN",
+      "DEFAULT_TOKEN_CHANNEL")
+
+  /** Lexer commands without argument */
+  public static val NO_ARG_COMMANDS = newHashSet("skip", "more", "popMode")
+
+  /** Lexer commands with argument */
+  public static val COMMANDS = newHashSet("type", "channel", "mode", "pushMode")
 
   @Check
   def checkGrammarName(Grammar grammar) {
@@ -196,6 +210,77 @@ class Antlr4Validator extends AbstractAntlr4Validator {
         "unsupported option '" + name + "'",
         option,
         option.eClass.getEStructuralFeature("name")
+      )
+    }
+  }
+
+  @Check
+  def commandWithUnrecognizedConstantValue(LexerCommand command) {
+    val args = command.args;
+
+    if (args != null) {
+      val ref = args.ref
+      val rule = command.getContainerOfType(Rule)
+      val references = Sets.newHashSet(MODES)
+      val constant = switch (ref) {
+        Mode : {
+          references.add(ref.id)
+          ref.id
+        }
+        LexerRule : {
+          references.add(ref.name)
+          ref.name
+        }
+        V3Token : ref.id
+        V4Token : ref.name
+        default: null
+      }
+      if (!references.contains(constant)) {
+        warning(
+          "rule '" + rule.name + "' contains a lexer command with an unrecognized " +
+          "constant value; lexer interpreters may produce incorrect output",
+          args,
+          args.eClass.getEStructuralFeature("ref")
+        )
+      }
+    }
+  }
+
+  @Check
+  def missingArgument(LexerCommand command) {
+    val name = command.name
+    val args = command.args;
+    if (COMMANDS.contains(name) && args == null) {
+      error(
+        "missing argument for lexer command '" + name + "' ",
+        command,
+        command.eClass.getEStructuralFeature("name")
+      )
+    }
+  }
+
+  @Check
+  def noArgument(LexerCommand command) {
+    val name = command.name
+    val args = command.args;
+    if (NO_ARG_COMMANDS.contains(name) && args != null) {
+      error(
+        "lexer command '" + name + "' does not take any arguments",
+        command,
+        command.eClass.getEStructuralFeature("name")
+      )
+    }
+  }
+
+  @Check
+  def unsupported(LexerCommand command) {
+    val name = command.name
+
+    if (!NO_ARG_COMMANDS.contains(name) && !COMMANDS.contains(name)) {
+      error(
+        "lexer command '" + name + "' does not exist or is not supported by the current target",
+        command,
+        command.eClass.getEStructuralFeature("name")
       )
     }
   }

@@ -24,16 +24,8 @@ import com.github.jknack.antlr4ide.lang.LexerCommands;
 import com.github.jknack.antlr4ide.lang.LexerRule;
 import com.github.jknack.antlr4ide.lang.ParserRule;
 import com.github.jknack.antlr4ide.lang.RuleRef;
-import com.google.common.collect.Sets;
 
 public class Antlr4MissingReferenceMessageProviderTest {
-
-  @Test
-  public void defaultModes() {
-    assertEquals(
-        Sets.newHashSet("DEFAULT_MODE", "MORE", "SKIP", "HIDDEN", "DEFAULT_TOKEN_CHANNEL"),
-        Antlr4MissingReferenceMessageProvider.MODES);
-  }
 
   @Test
   public void defaultModesOK() {
@@ -74,12 +66,7 @@ public class Antlr4MissingReferenceMessageProviderTest {
 
     DiagnosticMessage message = new Antlr4MissingReferenceMessageProvider()
         .getUnresolvedProxyMessage(diagnosticContext);
-    assertNotNull(message);
-
-    assertEquals(Diagnostic.LINKING_DIAGNOSTIC, message.getIssueCode());
-    assertArrayEquals(new String[]{"INSIDE", "mode" }, message.getIssueData());
-    assertEquals("reference to undefined mode 'INSIDE'", message.getMessage());
-    assertEquals(Severity.ERROR, message.getSeverity());
+    assertNull(message);
 
     verify(mocks);
   }

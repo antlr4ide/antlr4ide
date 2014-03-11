@@ -17,11 +17,6 @@ import com.github.jknack.antlr4ide.lang.LexerCommands
  */
 class Antlr4MissingReferenceMessageProvider extends LinkingDiagnosticMessageProvider {
 
-  /**
-   * Default modes in ANTLRv4.
-   */
-  public static val MODES = newHashSet("DEFAULT_MODE", "MORE", "SKIP", "HIDDEN", "DEFAULT_TOKEN_CHANNEL")
-
   override getUnresolvedProxyMessage(ILinkingDiagnosticContext diagnosticContext) {
     val linkText = try {
       diagnosticContext.linkText
@@ -33,13 +28,8 @@ class Antlr4MissingReferenceMessageProvider extends LinkingDiagnosticMessageProv
     val command = context.getContainerOfType(LexerCommands) != null
 
     if (command) {
-      if (MODES.contains(linkText)) {
-
-        // default modes are OK
-        return null
-      }
-      return new DiagnosticMessage("reference to undefined mode '" + linkText + "'", ERROR,
-        LINKING_DIAGNOSTIC, linkText, "mode")
+      // modes are OK
+      return null
     }
 
     val rule = context.getContainerOfType(Rule)

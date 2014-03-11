@@ -24,7 +24,6 @@ import com.github.jknack.antlr4ide.lang.EmptyTokens
 import com.github.jknack.antlr4ide.lang.LexerCommand
 import com.github.jknack.antlr4ide.lang.LexerCommands
 import com.github.jknack.antlr4ide.lang.Mode
-import com.github.jknack.antlr4ide.lang.ModeOrLexerRule
 import com.github.jknack.antlr4ide.lang.LexerCharSet
 import org.eclipse.xtext.util.ITextRegion
 import com.google.common.base.Function
@@ -48,6 +47,7 @@ import com.github.jknack.antlr4ide.lang.QualifiedOption
 import com.google.inject.Inject
 import org.eclipse.xtext.documentation.IEObjectDocumentationProviderExtension
 import org.eclipse.xtext.documentation.IEObjectDocumentationProvider
+import com.github.jknack.antlr4ide.lang.LexerCommandArg
 
 class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
 
@@ -355,7 +355,7 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
     val expr = object.args
     if (expr != null) {
       val ref = expr.ref
-      if (ref instanceof ModeOrLexerRule) {
+      if (ref instanceof LexerCommandArg) {
         highlightObjectAtFeature(acceptor, expr, "ref", MODE)
       } else if (ref instanceof LexerRule) {
         highlightObjectAtFeature(acceptor, expr, "ref", TOKEN)

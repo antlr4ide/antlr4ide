@@ -67,6 +67,9 @@ class ToolOptions {
 
   boolean outputSet = false
 
+  @Property
+  boolean packageInsideAction = false
+  
   /**
    * Produces output options like absolute, workspace relative output directory and package name.
    * It tries to detect/guess a package's name for files under <code>src/main/antlr4</code>,
@@ -82,11 +85,13 @@ class ToolOptions {
 
     // device = null is required on Windows, see https://github.com/jknack/antlr4ide/issues/1
     val prefix = file.location.setDevice(null).removeFirstSegments(projectPath.segmentCount)
-    var pkg = if (outputSet)
+    var pkgDir = if (outputSet) {
         // Output folder was set by user, just follow what user say and don't find a
         // default package see: https://github.com/jknack/antlr4ide/issues/5
         Path.fromPortableString("")
-      else
+      } else if (packageName != null) {
+        Path.fromPortableString(packageName.replace(".", "/"))
+      } else {
         removeSegment(
           removeSegment(
             removeSegment(removeSegment(prefix, "src", "main", "antlr4"), "src", "main", "java"),
@@ -96,19 +101,20 @@ class ToolOptions {
           ),
           "src"
         )
+      }
 
     val dir = new File(outputDirectory)
 
-    if (pkg == prefix) {
-      pkg = pkg.removeFirstSegments(prefix.segmentCount)
+    if (pkgDir == prefix) {
+      pkgDir = pkgDir.removeFirstSegments(prefix.segmentCount)
     }
 
     // if output was set by user, over
     if (dir.absolute || dir.exists) {
       return new OutputOption(
-        Path.fromOSString(outputDirectory).append(pkg),
-        Path.fromOSString(outputDirectory).append(pkg).makeRelative,
-        pkg.toString.replace("/", ".")
+        Path.fromOSString(outputDirectory).append(pkgDir),
+        Path.fromOSString(outputDirectory).append(pkgDir).makeRelative,
+        pkgDir.toString.replace("/", ".")
       )
     }
     var output = outputDirectory
@@ -118,17 +124,17 @@ class ToolOptions {
     val candidate = output.replace(projectPath.toOSString, "")
     if (candidate != output) {
       return new OutputOption(
-        Path.fromOSString(output).append(pkg),
-        Path.fromOSString(candidate).append(pkg).makeRelative,
-        pkg.toString.replace("/", ".")
+        Path.fromOSString(output).append(pkgDir),
+        Path.fromOSString(candidate).append(pkgDir).makeRelative,
+        pkgDir.toString.replace("/", ".")
       )
     }
 
     // make it project relative
     return new OutputOption(
-      Path.fromPortableString(projectPath.toOSString).append(output).append(pkg),
-      Path.fromPortableString(output).append(pkg),
-      pkg.toString.replace("/", ".")
+      Path.fromPortableString(projectPath.toOSString).append(output).append(pkgDir),
+      Path.fromPortableString(output).append(pkgDir),
+      pkgDir.toString.replace("/", ".")
     )
   }
 
@@ -184,10 +190,12 @@ class ToolOptions {
     }
 
     // package
-    if (packageName != null) {
-      options.addAll("-package", packageName)
-    } else if (out.packageName.length > 0) {
-      options.addAll("-package", out.packageName)
+    if(!packageInsideAction) {
+      if (packageName != null) {
+        options.addAll("-package", packageName)
+      } else if (out.packageName.length > 0) {
+        options.addAll("-package", out.packageName)
+      }
     }
 
     // message-format
