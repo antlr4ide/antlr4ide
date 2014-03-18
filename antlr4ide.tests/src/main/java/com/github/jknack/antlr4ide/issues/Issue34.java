@@ -1,4 +1,4 @@
-package com.github.jknack.antlr4ide.validation;
+package com.github.jknack.antlr4ide.issues;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
@@ -25,6 +25,7 @@ import com.github.jknack.antlr4ide.lang.Return;
 import com.github.jknack.antlr4ide.lang.Rule;
 import com.github.jknack.antlr4ide.lang.RuleBlock;
 import com.github.jknack.antlr4ide.lang.RuleRef;
+import com.github.jknack.antlr4ide.validation.Antlr4Validator;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Antlr4Validator.class })

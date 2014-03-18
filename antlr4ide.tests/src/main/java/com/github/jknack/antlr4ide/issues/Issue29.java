@@ -1,4 +1,4 @@
-package com.github.jknack.antlr4ide.validation;
+package com.github.jknack.antlr4ide.issues;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
@@ -21,10 +21,11 @@ import com.github.jknack.antlr4ide.lang.Mode;
 import com.github.jknack.antlr4ide.lang.Rule;
 import com.github.jknack.antlr4ide.lang.V3Token;
 import com.github.jknack.antlr4ide.lang.V4Token;
+import com.github.jknack.antlr4ide.validation.Antlr4Validator;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Antlr4Validator.class })
-public class Issue29Test {
+public class Issue29 {
 
   @Test
   public void commandWithModeRefOK() throws Exception {

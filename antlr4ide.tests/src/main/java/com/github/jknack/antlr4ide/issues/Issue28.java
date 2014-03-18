@@ -1,4 +1,4 @@
-package com.github.jknack.antlr4ide.validation;
+package com.github.jknack.antlr4ide.issues;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
@@ -16,10 +16,11 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import com.github.jknack.antlr4ide.lang.Grammar;
 import com.github.jknack.antlr4ide.lang.GrammarAction;
 import com.github.jknack.antlr4ide.lang.PrequelConstruct;
+import com.github.jknack.antlr4ide.validation.Antlr4Validator;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Antlr4Validator.class })
-public class Issue28Test {
+public class Issue28 {
 
   @Test
   public void actionOnDiffScopesMustNotFail() throws Exception {

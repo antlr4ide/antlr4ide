@@ -1,4 +1,4 @@
-package com.github.jknack.antlr4ide.i16;
+package com.github.jknack.antlr4ide.issues;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
@@ -15,7 +15,7 @@ import org.junit.Test;
 import com.github.jknack.antlr4ide.generator.ToolOptions;
 import com.google.common.collect.Lists;
 
-public class Issue16Test {
+public class Issue16 {
 
   @Test
   public void commandWithPackageNameFromAction() {
