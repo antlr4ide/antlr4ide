@@ -77,14 +77,18 @@
                   <fileset dir="${source}" includes="**/*.g" />
                 </copy>
 
-                <exec executable="java" dir="${workDir}">
-                  <arg value="-cp" />
-                  <arg value="${cp}" />
-                  <arg value="org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher" />
-                  <arg
-                    value="${workDir}${file.separator}${source}${file.separator}com${file.separator}github${file.separator}jknack${file.separator}antlr4ide${file.separator}GenerateAntlr4.mwe2" />
-                  <arg value="-p" />
-                  <arg value="runtimeProject=${workDir}" />
+                <!-- build fails on Windows, see https://github.com/jknack/antlr4ide/issues/33 -->
+                <pathconvert property="mwe2path" targetos="unix">
+                  <path location="${workDir}${file.separator}${source}${file.separator}com${file.separator}github${file.separator}jknack${file.separator}antlr4ide${file.separator}GenerateAntlr4.mwe2"/>
+                </pathconvert>
+
+                <exec dir="${workDir}" executable="java">
+                  <arg value="-cp"/>
+                  <arg value="${cp}"/>
+                  <arg value="org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher"/>
+                  <arg value="file://${mwe2path}"/>
+                  <arg value="-p"/>
+                  <arg value="runtimeProject=/${workDir}"/>
                 </exec>
               </target>
             </configuration>
