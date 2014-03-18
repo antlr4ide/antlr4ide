@@ -119,6 +119,10 @@
         <configuration>
           <useUIHarness>false</useUIHarness>
           <useUIThread>false</useUIThread>
+          <includes>
+            <include>**/*Test.java</include>
+            <include>**/Issue*.java</include>
+          </includes>
         </configuration>
         <executions>
           <execution>

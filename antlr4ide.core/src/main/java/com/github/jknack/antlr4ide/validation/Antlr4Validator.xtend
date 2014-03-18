@@ -35,6 +35,7 @@ import com.github.jknack.antlr4ide.lang.V4Token
 import com.github.jknack.antlr4ide.validation.AbstractAntlr4Validator
 import com.github.jknack.antlr4ide.lang.LexerCommand
 import com.google.common.collect.Sets
+import java.util.regex.Pattern
 
 /**
  * Custom validation rules. 
@@ -64,6 +65,10 @@ class Antlr4Validator extends AbstractAntlr4Validator {
 
   /** Lexer commands with argument */
   public static val COMMANDS = newHashSet("type", "channel", "mode", "pushMode")
+
+  /** Java Identifier expression. */
+  private static val REF = Pattern
+      .compile("\\$([\\p{L}_][\\p{L}\\p{N}_$]*)(\\.[\\p{L}_$][\\p{L}\\p{N}_$]*)*")
 
   @Check
   def checkGrammarName(Grammar grammar) {
@@ -384,38 +389,38 @@ class Antlr4Validator extends AbstractAntlr4Validator {
     if(locals != null) append.apply(locals.body)
 
     // local vars and/or lexer rules
-    rule.body.eAllContents.filter[it instanceof LabeledElement || it instanceof Terminal].forEach [
-      if (it instanceof LabeledElement) {
-        scope.append(it.name).append(" ")
-      } else if (it instanceof Terminal) {
-        val reference = it.reference
-        if (reference instanceof LexerRule) {
-          scope.append(reference.name).append(" ")
+    rule.body.eAllContents.filter[
+      it instanceof LabeledElement ||
+      it instanceof Terminal ||
+      it instanceof RuleRef
+    ].forEach [
+      val name = switch it {
+        LabeledElement: name
+        Terminal: switch ref : it.reference {
+          LexerRule: ref.name
+          default: ""
         }
+        RuleRef: reference.name
+        default: ""
       }
+      scope.append(name).append(" ")
     ]
 
     Splitter.on(CharMatcher.anyOf(" ,;\r\n\t=")).trimResults.omitEmptyStrings.split(scope).toSet
   }
 
   private def checkAttributeReference(Set<String> locals, EObject action, String body) {
-    var start = body.indexOf("$")
-    while (start >= 0) {
-      var i = start + 1
-      val ref = new StringBuilder
-      while (Character.isJavaIdentifierPart(body.charAt(i))) {
-        ref.append(body.charAt(i))
-        i = i + 1
-      }
+    val matcher = REF.matcher(body)
+    while (matcher.find) {
+      val ref = matcher.group(1)
       if (!locals.contains(ref.toString)) {
         error(
           "unknown attribute reference '" + ref + "' in '$" + ref + "'",
           action,
-          start,
+          matcher.start,
           ref.length + 1
         )
       }
-      start = body.indexOf("$", i)
     }
   }
 
