@@ -14,14 +14,12 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-@Ignore
 public class ToolOptionsTest {
 
   @Test
@@ -359,8 +357,10 @@ public class ToolOptionsTest {
 
     OutputOption output = options.output(file);
     assertNotNull(output);
-    assertEquals(projectPath.append(outputPath).toPortableString(), output.getAbsolute().toPortableString());
-    assertEquals(Path.fromPortableString("/").append(outputPath).toPortableString(), output.getRelative()
+    assertEquals(projectPath.append(outputPath).toPortableString(), output.getAbsolute()
+        .toPortableString());
+    assertEquals(Path.fromPortableString("/").append(outputPath).toPortableString(), output
+        .getRelative()
         .toPortableString());
     assertEquals("", output.getPackageName());
 
@@ -390,11 +390,12 @@ public class ToolOptionsTest {
 
     OutputOption output = options.output(file);
     assertNotNull(output);
-    assertEquals(projectPath.append(outputPath).append("org").append("demo").toPortableString(),
-        output.getAbsolute().toPortableString());
-    assertEquals(Path.fromPortableString("/").append(outputPath).append("org").append("demo")
-        .toPortableString(),
-        output.getRelative().toPortableString());
+
+    assertPath(projectPath.append(outputPath).append("org").append("demo"), output.getAbsolute());
+
+    assertPath(Path.fromPortableString("/").append(outputPath).append("org").append("demo"),
+        output.getRelative());
+
     assertEquals("org.demo", output.getPackageName());
 
     verify(mocks);
@@ -423,9 +424,12 @@ public class ToolOptionsTest {
 
     OutputOption output = options.output(file);
     assertNotNull(output);
-    assertEquals(projectPath.append(outputPath).append("org").append("demo").toPortableString(), output.getAbsolute().toPortableString());
-    assertEquals(Path.fromPortableString("/").append(outputPath).append("org").append("demo").toPortableString(),
-        output.getRelative().toPortableString());
+
+    assertPath(projectPath.append(outputPath).append("org").append("demo"), output.getAbsolute());
+
+    assertPath(Path.fromPortableString("/").append(outputPath).append("org").append("demo"),
+        output.getRelative());
+
     assertEquals("org.demo", output.getPackageName());
 
     verify(mocks);
@@ -454,9 +458,12 @@ public class ToolOptionsTest {
 
     OutputOption output = options.output(file);
     assertNotNull(output);
-    assertEquals(projectPath.append(outputPath).append("org").append("demo"), output.getAbsolute());
-    assertEquals(Path.fromPortableString("/").append(outputPath).append("org").append("demo"),
+
+    assertPath(projectPath.append(outputPath).append("org").append("demo"), output.getAbsolute());
+
+    assertPath(Path.fromPortableString("/").append(outputPath).append("org").append("demo"),
         output.getRelative());
+
     assertEquals("org.demo", output.getPackageName());
 
     verify(mocks);
@@ -666,4 +673,11 @@ public class ToolOptionsTest {
     verify(mocks);
   }
 
+  private void assertPath(final IPath expected, final IPath path) {
+    assertEquals(normalize(expected), normalize(path));
+  }
+
+  private String normalize(final IPath path) {
+    return path.toPortableString().replace("\\", "/");
+  }
 }
