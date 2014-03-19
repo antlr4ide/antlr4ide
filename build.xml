@@ -1,0 +1,91 @@
+<project>
+  <!-- Make a new release -->
+  <target name="make-release">
+    <!-- build before everything
+    <exec command="mvn">
+      <arg value="clean"/>
+      <arg value="package"/>
+    </exec> -->
+
+    <!-- Ask for version numbers -->
+    <input message="current version: " addproperty="version" />
+    <input message="release version: " addproperty="release.version" />
+    <input message="next version: " addproperty="n.version" />
+
+    <property name="current.version" value="${version}-SNAPSHOT" />
+    <property name="next.version" value="${n.version}-SNAPSHOT" />
+
+    <echo message="preparing release for: ${release.version}" />
+
+    <echo message="prepare for release ${release.version} " />
+    <!-- create p2 repository  -->
+    <property name="releaseDir" value="updates/release/4.3" />
+
+    <echo message="creating p2 repository under: ${releaseDir}" />
+    <delete dir="${releaseDir}" failonerror="false"/>
+    <mkdir dir="${releaseDir}" />
+    <copy file="updates/category.xml" todir="${releaseDir}" />
+    <copy todir="${releaseDir}">
+      <fileset dir="updates/target/repository" />
+    </copy>
+
+    <echo message="releasing: ${release.version}" />
+    <!-- update pom.xml with release version -->
+    <replace dir="${basedir}">
+      <include name="**/pom.xml"/>
+      <replacefilter token="${current.version}" value="${release.version}" />
+    </replace>
+
+    <exec executable="git">
+      <arg value="status"/>
+    </exec>
+    <exec executable="git">
+      <arg value="add"/>
+      <arg value="."/>
+    </exec>
+    <exec executable="git">
+      <arg value="commit"/>
+      <arg value="-m"/>
+      <arg value="release v${release.version}"/>
+    </exec>
+    <exec executable="git">
+      <arg value="tag"/>
+      <arg value="-a"/>
+      <arg value="v${release.version}"/>
+      <arg value="-m"/>
+      <arg value="release v${release.version}"/>
+    </exec>
+    <exec executable="git">
+      <arg value="push"/>
+      <arg value="origin"/>
+      <arg value="v${release.version}"/>
+    </exec>
+
+    <echo message="release done: ${release.version}" />
+
+    <echo message="preparing next development cycle for ${next.version}" />
+    <!-- update pom.xml with next version -->
+    <replace dir="${basedir}">
+      <include name="**/pom.xml"/>
+      <replacefilter token="${current.version}" value="${next.version}" />
+    </replace>
+
+    <exec executable="git">
+      <arg value="status"/>
+    </exec>
+    <exec executable="git">
+      <arg value="add"/>
+      <arg value="."/>
+    </exec>
+    <exec executable="git">
+      <arg value="commit"/>
+      <arg value="-m"/>
+      <arg value="next development cycle v${next.version}"/>
+    </exec>
+    <exec executable="git">
+      <arg value="push"/>
+      <arg value="origin"/>
+    </exec>
+
+  </target>
+</project>
