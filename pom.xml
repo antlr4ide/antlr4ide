@@ -15,7 +15,7 @@
     <module>antlr4ide.app</module>
     <module>antlr4ide.sdk</module>
     <module>antlr4ide.product</module>
-    <module>site</module>
+    <module>updates</module>
   </modules>
 
   <build>
