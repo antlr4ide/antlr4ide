@@ -26,7 +26,7 @@ This is brand new version of the **old** [ANTLR IDE](http://antlrv3ide.sourcefor
 
 The **old** [ANTLR IDE](http://antlrv3ide.sourceforge.net/) isn't supported anymore. When I wrote it, I was young and didn't know what was doing ;)
 
-Don't get it me wrong, the old version did a very good work from  user point of view, it just I'm not proud of the code base because is kind of complex and had a poor quality.
+Don't get me wrong, the old version did a very good work from  user point of view, it just I'm not proud of the code base because is kind of complex and had a poor quality.
 
 The main reason of complexity of the old IDE was in Dynamic Language ToolKit (DLTK) dependency. The DLTK project didn't evolve so much over the last few years and doing something in DLTK is very very complex and require a lot of work.
 
@@ -35,7 +35,7 @@ Now, the **new** IDE was built on [XText](http://www.eclipse.org/Xtext). [XText]
 Requirements
 =========
 * Eclipse 4.3 (Kepler)
-* XText 2.5
+* XText 2.5.x
 
 Installation
 =========
@@ -47,7 +47,7 @@ ANTLR 4 IDE **isn't** available in the Eclipse Market Place yet, so you MUST ins
 * Copy and paste this url: http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/ in the **Work with** text field
 * Hit Enter
 * Choose **XText 2.5.0**. NOTE: DON'T confuse with Xtend, you must choose Xtext
-* Now, copy and paste this url: https://github.com/jknack/antlr4ide/raw/master/site/0.1.0/ in the **Work with** text field
+* Now, copy and paste this url: https://github.com/jknack/antlr4ide/raw/master/updates/release/4.3 in the **Work with** text field
 * Choose: **ANTLR 4 SDK IDE**. NOTE: If you don't see it, please unmark the **Group items by category** option
 * Click: Next and follow the normal Eclipse installation procedure
 
