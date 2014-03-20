@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="ANTLRv4 IDE" uid="antlr4ide" id="antlr4ide.app.product" application="org.eclipse.ui.ide.workbench" version="0.1.1.qualifier" useFeatures="false" includeLaunchers="true">
+<product name="ANTLRv4 IDE" uid="antlr4ide" id="antlr4ide.app.product" application="org.eclipse.ui.ide.workbench" version="0.2.1.qualifier" useFeatures="false" includeLaunchers="true">
 
    <aboutInfo>
       <image path="about.png"/>

@@ -1,16 +1,24 @@
 <project>
+
+  <!-- Ask for version numbers -->
+  <input message="current version: " addproperty="version" />
+  <input message="release version: " addproperty="release.version" defaultvalue="${version}" />
+  <input message="next version: " addproperty="n.version" />
+
+  <property name="current.version.osgi" value="${version}.qualifier" />
+  <property name="current.version" value="${version}-SNAPSHOT" />
+  <property name="next.version.osgi" value="${n.version}.qualifier" />
+  <property name="next.version" value="${n.version}-SNAPSHOT" />
+
   <!-- Make a new release -->
   <target name="make-release">
-    <!-- Ask for version numbers -->
-    <input message="current version: " addproperty="version" />
-    <input message="release version: " addproperty="release.version" />
-    <input message="next version: " addproperty="n.version" />
+    <antcall target="release-version" />
 
-    <property name="current.version.osgi" value="${version}.qualifier" />
-    <property name="current.version" value="${version}-SNAPSHOT" />
-    <property name="next.version.osgi" value="${n.version}.qualifier" />
-    <property name="next.version" value="${n.version}-SNAPSHOT" />
+    <antcall target="development-version" />
 
+  </target>
+
+  <target name="release-version">
     <echo message="setting version to ${release.version}" />
 
     <!-- update pom.xml with release version -->
@@ -25,12 +33,13 @@
     <replace dir="${basedir}">
       <include name="**/feature.xml"/>
       <include name="**/category.xml"/>
+      <include name="**/ANTLRv4.product"/>
       <replacefilter token="${current.version.osgi}" value="${release.version}" />
     </replace>
 
     <echo message="building: ${release.version}..." />
     <!-- recompile -->
-    <exec executable="mvn">
+    <exec executable="mvn" failonerror="true">
       <arg value="clean"/>
       <arg value="package"/>
     </exec>
@@ -52,15 +61,18 @@
       <arg value="status"/>
     </exec>
 
+    <!--
     <exec executable="git">
       <arg value="add"/>
       <arg value="."/>
     </exec>
+
     <exec executable="git">
       <arg value="commit"/>
       <arg value="-m"/>
       <arg value="release v${release.version}"/>
     </exec>
+
     <exec executable="git">
       <arg value="tag"/>
       <arg value="-a"/>
@@ -68,14 +80,18 @@
       <arg value="-m"/>
       <arg value="release v${release.version}"/>
     </exec>
+
     <exec executable="git">
       <arg value="push"/>
       <arg value="origin"/>
       <arg value="v${release.version}"/>
     </exec>
+    -->
 
     <echo message="release done: ${release.version}" />
+  </target>
 
+  <target name="development-version">
     <echo message="preparing next development cycle for ${next.version}" />
 
     <!-- update pom.xml with next version -->
@@ -90,6 +106,7 @@
     <replace dir="${basedir}">
       <include name="**/feature.xml"/>
       <include name="**/category.xml"/>
+      <include name="**/ANTLRv4.product"/>
       <replacefilter token="${release.version}" value="${next.version.osgi}" />
     </replace>
 
@@ -97,6 +114,7 @@
       <arg value="status"/>
     </exec>
 
+    <!--
     <exec executable="git">
       <arg value="add"/>
       <arg value="."/>
@@ -107,10 +125,11 @@
       <arg value="-m"/>
       <arg value="next development cycle v${next.version}"/>
     </exec>
+
     <exec executable="git">
       <arg value="push"/>
       <arg value="origin"/>
-    </exec>
+    </exec> -->
 
   </target>
 </project>
