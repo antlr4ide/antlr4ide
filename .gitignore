@@ -4,7 +4,6 @@
 *.war
 *.ear
 
-*.zip
 target
 bin
 dependency-reduced-pom.xml
