@@ -1,4 +1,4 @@
-package com.github.jknack.antlr.ui;
+package com.github.jknack.antlr4ide.ui;
 
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;

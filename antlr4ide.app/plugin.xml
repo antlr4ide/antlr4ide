@@ -53,9 +53,9 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="com.github.jknack.antlr.ui.Antlr4Perspective"
+            class="com.github.jknack.antlr4ide.ui.Antlr4Perspective"
             icon="icons/perspective.png"
-            id="com.github.jknack.Antlr4.perspective"
+            id="antlr4.perspective"
             name="ANTLR">
       </perspective>
    </extension>
