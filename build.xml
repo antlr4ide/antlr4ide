@@ -85,7 +85,7 @@
     </replace>
     <replace dir="${basedir}">
       <include name="**/MANIFEST.MF"/>
-      <replacefilter token="Bundle-Version: ${release.version}.qualifier" value="Bundle-Version: ${next.version.osgi}" />
+      <replacefilter token="Bundle-Version: ${release.version}" value="Bundle-Version: ${next.version.osgi}" />
     </replace>
     <replace dir="${basedir}">
       <include name="**/feature.xml"/>
