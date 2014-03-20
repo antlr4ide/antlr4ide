@@ -1,25 +1,44 @@
 <project>
   <!-- Make a new release -->
   <target name="make-release">
-    <!-- build before everything
-    <exec command="mvn">
-      <arg value="clean"/>
-      <arg value="package"/>
-    </exec> -->
-
     <!-- Ask for version numbers -->
     <input message="current version: " addproperty="version" />
     <input message="release version: " addproperty="release.version" />
     <input message="next version: " addproperty="n.version" />
 
+    <property name="current.version.osgi" value="${version}.qualifier" />
     <property name="current.version" value="${version}-SNAPSHOT" />
+    <property name="next.version.osgi" value="${n.version}.qualifier" />
     <property name="next.version" value="${n.version}-SNAPSHOT" />
 
-    <echo message="preparing release for: ${release.version}" />
+    <echo message="setting version to ${release.version}" />
 
-    <echo message="prepare for release ${release.version} " />
+    <!-- update pom.xml with release version -->
+    <replace dir="${basedir}">
+      <include name="**/pom.xml"/>
+      <replacefilter token="${current.version}" value="${release.version}" />
+    </replace>
+    <replace dir="${basedir}">
+      <include name="**/MANIFEST.MF"/>
+      <replacefilter token="Bundle-Version: ${current.version.osgi}" value="Bundle-Version: ${release.version}" />
+    </replace>
+    <replace dir="${basedir}">
+      <include name="**/feature.xml"/>
+      <include name="**/category.xml"/>
+      <replacefilter token="${current.version.osgi}" value="${release.version}" />
+    </replace>
+
+    <echo message="building: ${release.version}..." />
+    <!-- recompile -->
+    <exec executable="mvn">
+      <arg value="clean"/>
+      <arg value="package"/>
+    </exec>
+
     <!-- create p2 repository  -->
+    <echo message="prepare for release ${release.version} " />
     <property name="releaseDir" value="updates/release/4.3" />
+    <property name="standaloneDir" value="updates/release/standalone" />
 
     <echo message="creating p2 repository under: ${releaseDir}" />
     <delete dir="${releaseDir}" failonerror="false"/>
@@ -29,16 +48,10 @@
       <fileset dir="updates/target/repository" />
     </copy>
 
-    <echo message="releasing: ${release.version}" />
-    <!-- update pom.xml with release version -->
-    <replace dir="${basedir}">
-      <include name="**/pom.xml"/>
-      <replacefilter token="${current.version}" value="${release.version}" />
-    </replace>
-
     <exec executable="git">
       <arg value="status"/>
     </exec>
+
     <exec executable="git">
       <arg value="add"/>
       <arg value="."/>
@@ -64,19 +77,31 @@
     <echo message="release done: ${release.version}" />
 
     <echo message="preparing next development cycle for ${next.version}" />
+
     <!-- update pom.xml with next version -->
     <replace dir="${basedir}">
       <include name="**/pom.xml"/>
-      <replacefilter token="${current.version}" value="${next.version}" />
+      <replacefilter token="${release.version}" value="${next.version}" />
+    </replace>
+    <replace dir="${basedir}">
+      <include name="**/MANIFEST.MF"/>
+      <replacefilter token="Bundle-Version: ${release.version}.qualifier" value="Bundle-Version: ${next.version.osgi}" />
+    </replace>
+    <replace dir="${basedir}">
+      <include name="**/feature.xml"/>
+      <include name="**/category.xml"/>
+      <replacefilter token="${release.version}" value="${next.version.osgi}" />
     </replace>
 
     <exec executable="git">
       <arg value="status"/>
     </exec>
+
     <exec executable="git">
       <arg value="add"/>
       <arg value="."/>
     </exec>
+
     <exec executable="git">
       <arg value="commit"/>
       <arg value="-m"/>

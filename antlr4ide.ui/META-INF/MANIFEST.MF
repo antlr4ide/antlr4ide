@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ANTLR 4 UI
 Bundle-Vendor: Edgar Espina
-Bundle-Version: 0.1.1.qualifier
+Bundle-Version: 0.2.0
 Bundle-SymbolicName: antlr4ide.ui; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: antlr4ide.core;visibility:=reexport,
