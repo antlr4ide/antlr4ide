@@ -3,14 +3,14 @@
 ANTLR 4 IDE
 =========
 
-![ANTLR 4 IDE](https://raw.github.com/jknack/antlr4ide/master/site/screenshots/full.png)
+![ANTLR 4 IDE](https://raw.github.com/jknack/antlr4ide/master/updates/screenshots/full.png)
 
 
 Features
 =========
 
 * ANTLR 4.x
-* Advanced Syntax Highlighting ([even for target language](https://raw.github.com/jknack/antlr4ide/master/site/screenshots/target-language-highlighting.png))
+* Advanced Syntax Highlighting ([even for target language](https://raw.github.com/jknack/antlr4ide/master/updates/screenshots/target-language-highlighting.png))
 * Automatic Code Generation (on save)
 * Manual Code Generation (through External Tools menu)
 * Code Formatter (Ctrl+Shift+F)
