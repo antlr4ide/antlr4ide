@@ -179,10 +179,15 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <plugin id="org.eclipse.core.externaltools"/>
       <plugin id="org.eclipse.core.filebuffers"/>
       <plugin id="org.eclipse.core.filesystem"/>
-      <plugin id="org.eclipse.core.filesystem.linux.x86_64" fragment="true"/>
+      <plugin id="org.eclipse.core.filesystem.linux.x86_64" fragment="true" ws="linux" os="linux" arch="x86_64"/>
+      <plugin id="org.eclipse.core.filesystem.linux.x86" fragment="true" ws="linux" os="linux" arch="x86" />
+      <plugin id="org.eclipse.core.filesystem.win32.x86_64" fragment="true" ws="win32" os="win32" arch="x86_64"/>
+      <plugin id="org.eclipse.core.filesystem.win32.x86" fragment="true" ws="win32" os="win32" arch="x86" />
+      <plugin id="org.eclipse.core.filesystem.macosx" fragment="true" ws="macosx" os="macosx" arch="x86_64" />
       <plugin id="org.eclipse.core.jobs"/>
       <plugin id="org.eclipse.core.net"/>
-      <plugin id="org.eclipse.core.net.linux.x86_64" fragment="true"/>
+      <plugin id="org.eclipse.core.net.linux.x86_64" fragment="true"  ws="linux" os="linux" arch="x86_64"/>
+      <plugin id="org.eclipse.core.net.linux.x86" fragment="true" ws="linux" os="linux" arch="x86_64"/>
       <plugin id="org.eclipse.core.resources"/>
       <plugin id="org.eclipse.core.runtime"/>
       <plugin id="org.eclipse.core.runtime.compatibility"/>
@@ -257,7 +262,11 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <plugin id="org.eclipse.equinox.http.registry"/>
       <plugin id="org.eclipse.equinox.http.servlet"/>
       <plugin id="org.eclipse.equinox.launcher"/>
-      <plugin id="org.eclipse.equinox.launcher.gtk.linux.x86_64" fragment="true"/>
+      <plugin id="org.eclipse.equinox.launcher.gtk.linux.x86_64" fragment="true" ws="linux" os="linux" arch="x86_64"/>
+      <plugin id="org.eclipse.equinox.launcher.gtk.linux.x86" fragment="true" ws="linux" os="linux" arch="x86"/>
+      <plugin id="org.eclipse.equinox.launcher.win32.win32.x86_64" fragment="true" ws="win32" os="win32" arch="x86_64"/>
+      <plugin id="org.eclipse.equinox.launcher.win32.win32.x86" fragment="true" ws="win32" os="win32" arch="x86"/>
+      <plugin id="org.eclipse.equinox.launcher.cocoa.macosx.x86_64" fragment="true" ws="macosx" os="macosx" arch="x86_64"/>
       <plugin id="org.eclipse.equinox.p2.artifact.repository"/>
       <plugin id="org.eclipse.equinox.p2.console"/>
       <plugin id="org.eclipse.equinox.p2.core"/>
@@ -323,7 +332,11 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <plugin id="org.eclipse.sdk"/>
       <plugin id="org.eclipse.search"/>
       <plugin id="org.eclipse.swt"/>
-      <plugin id="org.eclipse.swt.gtk.linux.x86_64" fragment="true"/>
+      <plugin id="org.eclipse.swt.gtk.linux.x86_64" fragment="true" ws="linux" os="linux" arch="x86_64"/>
+      <plugin id="org.eclipse.swt.gtk.linux.x86" fragment="true" ws="linux" os="linux" arch="x86"/>
+      <plugin id="org.eclipse.swt.win32.win32.x86_64" fragment="true" ws="win32" os="win32" arch="x86_64"/>
+      <plugin id="org.eclipse.swt.win32.win32.x86" fragment="true" ws="win32" os="win32" arch="x86"/>
+      <plugin id="org.eclipse.swt.cocoa.macosx.x86_64" fragment="true" ws="macosx" os="macosx" arch="x86_64"/>
       <plugin id="org.eclipse.team.core"/>
       <plugin id="org.eclipse.team.ui"/>
       <plugin id="org.eclipse.text"/>
