@@ -47,7 +47,7 @@ ANTLR 4 IDE **isn't** available in the Eclipse Market Place yet, so you MUST ins
 * Copy and paste this url: http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/ in the **Work with** text field
 * Hit Enter
 * Choose **XText 2.5.0**. NOTE: DON'T confuse with Xtend, you must choose Xtext
-* Now, copy and paste this url: https://github.com/jknack/antlr4ide/raw/master/updates/release/4.3 in the **Work with** text field
+* Now, copy and paste this url: https://rawgithub.com/jknack/antlr4ide/master/updates/release/4.3 in the **Work with** text field
 * Choose: **ANTLR 4 SDK IDE**. NOTE: If you don't see it, please unmark the **Group items by category** option
 * Click: Next and follow the normal Eclipse installation procedure
 
