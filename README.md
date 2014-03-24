@@ -35,7 +35,7 @@ Now, the **new** IDE was built on [XText](http://www.eclipse.org/Xtext). [XText]
 Requirements
 =========
 * Eclipse 4.3 (Kepler)
-* XText 2.5.x
+* XText 2.5.3
 
 Installation
 =========
@@ -43,10 +43,10 @@ ANTLR 4 IDE **isn't** available in the Eclipse Market Place yet, so you MUST ins
 
 * Open Eclipse Kepler (4.3)
 * Go to: ```Help > Install New Software...```
-* You need to Install XText 2.5
+* You need to Install XText 2.5.3
 * Copy and paste this url: http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/ in the **Work with** text field
 * Hit Enter
-* Choose **XText 2.5.0**. NOTE: DON'T confuse with Xtend, you must choose Xtext
+* Choose **XText 2.5.3**. NOTE: DON'T confuse with Xtend, you must choose Xtext
 * Now, copy and paste this url: https://rawgithub.com/jknack/antlr4ide/master/updates/release/4.3 in the **Work with** text field
 * Choose: **ANTLR 4 SDK IDE**. NOTE: If you don't see it, please unmark the **Group items by category** option
 * Click: Next and follow the normal Eclipse installation procedure
@@ -70,6 +70,33 @@ A default ANTLR 4 launch configuration will be created. You can modify the gener
 Syntax Diagrams
 =========
 To open the Syntax Diagram view go to: ```Window > Show View > Other``` search and select: **Syntax Diagram**
+
+Build with Maven 3.x
+=========
+1. Fork and clone the repository from github
+2. Download and install [Maven 3.x](http://maven.apache.org/)
+3. Open a shell console and type: ```cd antlr4ide```
+4. Build the project with: ```mvn clean package```
+5. It takes a while to download and configure Eclipse dependencies, so be patient
+6. Wait for a: ```BUILD SUCCESS``` message
+
+Eclipse setup
+=========
+1. Make sure you built the project first.
+2. Open Eclipse Kepler (4.3)
+3. Install Xtext 2.5.3
+4. Copy and paste this url: http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/ in the **Work with** text field
+5. Hit Enter
+6. Choose **XText 2.5.3**. NOTE: DON'T confuse with Xtend, you must choose Xtext
+7. Restart Eclipse after installing Xtext
+8. Import the project into Eclipse
+9. Go to: ```File > Import...``` then ```General > Existing Projects into Workspace```
+10. Choose project root ```antlr4ide```
+11. Enabled: ```Search for nested projects```
+12. Finish
+
+You don't need any extra Eclipse plugin (like m2e or similar). Project metadata is on git so all you need to do is: ```mvn clean package``` and then import the projects into Eclipse.
+
 
 Want to contribute?
 =========
