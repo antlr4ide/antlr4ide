@@ -66,6 +66,8 @@
 
                 <mkdir dir="${workDir}/lib" />
                 <get src="http://www.antlr.org/download/${antlr4.jar}" dest="${workDir}/lib/${antlr4.jar}" usetimestamp="true" skipexisting="true" />
+                <get src="http://repo1.maven.org/maven2/org/abego/treelayout/org.abego.treelayout.core/1.0.1/org.abego.treelayout.core-1.0.1.jar"
+                    dest="${workDir}/lib/treelayout.core-1.0.1.jar" usetimestamp="true" skipexisting="true" />
 
                 <get src="http://download.itemis.com/${antlr-generator}" dest=".${antlr-generator}" usetimestamp="true" skipexisting="true" />
 

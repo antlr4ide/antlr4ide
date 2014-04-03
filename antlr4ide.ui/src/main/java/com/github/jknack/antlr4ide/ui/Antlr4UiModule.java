@@ -2,6 +2,7 @@ package com.github.jknack.antlr4ide.ui;
 
 import java.util.Set;
 
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtext.documentation.impl.AbstractMultiLineCommentProvider;
 import org.eclipse.xtext.resource.containers.IAllContainersState;
@@ -52,8 +53,11 @@ import com.google.inject.util.Providers;
  */
 public class Antlr4UiModule extends com.github.jknack.antlr4ide.ui.AbstractAntlr4UiModule {
 
+  private IPath stateLocation;
+
   public Antlr4UiModule(final AbstractUIPlugin plugin) {
     super(plugin);
+    this.stateLocation = plugin.getStateLocation();
   }
 
   @Override
@@ -78,6 +82,8 @@ public class Antlr4UiModule extends com.github.jknack.antlr4ide.ui.AbstractAntlr
 
     binder.bind(TodoListProcessor.class);
     binder.bind(RefreshProjectProcessor.class);
+
+    binder.bind(IPath.class).annotatedWith(Names.named("stateLocation")).toInstance(stateLocation);
   }
 
   @Provides

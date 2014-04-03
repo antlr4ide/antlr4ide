@@ -13,6 +13,8 @@ import org.eclipse.xtext.ui.resource.IResourceSetProvider
 import com.github.jknack.antlr4ide.lang.Grammar
 import com.github.jknack.antlr4ide.lang.GrammarAction
 import java.util.regex.Pattern
+import org.eclipse.debug.core.ILaunchManager
+import com.github.jknack.antlr4ide.generator.LaunchConstants
 
 class DefaultToolOptionsProvider implements ToolOptionsProvider {
 
@@ -24,6 +26,11 @@ class DefaultToolOptionsProvider implements ToolOptionsProvider {
 
   @Inject
   IResourceSetProvider resourceSetProvider
+
+  /** Launch manager. */
+  @Inject
+  @Property
+  ILaunchManager launchManager
 
   static val PKG_NAME = Pattern.compile("package\\s+(([a-zA_Z_][\\.\\w]*))\\s*;")
 
@@ -45,7 +52,7 @@ class DefaultToolOptionsProvider implements ToolOptionsProvider {
         return null
       }
 
-    return new ToolOptions => [
+    val defaults = new ToolOptions => [
       antlrTool = getString(ToolOptions.BUILD_TOOL_PATH, store,
         Distributions.defaultDistribution.value
       )
@@ -58,6 +65,43 @@ class DefaultToolOptionsProvider implements ToolOptionsProvider {
       vmArgs = getString(ToolOptions.VM_ARGS, store, "")
       derived = output.setDerivedProperty
     ]
+
+    return options(file, defaults)
+  }
+
+  /**
+   * Find a launch configuration and create tool options from there. If no launch configuration
+   * exists, the defaults options will be used it.
+   */
+  private def options(IFile file, ToolOptions defaults) {
+    val grammar = file.fullPath.toOSString
+    val configType = launchManager.getLaunchConfigurationType(LaunchConstants.LAUNCH_ID)
+    var configurations = launchManager.getLaunchConfigurations(configType)
+
+    val existing = configurations.filter [ launch |
+      if (grammar == launch.getAttribute(LaunchConstants.GRAMMAR, "")) {
+        return true
+      }
+      return false
+    ]
+
+    if (existing.size > 0) {
+
+      // launch existing
+      val config = existing.head
+      val args = config.getAttribute(LaunchConstants.ARGUMENTS, "")
+      val options = ToolOptions.parse(args) [ message |
+      ]
+
+      // set some defaults if they are missing
+      if (options.outputDirectory == null) {
+        options.outputDirectory = defaults.outputDirectory
+      }
+      options.antlrTool = defaults.antlrTool
+      return options
+    } else {
+      return defaults
+    }
   }
 
   private def getBoolean(String key, IPreferenceStore store, Boolean defaultValue) {

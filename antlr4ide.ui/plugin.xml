@@ -398,6 +398,7 @@
     </shortcut>
   </extension>
 
+  <!--Railroad view-->
   <extension
          point="org.eclipse.ui.views">
       <view
@@ -418,5 +419,22 @@
       <initializer
             class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.antlr4ide.ui.railroad.RailroadViewPreferences">
       </initializer>
+   </extension>
+
+  <!-- Parse Tree view -->
+  <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="com.github.jknack.Antlr4.viewCategory"
+            class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.antlr4ide.ui.parsetree.ParseTreeView"
+            icon="icons/parsetree.gif"
+            id="antlr4.parseTreeView"
+            name="Parse Tree"
+            restorable="true">
+      </view>
+      <category
+            id="com.github.jknack.Antlr4.viewCategory"
+            name="ANTLR 4">
+      </category>
    </extension>
 </plugin>

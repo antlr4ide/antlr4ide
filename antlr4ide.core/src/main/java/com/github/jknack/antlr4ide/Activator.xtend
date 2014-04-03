@@ -20,12 +20,17 @@ class Activator extends Plugin {
   override start(BundleContext context) {
     super.start(context)
 
-    val jar = new File(Distributions.defaultDistribution.value)
+    val jars = #[
+      new File(Distributions.defaultDistribution.value),
+      ToolOptionsProvider.RUNTIME_JAR
+    ]
 
-    if (!jar.exists) {
-      val url = bundle.getResource("lib/" + ToolOptionsProvider.DEFAULT_TOOL)
-      copy(url.openStream, new BufferedOutputStream(new FileOutputStream(jar)))
-    }
+    jars.forEach[
+      if (!it.exists) {
+        val toolUrl = bundle.getResource("lib/" + it.name)
+        copy(toolUrl.openStream, new BufferedOutputStream(new FileOutputStream(it)))
+      }
+    ]
   }
 
   /**

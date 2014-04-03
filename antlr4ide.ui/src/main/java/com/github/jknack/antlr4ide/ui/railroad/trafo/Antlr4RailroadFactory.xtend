@@ -15,13 +15,12 @@ import com.github.jknack.antlr4ide.ui.railroad.figures.primitives.NodeType
 import com.google.inject.Inject
 import java.util.List
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.jface.resource.JFaceResources
 import org.eclipse.jface.text.Region
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
-import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess
 import com.github.jknack.antlr4ide.ui.railroad.figures.BypassSegment
 import com.github.jknack.antlr4ide.ui.railroad.figures.primitives.PrimitiveFigureFactory
 import com.github.jknack.antlr4ide.ui.highlighting.AntlrHighlightingConfiguration
+import com.github.jknack.antlr4ide.ui.views.ColorProvider
 
 class Antlr4RailroadFactory {
 
@@ -29,7 +28,7 @@ class Antlr4RailroadFactory {
   PrimitiveFigureFactory primitiveFactory
 
   @Inject
-  IPreferenceStoreAccess preferenceStoreAccess
+  ColorProvider colorProvider
 
   def createEbnf(ISegmentFigure segment, EbnfSuffix suffix) {
     if (suffix == null) {
@@ -52,7 +51,7 @@ class Antlr4RailroadFactory {
 
   def createTrack(Rule rule, ISegmentFigure body) {
     val track = new RailroadTrack(rule, rule.name, body, primitiveFactory, getTextRegion(rule))
-    track.foregroundColor = colorFromId(AntlrHighlightingConfiguration.RULE)
+    track.foregroundColor = colorProvider.get(AntlrHighlightingConfiguration.RULE)
     track
   }
 
@@ -79,27 +78,9 @@ class Antlr4RailroadFactory {
     val doc = "Select " + name + " in editor"
     val node = new NodeSegment(source, type, name, doc, primitiveFactory, region)
     if (name != null && name.length > 0) {
-      node.foregroundColor = color(name)
+      node.foregroundColor = colorProvider.bestFor(name)
     }
     node
-  }
-
-  private def color(String name) {
-    val tokenId = switch (name) {
-      case name == "EOF": AntlrHighlightingConfiguration.KEYWORD_ID
-      case name.startsWith("'"): AntlrHighlightingConfiguration.STRING_ID
-      case name.startsWith("["): AntlrHighlightingConfiguration.STRING_ID
-      case Character.isUpperCase(name.charAt(0)): AntlrHighlightingConfiguration.TOKEN_REF
-      case Character.isLowerCase(name.charAt(0)): AntlrHighlightingConfiguration.RULE_REF
-    }
-    colorFromId(tokenId)
-  }
-
-  private def colorFromId(String tokenId) {
-    val qualifiedId = AntlrHighlightingConfiguration.qualifiedId(tokenId)
-    val preferenceStore = preferenceStoreAccess.preferenceStore
-    val rgb = preferenceStore.getString(qualifiedId)
-    JFaceResources.colorRegistry.get(rgb)
   }
 
   private def Region getTextRegion(EObject eObject) {

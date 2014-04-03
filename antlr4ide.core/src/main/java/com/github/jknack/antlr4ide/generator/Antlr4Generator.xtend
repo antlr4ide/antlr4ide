@@ -10,9 +10,7 @@ import org.eclipse.core.resources.IFile
 import org.eclipse.core.runtime.Status
 import com.github.jknack.antlr4ide.console.Console
 import static com.google.common.base.Preconditions.*
-import com.github.jknack.antlr4ide.generator.LaunchConstants
 import java.util.Set
-import org.eclipse.debug.core.ILaunchManager
 
 /**
  * Generate code by executing ANTLR Tool. The code is generated on saved for valid grammars.
@@ -46,11 +44,6 @@ class Antlr4Generator implements IGenerator {
   @Property
   IWorkspaceRoot workspaceRoot
 
-  /** Launch manager. */
-  @Inject
-  @Property
-  ILaunchManager launchManager
-
   /**
    * Executed by Xtext when the ANTLR Tool is activated and the underlying resource is valid.
    * This method call ANTLR Tool for generated the code.
@@ -67,43 +60,7 @@ class Antlr4Generator implements IGenerator {
     checkNotNull(console)
     checkNotNull(workspaceRoot)
     val file = workspaceRoot.getFile(new Path(resource.getURI().toPlatformString(true)))
-    doGenerate(file, options(file, optionsProvider.options(file)))
-  }
-
-  /**
-   * Find a launch configuration and create tool options from there. If no launch configuration
-   * exists, the defaults options will be used it.
-   */
-  private def options(IFile file, ToolOptions defaults) {
-    val grammar = file.fullPath.toOSString
-    val configType = launchManager.getLaunchConfigurationType(LaunchConstants.LAUNCH_ID)
-    var configurations = launchManager.getLaunchConfigurations(configType)
-
-    val existing = configurations.filter [ launch |
-      if (grammar == launch.getAttribute(LaunchConstants.GRAMMAR, "")) {
-        return true
-      }
-      return false
-    ]
-
-    if (existing.size > 0) {
-
-      // launch existing
-      val config = existing.head
-      val args = config.getAttribute(LaunchConstants.ARGUMENTS, "")
-      val options = ToolOptions.parse(args) [ message |
-        console.error(message)
-      ]
-
-      // set some defaults if they are missing
-      if (options.outputDirectory == null) {
-        options.outputDirectory = defaults.outputDirectory
-      }
-      options.antlrTool = defaults.antlrTool
-      return options
-    } else {
-      return defaults
-    }
+    doGenerate(file, optionsProvider.options(file))
   }
 
   /**
