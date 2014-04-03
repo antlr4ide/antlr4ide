@@ -373,6 +373,10 @@ class Antlr4Validator extends AbstractAntlr4Validator {
 
   def private Set<String> locals(ParserRule rule) {
     val scope = new StringBuilder
+    // initialize default/global attributes
+    // See https://github.com/jknack/antlr4ide/issues/43
+    scope.append("ctx ")
+
     val append = [ String it |
       if (it != null) {
         scope.append(it, 1, it.length - 1).append(" ")
