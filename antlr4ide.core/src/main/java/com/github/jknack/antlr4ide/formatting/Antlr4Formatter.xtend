@@ -95,7 +95,7 @@ class Antlr4Formatter extends AbstractDeclarativeFormatter {
       g.lexerRuleAccess.semicolonSymbolSemicolonKeyword_4_0)
 
     // alternatives
-    c.setLinewrap.before(g.lexerAltListAccess.verticalLineKeyword_1_0)
+    c.setLinewrap.before(g.lexerAltListAccess.verticalLineKeyword_1_0_0)
 
     // '(' block ')'
     c.setLinewrap.before(g.lexerBlockAccess.leftParenthesisKeyword_0)

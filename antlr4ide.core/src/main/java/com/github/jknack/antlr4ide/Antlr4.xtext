@@ -406,13 +406,13 @@ LexerRuleBlock
 
 LexerAltList
   :
-    alternatives+=LexerAlt ('|' alternatives+=LexerAlt)*
+    alternatives+=LexerAlt ('|' alternatives+=LexerAlt | '|')*
   ;
 
 LexerAlt
   :
-    element=LexerElements
-    commands=LexerCommands?
+    {LexerAlt}
+    body=LexerElements commands=LexerCommands?
   ;
 
 LexerElements

@@ -22,13 +22,10 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.Tree;
-import org.antlr.v4.tool.ANTLRMessage;
-import org.antlr.v4.tool.DefaultToolListener;
 import org.antlr.v4.tool.Grammar;
 import org.antlr.v4.tool.LexerGrammar;
 import org.antlr.v4.tool.Rule;
 import org.antlr.v4.tool.ast.GrammarRootAST;
-import org.stringtemplate.v4.ST;
 
 public class LiveParseTreeRunner {
 
@@ -43,15 +40,7 @@ public class LiveParseTreeRunner {
   public static String tree(final String grammarFileName, final String startRule,
       final String inputText) {
     Tool antlr = new Tool();
-    final StringBuilder error = new StringBuilder();
-    antlr.addListener(new DefaultToolListener(antlr) {
-      @Override
-      public void error(final ANTLRMessage msg) {
-        ST msgST = tool.errMgr.getMessageTemplate(msg);
-        String message = msgST.render().replace('\n', ' ');
-        error.append(message);
-      }
-    });
+
     String combinedGrammarFileName = null;
     String lexerGrammarFileName = null;
     String parserGrammarFileName = null;
@@ -93,19 +82,24 @@ public class LiveParseTreeRunner {
       lexEngine = lg.createLexerInterpreter(input);
     }
 
-    CommonTokenStream tokens = new CommonTokenStream(lexEngine);
-    ParserInterpreter parser = g.createParserInterpreter(tokens);
-    parser.removeErrorListeners();
-    parser.addErrorListener(new BaseErrorListener() {
+    final String gname = g.name;
+    BaseErrorListener printError = new BaseErrorListener() {
       @Override
       public void syntaxError(final Recognizer<?, ?> recognizer, final Object offendingSymbol,
-          final int line,
-          final int charPositionInLine, final String msg, final RecognitionException e) {
-        if (error.length() == 0) {
-          error.append(msg);
-        }
+          final int line, final int position, final String msg,
+          final RecognitionException e) {
+        System.err.println(gname + "::" + startRule + ":" + line + ":" + position + ": " + msg);
       }
-    });
+    };
+
+    lexEngine.removeErrorListeners();
+    lexEngine.addErrorListener(printError);
+
+    CommonTokenStream tokens = new CommonTokenStream(lexEngine);
+
+    ParserInterpreter parser = g.createParserInterpreter(tokens);
+    parser.removeErrorListeners();
+    parser.addErrorListener(printError);
     Rule start = g.getRule(startRule);
     ParseTree tree = parser.parse(start.index);
 
@@ -116,10 +110,7 @@ public class LiveParseTreeRunner {
       tree = tree.getParent();
     }
     String sexpression = toStringTree(tree, Arrays.asList(parser.getRuleNames())).trim();
-    if (error.length() > 0) {
-      sexpression = sexpression.substring(0, sexpression.length() - 1) + " <"
-          + Utils.escapeWhitespace(error.toString(), true) + "> )";
-    }
+
     return sexpression;
   }
 
