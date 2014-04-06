@@ -24,6 +24,7 @@ import static extension org.eclipse.xtext.EcoreUtil2.*
 import static extension com.github.jknack.antlr4ide.services.ModelExtensions.*
 import java.util.List
 import com.google.common.base.Function
+import com.google.common.base.Objects
 
 /**
  * Given a start rule and grammar this class generate a parse tree for matching input.
@@ -80,7 +81,7 @@ class ParseTreeGenerator {
    * Build a cache key for the given rule & input.
    */
   private def key(Rule rule, String input) {
-    val id = rule.name + "@" + rule.hash + "@" + input.hashCode
+    val id = rule.name + "@" + Objects.hashCode(rule.name, rule.hash, input)
     id -> (rule -> input)
   }
 

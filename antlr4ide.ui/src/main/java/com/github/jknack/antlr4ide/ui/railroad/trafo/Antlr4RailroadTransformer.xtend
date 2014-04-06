@@ -194,7 +194,7 @@ class Antlr4RailroadTransformer {
   }
 
   def dispatch ISegmentFigure toFigure(LexerAlt alt) {
-    toFigure(alt.element)
+    toFigure(alt.body)
   }
 
   def dispatch ISegmentFigure toFigure(LexerElements elements) {
