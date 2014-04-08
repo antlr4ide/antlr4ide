@@ -7,14 +7,18 @@ import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.ByteArrayInputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.Arrays;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.abego.treelayout.NodeExtentProvider;
@@ -22,7 +26,6 @@ import org.abego.treelayout.TreeForTreeLayout;
 import org.abego.treelayout.TreeLayout;
 import org.abego.treelayout.TreeLayout.DumpConfiguration;
 import org.abego.treelayout.util.DefaultConfiguration;
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.IPath;
@@ -45,34 +48,35 @@ import com.github.jknack.antlr4ide.lang.ParserRule;
 import com.github.jknack.antlr4ide.lang.Rule;
 import com.github.jknack.antlr4ide.lang.Terminal;
 import com.github.jknack.antlr4ide.services.ModelExtensions;
+import com.google.common.collect.Lists;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ParseTreeGenerator.class, ProcessBuilder.class, ModelExtensions.class })
 public class ParseTreeGeneratorTest {
 
   @Test
+  @PrepareForTest({ParseTreeGenerator.class, ProcessBuilder.class, ModelExtensions.class,
+    Socket.class, ServerSocket.class, PrintWriter.class, BufferedReader.class,
+    InputStreamReader.class })
   public void build() throws Exception {
     String ruleName = "rule";
     String input = "3+4*5";
+    String sexpression = "( expression ( sum ( number 3 ) '+' ( expression ( prod ( number 2 ) '*' ( number 4 ) ) ) ) ) ";
+
+    int freePort = 41900;
 
     ToolOptionsProvider optionsProvider = createMock(ToolOptionsProvider.class);
 
     String toolPath = "/tmp/antlr4-x-complete.jar";
+    String[] vmArgs = {};
     ToolOptions options = createMock(ToolOptions.class);
     expect(options.getAntlrTool()).andReturn(toolPath);
+    expect(options.vmArguments()).andReturn(vmArgs);
 
     IPath location = Path.fromPortableString("/home/edgar/ws/project/G4.g4");
-
-    IContainer folder = createMock(IContainer.class);
-    IPath folderLocation = createMock(IPath.class);
-    File folderLocationFile = location.toFile();
-    expect(folder.getLocation()).andReturn(folderLocation);
-    expect(folderLocation.toFile()).andReturn(folderLocationFile);
 
     IWorkspaceRoot workspaceRoot = createMock(IWorkspaceRoot.class);
     IFile file = createMock(IFile.class);
     expect(file.getLocation()).andReturn(location);
-    expect(file.getParent()).andReturn(folder);
 
     LexerRule plusRule = createMock(LexerRule.class);
     expect(plusRule.getName()).andReturn("+");
@@ -91,6 +95,7 @@ public class ParseTreeGeneratorTest {
     expect(resource.getURI()).andReturn(resourceURI);
 
     Grammar grammar = createMock(Grammar.class);
+    expect(grammar.getName()).andReturn("G");
     expect(grammar.eResource()).andReturn(resource);
 
     Rule rule = createMock(Rule.class);
@@ -100,22 +105,37 @@ public class ParseTreeGeneratorTest {
     expect(workspaceRoot.getFile(Path.fromOSString("/project/G.g4"))).andReturn(file);
     expect(optionsProvider.options(file)).andReturn(options);
 
-    Object[] command = {"java", "-cp",
+    List<String> command = Lists.newArrayList("java", "-cp",
         toolPath + File.pathSeparator + ToolOptionsProvider.RUNTIME_JAR, ParseTreeGenerator.MAIN,
-        location.toOSString(), ruleName, input };
+        freePort + "");
 
     Process process = createMock(Process.class);
-    expect(process.getInputStream())
-        .andReturn(
-            stream("( expression ( sum ( number 3 ) '+' ( expression ( prod ( number 2 ) '*' ( number 4 ) ) ) ) ) "));
-    expect(process.getErrorStream()).andReturn(stream(""));
-    expect(process.waitFor()).andReturn(0);
-    process.destroy();
 
-    ProcessBuilder pb = PowerMock.createMockAndExpectNew(ProcessBuilder.class,
-        Arrays.asList(command));
-    expect(pb.directory(folderLocationFile)).andReturn(pb);
+    ProcessBuilder pb = PowerMock.createMockAndExpectNew(ProcessBuilder.class, command);
     expect(pb.start()).andReturn(process);
+
+    OutputStream out = createMock(OutputStream.class);
+
+    PrintWriter writer = PowerMock.createMockAndExpectNew(PrintWriter.class, out, true);
+    writer.println("parsetree /home/edgar/ws/project/G4.g4 rule 3+4*5");
+    writer.close();
+
+    InputStream in = createMock(InputStream.class);
+    InputStreamReader streamReader = PowerMock.createMockAndExpectNew(InputStreamReader.class, in);
+
+    BufferedReader reader = PowerMock.createMockAndExpectNew(BufferedReader.class, streamReader);
+    expect(reader.readLine()).andReturn(sexpression);
+    expect(reader.readLine()).andReturn(null);
+    reader.close();
+
+    ServerSocket serverSocket = PowerMock.createMockAndExpectNew(ServerSocket.class, 0);
+    expect(serverSocket.getLocalPort()).andReturn(freePort);
+    serverSocket.close();
+
+    Socket socket = PowerMock.createMockAndExpectNew(Socket.class, "localhost", freePort);
+    expect(socket.getOutputStream()).andReturn(out);
+    expect(socket.getInputStream()).andReturn(in);
+    socket.close();
 
     Rule parserRule = createMock(ParserRule.class);
     Rule lexerRule = createMock(LexerRule.class);
@@ -128,13 +148,12 @@ public class ParseTreeGeneratorTest {
     ruleMap.put("lexerRule", lexerRule);
     expect(ModelExtensions.ruleMap(grammar, true)).andReturn(ruleMap);
 
-    expect(ModelExtensions.hash(rule)).andReturn(678);
-
     Object[] mocks = {rule, grammar, resource, workspaceRoot, optionsProvider, file,
-        options, folder, process, folderLocation, parserRule, lexerRule, three, langFactory,
-        plusRule, starRule };
+        options, process, parserRule, lexerRule, three, langFactory,
+        plusRule, starRule, serverSocket, socket, out, in, writer, reader, streamReader };
 
-    PowerMock.replay(ProcessBuilder.class, pb, ModelExtensions.class);
+    PowerMock.replay(ProcessBuilder.class, pb, ModelExtensions.class, Socket.class,
+        ServerSocket.class, PrintWriter.class, BufferedReader.class, InputStreamReader.class);
 
     replay(mocks);
 
@@ -161,7 +180,8 @@ public class ParseTreeGeneratorTest {
         dump(tree));
 
     verify(mocks);
-    PowerMock.verify(ProcessBuilder.class, pb, ModelExtensions.class);
+    PowerMock.verify(ProcessBuilder.class, pb, ModelExtensions.class, Socket.class,
+        ServerSocket.class, PrintWriter.class, BufferedReader.class, InputStreamReader.class);
   }
 
   private String dump(final TreeForTreeLayout<ParseTreeNode> tree) {
@@ -179,10 +199,6 @@ public class ParseTreeGeneratorTest {
       }
     }, new DefaultConfiguration<ParseTreeNode>(10, 10)).dumpTree(new PrintStream(stream), conf);
     return stream.toString();
-  }
-
-  private InputStream stream(final String content) {
-    return new ByteArrayInputStream(content.getBytes());
   }
 
 }

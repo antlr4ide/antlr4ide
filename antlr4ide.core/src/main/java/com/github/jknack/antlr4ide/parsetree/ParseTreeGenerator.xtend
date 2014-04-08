@@ -22,9 +22,15 @@ import com.google.common.cache.CacheLoader
 import com.github.jknack.antlr4ide.lang.Rule
 import static extension org.eclipse.xtext.EcoreUtil2.*
 import static extension com.github.jknack.antlr4ide.services.ModelExtensions.*
+import java.net.ServerSocket
+import java.net.Socket
+import java.util.concurrent.TimeUnit
+import java.io.PrintWriter
+import com.github.jknack.antlr4ide.generator.Jobs
+import java.util.Set
+import org.eclipse.xtext.xbase.lib.Functions.Function3
+import com.github.jknack.antlr4ide.generator.ToolOptions
 import java.util.List
-import com.google.common.base.Function
-import com.google.common.base.Objects
 
 /**
  * Given a start rule and grammar this class generate a parse tree for matching input.
@@ -36,7 +42,7 @@ import com.google.common.base.Objects
 class ParseTreeGenerator {
 
   /** The parse tree runner from 'antlr4ide-runtime' project. */
-  public static val MAIN = "com.github.jknack.antlr4ide.runtime.LiveParseTreeRunner"
+  public static val MAIN = "com.github.jknack.antlr4ide.runtime.Antlr4Server"
 
   /** Access to the workspace root and resolve file/resource from there. */
   @Inject
@@ -58,12 +64,24 @@ class ParseTreeGenerator {
   @Property
   LangFactory langFactory
 
-  /** Cache a max of 20 parse trees. */
-  val cache = CacheBuilder.newBuilder.maximumSize(20).build(
-    CacheLoader.from [ Pair<String, Pair<Rule, String>> key |
-      val data = key.value
-      doBuild(data.key, data.value)
-    ])
+  /** Cache JVM and reduce startup time. */
+  val processCache = CacheBuilder.newBuilder.maximumSize(2).expireAfterAccess(1, TimeUnit.HOURS).removalListener [
+    // destroy process
+    destroy(it.value)
+  ].build(
+    CacheLoader.from [ Pair<String, Set<String>> key |
+      val cp = key.key
+      val vmArgs = key.value
+      val port = freePort.toString
+      val command = Lists.newArrayList("java", "-cp")
+      command += vmArgs
+      command += cp
+      command += MAIN
+      command += port
+      val process = newProcess(command)
+      port -> process
+    ]
+  )
 
   /**
    * Build a parse tree for the given rule & input.
@@ -74,15 +92,42 @@ class ParseTreeGenerator {
    * @return A parse tree
    */
   def TreeForTreeLayout<ParseTreeNode> build(Rule rule, String input) {
-    cache.get(key(rule, input))
+    doBuild(rule, input)
   }
 
   /**
-   * Build a cache key for the given rule & input.
+   * Disconnect the parse tree evaluator and destroy any live process.
    */
-  private def key(Rule rule, String input) {
-    val id = rule.name + "@" + Objects.hashCode(rule.name, rule.hash, input)
-    id -> (rule -> input)
+  def disconnect() {
+    processCache.invalidateAll
+  }
+
+  /**
+   * Build a cache key for the given options.
+   */
+  private def processKey(ToolOptions options) {
+
+    // classpath
+    val cp = #[options.antlrTool, ToolOptionsProvider.RUNTIME_JAR].join(File.pathSeparator)
+
+    cp -> options.vmArguments.toSet
+  }
+
+  /**
+   * Creates a new process.
+   */
+  private def newProcess(List<String> command) {
+    val process = new ProcessBuilder(command).start
+    // wait for serverSocket
+    Thread.sleep(500)
+    return process
+  }
+
+  /**
+   * Destroy the JVM process.
+   */
+  private def destroy(Pair<String, Process> entry) {
+    entry.value.destroy
   }
 
   /**
@@ -94,7 +139,6 @@ class ParseTreeGenerator {
    * @return A parse tree
    */
   private def TreeForTreeLayout<ParseTreeNode> doBuild(Rule rule, String input) {
-
     // get root grammar
     val grammar = rule.getContainerOfType(Grammar)
 
@@ -105,17 +149,31 @@ class ParseTreeGenerator {
     // tool options
     val options = optionsProvider.options(file)
 
-    // classpath
-    val cp = #[options.antlrTool, ToolOptionsProvider.RUNTIME_JAR].join(File.pathSeparator)
+    val entry = processCache.get(processKey(options))
+    val port = Integer.parseInt(entry.key)
+    val process = entry.value
 
-    // build and execute command
-    val command = #["java", "-cp", cp, MAIN, file.location.toOSString, rule.name, input]
-
-    val rules = grammar.ruleMap(true)
-
-    run(command, file.parent.location.toFile) [ process |
-      val sexpression = processOutput(process.inputStream, console)
+    Jobs.system("error printer " + grammar.name + "::" + rule.name) [
       processOutput(process.errorStream, console)
+    ].schedule
+
+    val escape = [ String string |
+      return string.replace(" ", "\u00B7").replace("\t", "\\t").replace("\r", "\\r").replace("\n", "\\n")
+    ]
+
+    connect(process, port) [ socket, out, in |
+      out.println(
+        "parsetree " + escape.apply(file.location.toOSString) + " " + rule.name + " " + escape.apply(input))
+      var line = ""
+      var sexpression = "( )"
+      while ((line = in.readLine) != null) {
+        if (line.startsWith("(")) {
+          sexpression = line
+        } else {
+          console.error(line)
+        }
+      }
+      val rules = grammar.ruleMap(true)
       val tokens = Splitter.on(" ").trimResults.omitEmptyStrings.split(sexpression)
       val stack = Lists.<ParseTreeNode>newLinkedList
       var DefaultTreeForTreeLayout<ParseTreeNode> tree = null
@@ -153,21 +211,30 @@ class ParseTreeGenerator {
         }
         i = i + 1
       }
-      return tree
+      return tree as TreeForTreeLayout <ParseTreeNode>
     ]
   }
 
-  /**
-   * Run the eval command safely.
-   */
-  private def run(List<String> command, File directory,
-    Function<Process, ? extends TreeForTreeLayout<ParseTreeNode>> fn) {
-    val process = new ProcessBuilder(command).directory(directory).start
+  private def connect(Process process, int port,
+    Function3<Socket, PrintWriter, BufferedReader, TreeForTreeLayout<ParseTreeNode>> fn) {
+    var Socket socket = null
+    var PrintWriter out = null
+    var BufferedReader in = null
     try {
-      return fn.apply(process)
+      socket = new Socket("localhost", port)
+      out = new PrintWriter(socket.outputStream, true)
+      in = new BufferedReader(new InputStreamReader(socket.inputStream))
+      return fn.apply(socket, out, in)
     } finally {
-      process.waitFor
-      process.destroy
+      if (in != null) {
+        in.close
+      }
+      if (out != null) {
+        out.close
+      }
+      if (socket != null) {
+        socket.close
+      }
     }
   }
 
@@ -176,20 +243,27 @@ class ParseTreeGenerator {
    */
   private def processOutput(InputStream stream, Console console) {
     val in = new BufferedReader(new InputStreamReader(stream))
-    val buffer = new StringBuilder
     var line = ""
     try {
       while ((line = in.readLine) != null) {
-        if (line.startsWith("(")) {
-          buffer.append(line)
-        } else {
-          console.error(line)
-        }
+        console.error(line)
       }
     } finally {
       in.close
     }
-    return buffer.toString
   }
 
+  /**
+   * Find a free port to connect.
+   */
+  private def freePort() {
+    try {
+      val socket = new ServerSocket(0)
+      val port = socket.localPort
+      socket.close
+      return port
+    } catch (Exception ex) {
+      return 49100
+    }
+  }
 }

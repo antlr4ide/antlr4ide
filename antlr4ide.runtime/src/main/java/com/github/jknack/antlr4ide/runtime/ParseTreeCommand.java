@@ -1,5 +1,6 @@
 package com.github.jknack.antlr4ide.runtime;
 
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,7 +10,6 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.LexerInterpreter;
-import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserInterpreter;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
@@ -27,17 +27,15 @@ import org.antlr.v4.tool.LexerGrammar;
 import org.antlr.v4.tool.Rule;
 import org.antlr.v4.tool.ast.GrammarRootAST;
 
-public class LiveParseTreeRunner {
+public class ParseTreeCommand {
 
-  public static void main(final String[] args) {
-    String grammarFileName = args[0];
-    String startRule = args[1];
-    String inputText = args[2];
+  private PrintWriter out;
 
-    System.out.println(tree(grammarFileName, startRule, inputText));
+  public ParseTreeCommand(final PrintWriter out) {
+    this.out = out;
   }
 
-  public static String tree(final String grammarFileName, final String startRule,
+  public String run(final String grammarFileName, final String startRule,
       final String inputText) {
     Tool antlr = new Tool();
 
@@ -76,7 +74,7 @@ public class LiveParseTreeRunner {
       try {
         lg = (LexerGrammar) Grammar.load(lexerGrammarFileName);
       } catch (ClassCastException cce) {
-        System.err.println("File " + lexerGrammarFileName + " isn't a lexer grammar");
+        out.println("File " + lexerGrammarFileName + " isn't a lexer grammar");
       }
       g = loadGrammar(antlr, parserGrammarFileName, lg);
       lexEngine = lg.createLexerInterpreter(input);
@@ -88,7 +86,7 @@ public class LiveParseTreeRunner {
       public void syntaxError(final Recognizer<?, ?> recognizer, final Object offendingSymbol,
           final int line, final int position, final String msg,
           final RecognitionException e) {
-        System.err.println(gname + "::" + startRule + ":" + line + ":" + position + ": " + msg);
+        out.println(gname + "::" + startRule + ":" + line + ":" + position + ": " + msg);
       }
     };
 
@@ -115,7 +113,7 @@ public class LiveParseTreeRunner {
   }
 
   /** Same as loadGrammar(fileName) except import vocab from existing lexer */
-  public static Grammar loadGrammar(final Tool tool, final String fileName,
+  private Grammar loadGrammar(final Tool tool, final String fileName,
       final LexerGrammar lexerGrammar) {
     GrammarRootAST grammarRootAST = tool.parseGrammar(fileName);
     final Grammar g = tool.createGrammar(grammarRootAST);
@@ -125,7 +123,7 @@ public class LiveParseTreeRunner {
     return g;
   }
 
-  public static String toStringTree(@NotNull final Tree t, @Nullable final List<String> ruleNames) {
+  private String toStringTree(@NotNull final Tree t, @Nullable final List<String> ruleNames) {
     if (t.getChildCount() == 0) {
       return Utils.escapeWhitespace(getNodeText(t, ruleNames), true);
     }
@@ -144,13 +142,7 @@ public class LiveParseTreeRunner {
     return buf.toString();
   }
 
-  public static String getNodeText(@NotNull final Tree t, @Nullable final Parser recog) {
-    String[] ruleNames = recog != null ? recog.getRuleNames() : null;
-    List<String> ruleNamesList = ruleNames != null ? Arrays.asList(ruleNames) : null;
-    return getNodeText(t, ruleNamesList);
-  }
-
-  public static String getNodeText(@NotNull final Tree t, @Nullable final List<String> ruleNames) {
+  private String getNodeText(@NotNull final Tree t, @Nullable final List<String> ruleNames) {
     if (ruleNames != null) {
       if (t instanceof RuleNode) {
         int ruleIndex = ((RuleNode) t).getRuleContext().getRuleIndex();

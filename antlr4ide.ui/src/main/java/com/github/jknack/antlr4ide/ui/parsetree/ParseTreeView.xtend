@@ -33,6 +33,7 @@ import static extension com.github.jknack.antlr4ide.services.ModelExtensions.*
 import java.util.regex.Matcher
 import com.github.jknack.antlr4ide.ui.views.GraphView
 import com.github.jknack.antlr4ide.lang.ParserRule
+import org.eclipse.ui.IWorkbenchPart
 
 /**
  * Eval and draw parse trees.
@@ -232,6 +233,12 @@ class ParseTreeView extends GraphView {
     canvas = newCanvas(composite)
 
     return composite
+  }
+
+  override partClosed(IWorkbenchPart part) {
+    if (part == this) {
+      generator.disconnect
+    }
   }
 
 }
