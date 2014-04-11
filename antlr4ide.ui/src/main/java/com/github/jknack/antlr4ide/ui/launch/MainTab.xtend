@@ -50,8 +50,6 @@ class MainTab extends AbstractLaunchConfigurationTab {
 
   override createControl(Composite parent) {
     val comp = createComposite(parent, parent.font, 1, 1, GridData.FILL_BOTH)
-    val layout = comp.getLayout as GridLayout
-    layout.verticalSpacing = 0
 
     createVerticalSpacer(comp, 2)
     fGrammarText = createSection(comp, "Grammar:", SWT.SINGLE.bitwiseOr(SWT.BORDER), 1, true)
@@ -68,16 +66,17 @@ class MainTab extends AbstractLaunchConfigurationTab {
     setControl(comp)
   }
 
-  private def createComposite(Composite parent, Font font, int columns, int hspan, int fill) {
-    val g = new Composite(parent, SWT.NONE)
-    g.layout = new GridLayout(columns, false)
-    g.font = font
-
-    val gd = new GridData(fill)
-    gd.horizontalSpan = hspan
-    gd.grabExcessHorizontalSpace = true
-    g.layoutData = gd
-    return g
+  protected def createComposite(Composite parent, Font font, int columns, int hspan, int fill) {
+    new Composite(parent, SWT.NONE) => [
+      it.layout = new GridLayout(columns, false) => [
+        verticalSpacing = 0
+      ]
+      layoutData = new GridData(fill) => [
+        horizontalSpan = hspan
+        grabExcessHorizontalSpace = true
+      ]
+      it.font = font
+    ]
   }
 
   override getName() {
@@ -115,13 +114,18 @@ class MainTab extends AbstractLaunchConfigurationTab {
     val List<String> errors = newArrayList()
     errorMessage = null
 
-    val file = workspaceRoot.getFile(Path.fromOSString(fGrammarText.text))
-    if (file == null || !file.exists) {
-      errors.add( "File not found: " + fGrammarText.text)
+    val path = fGrammarText.text
+    if (path == null || path.empty) {
+      errors.add( "Grammar path is empty")
+    } else {
+      val file = workspaceRoot.getFile(Path.fromOSString(path))
+      if (file == null || !file.exists) {
+        errors.add( "File not found: " + fGrammarText.text)
+      }
+      ToolOptions.parse(fArgsText.text) [message|
+        errors.add(message)
+      ]
     }
-    ToolOptions.parse(fArgsText.text) [message|
-      errors.add(message)
-    ]
     return if (errors.size == 0) {
       true
     } else {
@@ -135,7 +139,7 @@ class MainTab extends AbstractLaunchConfigurationTab {
    *
    * @param parent the parent composite
    */
-  private def createSection(Composite parent, String title, int style, int rows, boolean btn) {
+  protected def createSection(Composite parent, String title, int style, int rows, boolean btn) {
     val font = parent.font
     val group = new Group(parent, SWT.NONE)
     group.text = title

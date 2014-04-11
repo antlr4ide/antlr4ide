@@ -27,8 +27,8 @@ Import-Package: org.apache.log4j,
  org.eclipse.xtext.xbase.lib
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: com.github.jknack.antlr4ide.ui.contentassist,
- com.github.jknack.antlr4ide.ui.internal,
- com.github.jknack.antlr4ide.ui.quickfix,
  com.github.jknack.antlr4ide.ui.contentassist.antlr,
- com.github.jknack.antlr4ide.ui.internal
+ com.github.jknack.antlr4ide.ui.internal,
+ com.github.jknack.antlr4ide.ui.launch,
+ com.github.jknack.antlr4ide.ui.quickfix
 Bundle-Activator: com.github.jknack.antlr4ide.ui.internal.Antlr4Activator

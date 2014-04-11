@@ -12,7 +12,8 @@ Require-Bundle: antlr4ide.core,
  org.eclipse.xtext.junit4,
  org.eclipse.xtext.xbase.junit,
  org.eclipse.ui.workbench;resolution:=optional,
- org.eclipse.debug.core
+ org.eclipse.debug.core,
+ org.eclipse.debug.ui
 Import-Package: org.apache.log4j,
  org.apache.log4j.or,
  org.apache.log4j.spi,

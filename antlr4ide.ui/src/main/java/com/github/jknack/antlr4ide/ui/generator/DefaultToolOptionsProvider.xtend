@@ -47,7 +47,7 @@ class DefaultToolOptionsProvider implements ToolOptionsProvider {
           val matcher = PKG_NAME.matcher(it.action)
           return if (matcher.find) matcher.group(1).trim else null
         ]
-        if (pkgNames.empty) null else pkgNames.head as String
+        if (pkgNames.empty) null else pkgNames.head
       } catch (Exception ex) {
         return null
       }
