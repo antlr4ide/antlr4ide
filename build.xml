@@ -61,7 +61,6 @@
       <arg value="status"/>
     </exec>
 
-    <!--
     <exec executable="git">
       <arg value="add"/>
       <arg value="."/>
@@ -86,7 +85,6 @@
       <arg value="origin"/>
       <arg value="v${release.version}"/>
     </exec>
-    -->
 
     <echo message="release done: ${release.version}" />
   </target>
@@ -114,7 +112,6 @@
       <arg value="status"/>
     </exec>
 
-    <!--
     <exec executable="git">
       <arg value="add"/>
       <arg value="."/>
@@ -129,7 +126,7 @@
     <exec executable="git">
       <arg value="push"/>
       <arg value="origin"/>
-    </exec> -->
+    </exec>
 
   </target>
 </project>
