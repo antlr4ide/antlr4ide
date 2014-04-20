@@ -65,10 +65,12 @@ LIBOVERLAY_SCROLLBAR=0
 export UBUNTU_MENUPROXY LIBOVERLAY_SCROLLBAR
 GTK_IM_MODULE=xim ./antlr4ide $*
                 </echo>
-                <chmod file="${linux.x86.dir}${file.separator}antlr4ide.sh" perm="ugo+rx"/>
-                <zip destfile="${output}${file.separator}antlr4ide-linux.gtk.x86.zip">
-                  <zipfileset dir="${linux.x86.dir}" prefix="antlr4ide"/>
-                </zip>
+                <chmod file="${linux.x86.dir}${file.separator}antlr4ide" perm="755"/>
+                <chmod file="${linux.x86.dir}${file.separator}antlr4ide.sh" perm="755"/>
+                <tar destfile="${output}${file.separator}antlr4ide-linux.gtk.x86.tar.gz" compression="gzip" longfile="gnu">
+                  <tarfileset dir="${linux.x86.dir}" prefix="antlr4ide">
+                  </tarfileset>
+                </tar>
                 <echo file="${linux.x86_64.dir}${file.separator}antlr4ide.sh">
 #!/bin/bash
 UBUNTU_MENUPROXY=0
@@ -76,10 +78,12 @@ LIBOVERLAY_SCROLLBAR=0
 export UBUNTU_MENUPROXY LIBOVERLAY_SCROLLBAR
 GTK_IM_MODULE=xim ./antlr4ide $*
                 </echo>
-                <chmod file="${linux.x86_64.dir}${file.separator}antlr4ide.sh" perm="ugo+rx"/>
-                <zip destfile="${output}${file.separator}antlr4ide-linux.gtk.x86_64.zip">
-                  <zipfileset dir="${linux.x86_64.dir}" prefix="antlr4ide"/>
-                </zip>
+                <chmod file="${linux.x86_64.dir}${file.separator}antlr4ide" perm="755"/>
+                <chmod file="${linux.x86_64.dir}${file.separator}antlr4ide.sh" perm="755"/>
+                <tar destfile="${output}${file.separator}antlr4ide-linux.gtk.x86_64.tar.gz" compression="gzip" longfile="gnu">
+                  <tarfileset dir="${linux.x86_64.dir}" prefix="antlr4ide">
+                  </tarfileset>
+                </tar>
 
                 <zip destfile="${output}${file.separator}antlr4ide-windows.x86.zip">
                   <zipfileset dir="${win.x86.dir}" prefix="antlr4ide"/>
@@ -88,9 +92,11 @@ GTK_IM_MODULE=xim ./antlr4ide $*
                   <zipfileset dir="${win.x86_64.dir}" prefix="antlr4ide"/>
                 </zip>
 
-                <zip destfile="${output}${file.separator}antlr4ide-macosx.x86_64.zip">
-                  <zipfileset dir="${macosx.x86_64.dir}" prefix="antlr4ide"/>
-                </zip>
+                <chmod file="${macosx.x86_64.dir}${file.separator}antlr4ide" perm="755"/>
+                <tar destfile="${output}${file.separator}antlr4ide-macosx.x86_64.tar.gz" compression="gzip" longfile="gnu">
+                  <tarfileset dir="${macosx.x86_64.dir}" prefix="antlr4ide">
+                  </tarfileset>
+                </tar>
               </target>
             </configuration>
             <goals>

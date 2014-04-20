@@ -337,10 +337,11 @@
    <extension
          point="org.eclipse.ui.newWizards">
       <wizard
-            category="org.eclipse.xtext.projectwiz"
+            category="org.eclipse.ui.Basic"
             class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.antlr4ide.ui.wizard.Antlr4NewProjectWizard"
             id="com.github.jknack.antlr4ide.ui.wizard.Antlr4NewProjectWizard"
             name="ANTLR 4 Project"
+            icon="icons/g.png"
             project="true">
       </wizard>
    </extension>

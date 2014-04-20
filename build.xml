@@ -1,4 +1,4 @@
-<project>
+<project default="make-release">
 
   <!-- Ask for version numbers -->
   <input message="current version: " addproperty="version" />

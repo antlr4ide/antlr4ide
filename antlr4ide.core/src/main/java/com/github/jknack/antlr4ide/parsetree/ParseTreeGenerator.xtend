@@ -17,20 +17,18 @@ import org.eclipse.core.runtime.Path
 import org.eclipse.xtext.xbase.lib.Pair
 import com.github.jknack.antlr4ide.lang.LangFactory
 import com.github.jknack.antlr4ide.generator.ToolOptionsProvider
-import com.google.common.cache.CacheBuilder
-import com.google.common.cache.CacheLoader
 import com.github.jknack.antlr4ide.lang.Rule
 import static extension org.eclipse.xtext.EcoreUtil2.*
 import static extension com.github.jknack.antlr4ide.services.ModelExtensions.*
 import java.net.ServerSocket
 import java.net.Socket
-import java.util.concurrent.TimeUnit
 import java.io.PrintWriter
 import com.github.jknack.antlr4ide.generator.Jobs
 import java.util.Set
 import org.eclipse.xtext.xbase.lib.Functions.Function3
 import com.github.jknack.antlr4ide.generator.ToolOptions
 import java.util.List
+import com.github.jknack.antlr4ide.services.Caches
 
 /**
  * Given a start rule and grammar this class generate a parse tree for matching input.
@@ -65,11 +63,11 @@ class ParseTreeGenerator {
   LangFactory langFactory
 
   /** Cache JVM and reduce startup time. */
-  val processCache = CacheBuilder.newBuilder.maximumSize(2).expireAfterAccess(1, TimeUnit.HOURS).removalListener [
-    // destroy process
-    destroy(it.value)
-  ].build(
-    CacheLoader.from [ Pair<String, Set<String>> key |
+  val processCache = new Caches<Pair<String, Set<String>>, Pair<String, Process>> (2)
+    .removalListener[
+      it.value.destroy
+    ]
+    .build[key|
       val cp = key.key
       val vmArgs = key.value
       val port = freePort.toString
@@ -81,7 +79,6 @@ class ParseTreeGenerator {
       val process = newProcess(command)
       port -> process
     ]
-  )
 
   /**
    * Build a parse tree for the given rule & input.
@@ -99,7 +96,7 @@ class ParseTreeGenerator {
    * Disconnect the parse tree evaluator and destroy any live process.
    */
   def disconnect() {
-    processCache.invalidateAll
+    processCache.clear
   }
 
   /**
@@ -121,13 +118,6 @@ class ParseTreeGenerator {
     // wait for serverSocket
     Thread.sleep(500)
     return process
-  }
-
-  /**
-   * Destroy the JVM process.
-   */
-  private def destroy(Pair<String, Process> entry) {
-    entry.value.destroy
   }
 
   /**

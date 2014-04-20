@@ -18,6 +18,7 @@ public class Antlr4Perspective implements IPerspectiveFactory {
 
     IFolderLayout bottom2 = layout.createFolder("bottom2", IPageLayout.RIGHT, .5f, "bottom1");
     bottom2.addView("com.github.jknack.Antlr4.syntaxDiagram");
+    bottom2.addView("antlr4.parseTreeView");
 
     IFolderLayout folder = layout.createFolder("left", IPageLayout.LEFT, .22f, editorId);
     folder.addView(IPageLayout.ID_PROJECT_EXPLORER);
