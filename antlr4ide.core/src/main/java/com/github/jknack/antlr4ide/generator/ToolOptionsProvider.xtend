@@ -9,7 +9,7 @@ import java.io.File
 interface ToolOptionsProvider {
 
   /** Included ANTLR-4.x version. */
-  val VERSION = "4.2"
+  val VERSION = "4.2.2"
 
   /** Name of the included distribution. */
   val DEFAULT_TOOL = "antlr-" + VERSION + "-complete.jar"

@@ -92,12 +92,11 @@ public class ToolRunnerTest {
 
     console.info(eq("Total time: %s %s(s)\n"), isA(Number.class), eq("millisecond"));
 
-    expect(file.getFullPath()).andReturn(fileFullPath);
     expect(file.getName()).andReturn(fileName);
     expect(file.getPersistentProperty(generatedFiles)).andReturn(
         lexerPath.toOSString() + File.separator + parserPath.toOSString());
-    expect(file.getParent()).andReturn(fileParent).times(2);
-    expect(fileParent.getLocation()).andReturn(fileParentPath).times(2);
+    expect(file.getParent()).andReturn(fileParent).times(3);
+    expect(fileParent.getLocation()).andReturn(fileParentPath).times(3);
 
     expect(options.getAntlrTool()).andReturn(toolPath.toOSString());
     expect(options.vmArguments()).andReturn(vmArgs);

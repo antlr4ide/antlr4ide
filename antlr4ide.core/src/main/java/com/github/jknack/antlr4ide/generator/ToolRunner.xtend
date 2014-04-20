@@ -34,7 +34,7 @@ class ToolRunner {
     val startBuild = System.currentTimeMillis();
 
     val fileName = file.name
-    val parentPath = file.fullPath.toOSString + File.separator
+    val parentPath = file.parent.location.toOSString + File.separator
 
     // classpath
     val cp = classpath(options.antlrTool, console)
