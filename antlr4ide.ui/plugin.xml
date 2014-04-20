@@ -193,13 +193,14 @@
             class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant">
       </participant>
    </extension>
+   <!-- Custom build page -->
    <extension
             point="org.eclipse.ui.preferencePages">
         <page
             category="com.github.jknack.antlr4ide.Antlr4"
-            class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+            class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.antlr4ide.ui.preferences.BuilderPreferencePage"
             id="com.github.jknack.antlr4ide.Antlr4.compiler.preferencePage"
-            name="Compiler">
+            name="Tool">
             <keywordReference id="com.github.jknack.antlr4ide.ui.keyword_Antlr4"/>
         </page>
     </extension>
@@ -207,7 +208,7 @@
             point="org.eclipse.ui.propertyPages">
         <page
             category="com.github.jknack.antlr4ide.Antlr4"
-            class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+            class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.antlr4ide.ui.preferences.BuilderPreferencePage"
             id="com.github.jknack.antlr4ide.Antlr4.compiler.propertyPage"
             name="Tool">
             <keywordReference id="com.github.jknack.antlr4ide.ui.keyword_Antlr4"/>
