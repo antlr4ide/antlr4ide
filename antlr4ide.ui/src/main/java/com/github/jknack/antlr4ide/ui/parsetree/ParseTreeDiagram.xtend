@@ -110,7 +110,8 @@ class ParseTreeDiagram extends Figure {
 
     val x = bounds.x + ARC_SIZE / 2
     val y = bounds.y + 5
-    g.foregroundColor = colorProvider.bestFor(node.element)
+    val fgc = colorProvider.bestFor(node.element)
+    g.foregroundColor = if (fgc == null) ColorConstants.black else fgc
     g.drawString(node.text, x, y)
   }
 
