@@ -15,6 +15,7 @@ Features
 * Manual Code Generation (through External Tools menu)
 * Code Formatter (Ctrl+Shift+F)
 * [Syntax Diagrams as HTML](http://jknack.github.io/antlr4ide/Java/Javav4.g4.html)
+* Live Parse Tree evaluation
 * Advanced Rule Navigation between files (F3 or Ctrl+Click over a rule)
 * Quick fixes
 
@@ -35,7 +36,7 @@ Now, the **new** IDE was built on [XText](http://www.eclipse.org/Xtext). [XText]
 Requirements
 =========
 * Eclipse 4.3 (Kepler)
-* XText 2.5.3
+* XText 2.5.4
 
 Installation
 =========
@@ -43,13 +44,14 @@ ANTLR 4 IDE **isn't** available in the Eclipse Market Place yet, so you MUST ins
 
 * Open Eclipse Kepler (4.3)
 * Go to: ```Help > Install New Software...```
-* You need to Install XText 2.5.3
+* You need to Install XText 2.5.4
 * Copy and paste this url: http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/ in the **Work with** text field
 * Hit Enter
 * Choose **XText 2.5.3**. NOTE: DON'T confuse with Xtend, you must choose Xtext
-* Now, copy and paste this url: https://rawgithub.com/jknack/antlr4ide/master/updates/release/4.3 in the **Work with** text field
+* Now, copy and paste this url: https://rawgit.com/jknack/antlr4ide/master/updates/release/4.3 in the **Work with** text field
 * Choose: **ANTLR 4 SDK IDE**. NOTE: If you don't see it, please unmark the **Group items by category** option
 * Click: Next and follow the normal Eclipse installation procedure
+* NOTE: If you found a handsake error, just add this entry ```-Djsse.enableSNIExtension=false``` to your ```eclipse.ini``` file. A detailed explanation is available [here](http://stackoverflow.com/questions/7615645/ssl-handshake-alert-unrecognized-name-error-since-upgrade-to-java-1-7-0) 
 
 Usage
 =========
