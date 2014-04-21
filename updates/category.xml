@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/antlr4ide.sdk_0.3.1.qualifier.jar" id="antlr4ide.sdk" version="0.3.1.qualifier">
+   <feature url="features/antlr4ide.sdk_0.3.1.jar" id="antlr4ide.sdk" version="0.3.1">
       <category name="antlr4ide"/>
    </feature>
    <category-def name="antlr4ide" label="ANTLR 4 IDE"/>
