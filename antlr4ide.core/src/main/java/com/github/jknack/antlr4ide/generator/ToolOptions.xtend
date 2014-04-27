@@ -329,10 +329,12 @@ class ToolOptions {
   private def removeSegment(IPath path, String... names) {
     var result = path
     var count = 0
-    for (name : names) {
-      if (result.segments.get(0) == name) {
-        result = result.removeFirstSegments(1)
-        count = count + 1
+    if (result.segmentCount > 0) {
+      for (name : names) {
+        if (result.segments.get(0) == name) {
+          result = result.removeFirstSegments(1)
+          count = count + 1
+        }
       }
     }
     return if(count == names.length) result.removeLastSegments(1) else path
