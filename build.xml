@@ -24,7 +24,7 @@
     <!-- update pom.xml with release version -->
     <replace dir="${basedir}">
       <include name="**/pom.xml"/>
-      <replacefilter token="${current.version}" value="${release.version}" />
+      <replacefilter token="[CDATA[${current.version}]]" value="[CDATA[${release.version}]]" />
     </replace>
     <replace dir="${basedir}">
       <include name="**/MANIFEST.MF"/>
@@ -102,7 +102,7 @@
     <!-- update pom.xml with next version -->
     <replace dir="${basedir}">
       <include name="**/pom.xml"/>
-      <replacefilter token="${release.version}" value="${next.version}" />
+      <replacefilter token="[CDATA[${release.version}]]" value="[CDATA[${next.version}]]" />
     </replace>
     <replace dir="${basedir}">
       <include name="**/MANIFEST.MF"/>
@@ -121,7 +121,7 @@
 
     <exec executable="git">
       <arg value="add"/>
-      <arg value="."/>
+      <arg value="-all"/>
     </exec>
 
     <exec executable="git">
