@@ -23,7 +23,7 @@
             <phase>package</phase>
             <configuration>
               <target>
-                <delete>
+                <delete failonerror="false">
                   <fileset dir="../antlr4ide.core/lib" includes="${project.artifactId}-*.jar" />
                 </delete>
                 <copy file="target/${project.artifactId}-${project.version}.jar"
