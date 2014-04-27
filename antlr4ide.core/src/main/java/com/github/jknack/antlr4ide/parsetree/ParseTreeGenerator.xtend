@@ -29,6 +29,9 @@ import org.eclipse.xtext.xbase.lib.Functions.Function3
 import com.github.jknack.antlr4ide.generator.ToolOptions
 import java.util.List
 import com.github.jknack.antlr4ide.services.Caches
+import java.util.Map
+import org.eclipse.core.runtime.jobs.Job
+import com.google.common.collect.Maps
 
 /**
  * Given a start rule and grammar this class generate a parse tree for matching input.
@@ -62,10 +65,16 @@ class ParseTreeGenerator {
   @Property
   LangFactory langFactory
 
+  /** Process->Job */
+  Map<Process, Job> jobs = Maps.newHashMap
+
   /** Cache JVM and reduce startup time. */
   val processCache = new Caches<Pair<String, Set<String>>, Pair<String, Process>> (2)
     .removalListener[
-      it.value.destroy
+      val process = it.value
+      jobs.remove(process).cancel
+
+      process.destroy
     ]
     .build[key|
       val cp = key.key
@@ -115,8 +124,17 @@ class ParseTreeGenerator {
    */
   private def newProcess(List<String> command) {
     val process = new ProcessBuilder(command).start
+
+    val job = Jobs.system("parse tree server") [
+      processOutput(process.errorStream, console)
+    ]
+
+    jobs.put(process, job)
+    job.schedule
+
     // wait for serverSocket
     Thread.sleep(500)
+
     return process
   }
 
@@ -142,10 +160,6 @@ class ParseTreeGenerator {
     val entry = processCache.get(processKey(options))
     val port = Integer.parseInt(entry.key)
     val process = entry.value
-
-    Jobs.system("error printer " + grammar.name + "::" + rule.name) [
-      processOutput(process.errorStream, console)
-    ].schedule
 
     val escape = [ String string |
       return string.replace(" ", "\u00B7").replace("\t", "\\t").replace("\r", "\\r").replace("\n", "\\n")

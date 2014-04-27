@@ -53,6 +53,7 @@ public class Caches<K, V> {
         V value = super.get(key);
         if (value == null) {
           value = loader.apply((K) key);
+          super.put((K) key, value);
         }
         return value;
       }
