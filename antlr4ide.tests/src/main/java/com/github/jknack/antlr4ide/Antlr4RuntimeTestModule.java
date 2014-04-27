@@ -9,6 +9,7 @@ import org.eclipse.debug.core.ILaunchManager;
 import com.github.jknack.antlr4ide.console.Console;
 import com.github.jknack.antlr4ide.generator.CodeGeneratorListener;
 import com.github.jknack.antlr4ide.generator.ToolOptionsProvider;
+import com.github.jknack.antlr4ide.services.GrammarResource;
 import com.google.common.collect.Sets;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
@@ -21,6 +22,8 @@ public class Antlr4RuntimeTestModule extends Antlr4RuntimeModule {
 
   public static Console console = EasyMock.createMock(Console.class);
 
+  public static GrammarResource grammarResource = EasyMock.createMock(GrammarResource.class);
+
   public static ILaunchManager launchManager = EasyMock.createMock(ILaunchManager.class);
 
   @Override
@@ -32,6 +35,7 @@ public class Antlr4RuntimeTestModule extends Antlr4RuntimeModule {
 
     binder.bind(Console.class).toInstance(console);
 
+    binder.bind(GrammarResource.class).toInstance(grammarResource);
   }
 
   @Provides

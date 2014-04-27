@@ -3,14 +3,13 @@ package com.github.jknack.antlr4ide.generator
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess
-import org.eclipse.core.runtime.Path
 import com.google.inject.Inject
-import org.eclipse.core.resources.IWorkspaceRoot
 import org.eclipse.core.resources.IFile
 import org.eclipse.core.runtime.Status
 import com.github.jknack.antlr4ide.console.Console
 import static com.google.common.base.Preconditions.*
 import java.util.Set
+import com.github.jknack.antlr4ide.services.GrammarResource
 
 /**
  * Generate code by executing ANTLR Tool. The code is generated on saved for valid grammars.
@@ -42,7 +41,7 @@ class Antlr4Generator implements IGenerator {
   /** Workspace root. */
   @Inject
   @Property
-  IWorkspaceRoot workspaceRoot
+  GrammarResource grammarResource
 
   /**
    * Executed by Xtext when the ANTLR Tool is activated and the underlying resource is valid.
@@ -58,8 +57,8 @@ class Antlr4Generator implements IGenerator {
     checkNotNull(listeners)
     checkNotNull(optionsProvider)
     checkNotNull(console)
-    checkNotNull(workspaceRoot)
-    val file = workspaceRoot.getFile(new Path(resource.getURI().toPlatformString(true)))
+    checkNotNull(grammarResource)
+    val file = grammarResource.fileFrom(resource)
     doGenerate(file, optionsProvider.options(file))
   }
 

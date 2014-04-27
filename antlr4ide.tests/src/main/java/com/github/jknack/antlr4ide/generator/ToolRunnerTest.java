@@ -100,6 +100,7 @@ public class ToolRunnerTest {
 
     expect(options.getAntlrTool()).andReturn(toolPath.toOSString());
     expect(options.vmArguments()).andReturn(vmArgs);
+    expect(options.getLibDirectory()).andReturn("libdir");
     expect(options.command(file)).andReturn(command);
 
     PowerMock.expectNew(ProcessBuilder.class, (Object[]) toolCommand.toArray(new String[0]))

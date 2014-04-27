@@ -10,6 +10,9 @@ import com.google.common.collect.Sets
 import com.google.common.base.Objects
 import org.eclipse.xtext.EcoreUtil2
 import java.util.Map
+import com.github.jknack.antlr4ide.lang.Imports
+import java.util.Set
+import com.github.jknack.antlr4ide.lang.Import
 
 /**
  * Utility methods for model objects.
@@ -68,6 +71,16 @@ class ModelExtensions {
    */
   def static hash(EObject object) {
     Objects.hashCode(EcoreUtil2.eAllContentsAsList(object).toArray)
+  }
+
+  def static Set<Import> imports(Grammar grammar) {
+    val Set<Import> imports = Sets.newLinkedHashSet
+    grammar.prequels.filter(Imports).forEach[
+      it.imports.forEach[
+        imports.add(it)
+      ]
+    ]
+    return imports
   }
 
 }

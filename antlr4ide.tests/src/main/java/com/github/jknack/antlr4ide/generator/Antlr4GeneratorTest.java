@@ -13,13 +13,11 @@ import java.util.Set;
 
 import org.easymock.Capture;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.emf.common.util.URI;
@@ -32,6 +30,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.github.jknack.antlr4ide.console.Console;
+import com.github.jknack.antlr4ide.services.GrammarResource;
 import com.google.common.base.Function;
 
 @RunWith(PowerMockRunner.class)
@@ -42,9 +41,8 @@ public class Antlr4GeneratorTest {
   public void doGenerate() throws CoreException {
     Resource resource = createMock(Resource.class);
     IFileSystemAccess fsa = createMock(IFileSystemAccess.class);
-    IWorkspaceRoot workspaceRoot = createMock(IWorkspaceRoot.class);
+    GrammarResource grammarResource = createMock(GrammarResource.class);
     URI resourceURI = createMock(URI.class);
-    String path = "/antlr4/Test.g4";
     IFile file = createMock(IFile.class);
     ToolOptionsProvider optionsProvider = createMock(ToolOptionsProvider.class);
     ToolOptions options = createMock(ToolOptions.class);
@@ -56,10 +54,7 @@ public class Antlr4GeneratorTest {
     ToolRunner toolRunner = createMock(ToolRunner.class);
     Console console = createMock(Console.class);
 
-    expect(resource.getURI()).andReturn(resourceURI);
-    expect(resourceURI.toPlatformString(true)).andReturn(path);
-
-    expect(workspaceRoot.getFile(Path.fromPortableString(path))).andReturn(file);
+    expect(grammarResource.fileFrom(resource)).andReturn(file);
 
     expect(optionsProvider.options(file)).andReturn(options);
 
@@ -69,13 +64,13 @@ public class Antlr4GeneratorTest {
 
     listener.afterProcess(file, options);
 
-    Object[] mocks = {resource, fsa, workspaceRoot, resourceURI, file, optionsProvider, options,
+    Object[] mocks = {resource, fsa, grammarResource, resourceURI, file, optionsProvider, options,
         fileFullPath, configType, listener, toolRunner, console };
 
     replay(mocks);
 
     Antlr4Generator generator = newAntlr4Generator(console, launchManager, listeners,
-        optionsProvider, toolRunner, workspaceRoot);
+        optionsProvider, toolRunner, grammarResource);
 
     generator.doGenerate(resource, fsa);
 
@@ -85,9 +80,9 @@ public class Antlr4GeneratorTest {
   public Antlr4Generator newAntlr4Generator(final Console console,
       final ILaunchManager launchManager, final Set<CodeGeneratorListener> listeners,
       final ToolOptionsProvider optionsProvider, final ToolRunner toolRunner,
-      final IWorkspaceRoot workspaceRoot) {
+      final GrammarResource grammarResource) {
     Antlr4Generator generator = new Antlr4Generator();
-    generator.setWorkspaceRoot(workspaceRoot);
+    generator.setGrammarResource(grammarResource);
     generator.setOptionsProvider(optionsProvider);
     generator.setListeners(listeners);
     generator.setToolRunner(toolRunner);
@@ -98,7 +93,7 @@ public class Antlr4GeneratorTest {
 
   @Test
   public void generate() throws CoreException {
-    IWorkspaceRoot workspaceRoot = createMock(IWorkspaceRoot.class);
+    GrammarResource grammarResource = createMock(GrammarResource.class);
     IFile file = createMock(IFile.class);
     ToolOptionsProvider optionsProvider = createMock(ToolOptionsProvider.class);
     ToolOptions options = createMock(ToolOptions.class);
@@ -129,7 +124,7 @@ public class Antlr4GeneratorTest {
     replay(mocks);
 
     Antlr4Generator generator = newAntlr4Generator(console, launchManager, listeners,
-        optionsProvider, toolRunner, workspaceRoot);
+        optionsProvider, toolRunner, grammarResource);
 
     generator.generate(file, options);
 

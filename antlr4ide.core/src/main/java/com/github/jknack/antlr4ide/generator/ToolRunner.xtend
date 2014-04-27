@@ -12,6 +12,9 @@ import java.util.Set
 import com.github.jknack.antlr4ide.console.Console
 import com.google.inject.Singleton
 import java.util.List
+import com.google.inject.Inject
+import com.github.jknack.antlr4ide.services.GrammarResource
+import static extension com.github.jknack.antlr4ide.services.ModelExtensions.*
 
 /**
  * Execute ANTLR Tool and generated the code.
@@ -20,7 +23,11 @@ import java.util.List
 class ToolRunner {
 
   /** The generated files property. */
-  private static val GENERATED_FILES = new QualifiedName("antlr4ide", "generatedFiles")
+  static val GENERATED_FILES = new QualifiedName("antlr4ide", "generatedFiles")
+
+  /** The resource set provider. */
+  @Inject
+  GrammarResource grammarResource
 
   /**
    * Generate code by executing the ANTLR Tool. If the output directory lives inside the workspace,
@@ -43,6 +50,18 @@ class ToolRunner {
     val List<String> bootArgs = newArrayList("java")
     bootArgs.addAll(options.vmArguments)
     bootArgs.addAll("-cp", cp.join(File.pathSeparator), ToolOptionsProvider.TOOL, fileName)
+
+    // set -lib when is empty
+    val lib = options.libDirectory
+    if (lib == null || lib.empty) {
+      val grammar = grammarResource.grammarFrom(file)
+      val libs = grammar.imports.map[
+        grammarResource.fileFrom(it.importURI).parent
+      ].toSet
+      if (libs.size > 0) {
+        options.libDirectory = libs.iterator.next.location.toOSString
+      }
+    }
 
     // tool args
     val toolArgs = options.command(file)

@@ -25,6 +25,7 @@ import org.eclipse.xtext.ui.wizard.IProjectCreator;
 import com.github.jknack.antlr4ide.console.Console;
 import com.github.jknack.antlr4ide.generator.CodeGeneratorListener;
 import com.github.jknack.antlr4ide.generator.ToolOptionsProvider;
+import com.github.jknack.antlr4ide.services.GrammarResource;
 import com.github.jknack.antlr4ide.ui.console.AntlrConsoleFactory;
 import com.github.jknack.antlr4ide.ui.console.DefaultConsole;
 import com.github.jknack.antlr4ide.ui.editor.Antlr4NatureCallback;
@@ -39,6 +40,7 @@ import com.github.jknack.antlr4ide.ui.highlighting.ShowWhitespaceCharactersActio
 import com.github.jknack.antlr4ide.ui.highlighting.TokenToAttributeIdMapper;
 import com.github.jknack.antlr4ide.ui.labeling.Antlr4HoverProvider;
 import com.github.jknack.antlr4ide.ui.preferences.BuildPreferenceStoreInitializer;
+import com.github.jknack.antlr4ide.ui.services.DefaultGrammarResource;
 import com.github.jknack.antlr4ide.ui.wizard.JdtFreeProjectCreator;
 import com.google.common.collect.Sets;
 import com.google.inject.Binder;
@@ -67,6 +69,7 @@ public class Antlr4UiModule extends com.github.jknack.antlr4ide.ui.AbstractAntlr
     binder.requestStaticInjection(AntlrConsoleFactory.class);
     binder.requestStaticInjection(AntlrHighlightingConfiguration.class);
     binder.bind(Console.class).to(DefaultConsole.class);
+    binder.bind(GrammarResource.class).to(DefaultGrammarResource.class);
 
     binder.bind(ToolOptionsProvider.class).to(DefaultToolOptionsProvider.class);
 
