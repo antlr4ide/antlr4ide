@@ -250,7 +250,11 @@ class ParseTreeGenerator {
     var line = ""
     try {
       while ((line = in.readLine) != null) {
-        console.error(line)
+        if (line.startsWith("warning")) {
+          console.info(line)
+        } else {
+          console.error(line)
+        }
       }
     } finally {
       in.close

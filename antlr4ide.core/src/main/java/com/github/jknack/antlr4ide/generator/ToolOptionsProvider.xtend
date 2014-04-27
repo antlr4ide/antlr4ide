@@ -15,7 +15,7 @@ interface ToolOptionsProvider {
   val DEFAULT_TOOL = "antlr-" + VERSION + "-complete.jar"
 
   /** Name of the antlr4ide runtime jar. */
-  val RUNTIME_JAR = new File(System.getProperty("java.io.tmpdir"), "antlr4ide.runtime.jar")
+  val RUNTIME_JAR = new File(System.getProperty("antlr4ide.runtime.jar", "antlr4ide.runtime.jar"))
 
   /** The name of the ANTLR Tool class. */
   val TOOL = "org.antlr.v4.Tool"

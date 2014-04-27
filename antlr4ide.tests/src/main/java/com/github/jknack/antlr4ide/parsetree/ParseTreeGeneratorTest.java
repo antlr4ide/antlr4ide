@@ -95,11 +95,10 @@ public class ParseTreeGeneratorTest {
     expect(resource.getURI()).andReturn(resourceURI);
 
     Grammar grammar = createMock(Grammar.class);
-    expect(grammar.getName()).andReturn("G");
     expect(grammar.eResource()).andReturn(resource);
 
     Rule rule = createMock(Rule.class);
-    expect(rule.getName()).andReturn(ruleName).times(2);
+    expect(rule.getName()).andReturn(ruleName);
     expect(rule.eContainer()).andReturn(grammar);
 
     expect(workspaceRoot.getFile(Path.fromOSString("/project/G.g4"))).andReturn(file);
