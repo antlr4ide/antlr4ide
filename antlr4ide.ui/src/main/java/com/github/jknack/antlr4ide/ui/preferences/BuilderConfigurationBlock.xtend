@@ -248,7 +248,11 @@ class BuilderConfigurationBlock extends OptionsConfigurationBlock {
       }
     ]
 
-    packageViewer.input = Distributions.fromString(getValue(ToolOptions.BUILD_ANTLR_TOOLS))
+    packageViewer.input = try {
+      Distributions.fromString(getValue(ToolOptions.BUILD_ANTLR_TOOLS))
+    } catch (Exception ex) {
+      Sets.newHashSet(Distributions.defaultDistribution)
+    }
 
     // Select current tool
     val distribution = getValue(ToolOptions.BUILD_TOOL_PATH)
