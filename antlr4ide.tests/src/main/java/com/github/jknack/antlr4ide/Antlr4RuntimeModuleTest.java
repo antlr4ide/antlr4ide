@@ -11,8 +11,8 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.xtext.linking.ILinkingDiagnosticMessageProvider;
 import org.junit.Test;
 
-import com.github.jknack.antlr4ide.lang.LangFactory;
 import com.github.jknack.antlr4ide.generator.Antlr4OutputConfigurationProvider;
+import com.github.jknack.antlr4ide.lang.LangFactory;
 import com.github.jknack.antlr4ide.scoping.Antlr4NameProvider;
 import com.github.jknack.antlr4ide.validation.Antlr4MissingReferenceMessageProvider;
 import com.google.inject.Binder;

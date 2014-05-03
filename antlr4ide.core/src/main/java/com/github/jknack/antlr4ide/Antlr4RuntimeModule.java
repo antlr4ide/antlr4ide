@@ -45,4 +45,5 @@ public class Antlr4RuntimeModule extends com.github.jknack.antlr4ide.AbstractAnt
   protected ILaunchManager getLaunchManager() {
     return DebugPlugin.getDefault().getLaunchManager();
   }
+
 }

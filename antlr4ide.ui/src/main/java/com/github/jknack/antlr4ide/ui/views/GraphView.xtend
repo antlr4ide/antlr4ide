@@ -209,6 +209,9 @@ abstract class GraphView extends ViewPart implements IXtextModelListener, IPartL
    * A rule has been selected from editor. Update view the reflect current rule.
    */
   private def select(Rule rule) {
+    if (rule == null || rule.eContainer == null) {
+      return
+    }
     if (this.rule == null || this.rule.name != rule.name || this.rule.hash != rule.hash) {
       this.rule = rule
       onSelection(rule)
