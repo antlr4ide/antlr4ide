@@ -8,7 +8,7 @@ ANTLR 4 IDE
 
 Current Version
 =========
- Latest release version is: 0.3.2
+ Latest release version is: 0.3.3
 
 Features
 =========
@@ -52,10 +52,14 @@ ANTLR 4 IDE **isn't** available in the Eclipse Market Place yet, so you MUST ins
 * Copy and paste this url: http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/ in the **Work with** text field
 * Hit Enter
 * Choose **XText 2.5.4**. NOTE: DON'T confuse with Xtend, you must choose Xtext
-* Now, copy and paste this url: https://rawgit.com/jknack/antlr4ide/master/updates/release/4.3 in the **Work with** text field
+* Now, copy and paste this url: http://dl.bintray.com/jknack/antlr4ide in the **Work with** text field
 * Choose: **ANTLR 4 SDK IDE**. NOTE: If you don't see it, please unmark the **Group items by category** option
 * Click: Next and follow the normal Eclipse installation procedure
-* NOTE: If you found a handsake error, just add this entry ```-Djsse.enableSNIExtension=false``` to your ```eclipse.ini``` file. A detailed explanation is available [here](http://stackoverflow.com/questions/7615645/ssl-handshake-alert-unrecognized-name-error-since-upgrade-to-java-1-7-0) 
+
+Manual Installation
+=========
+You can [download the plugin](https://bintray.com/jknack/antlr4ide/antlr4ide/view) and the save it in the ```dropins``` directory of your Eclipse installation.
+
 
 Usage
 =========
