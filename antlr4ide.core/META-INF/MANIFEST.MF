@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ANTLR 4 Core
 Bundle-Vendor: Edgar Espina
-Bundle-Version: 0.3.3.qualifier
+Bundle-Version: 0.3.4.qualifier
 Bundle-SymbolicName: antlr4ide.core;singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext;bundle-version="2.5.0";visibility:=reexport,

@@ -46,26 +46,6 @@
       <arg value="package"/>
     </exec>
 
-    <!-- create p2 repository  -->
-    <echo message="prepare for release ${release.version} " />
-    <property name="releaseDir" value="updates/release/4.3" />
-    <property name="standaloneDir" value="updates/release/standalone" />
-
-    <echo message="creating p2 repository under: ${releaseDir}" />
-    <delete dir="${releaseDir}" failonerror="false"/>
-    <mkdir dir="${releaseDir}" />
-
-    <exec executable="git">
-      <arg value="rm"/>
-      <arg value="${releaseDir}/features/*.jar"/>
-      <arg value="${releaseDir}/plugins/*.jar"/>
-    </exec>
-
-    <copy file="updates/category.xml" todir="${releaseDir}" />
-    <copy todir="${releaseDir}">
-      <fileset dir="updates/target/repository" />
-    </copy>
-
     <exec executable="git">
       <arg value="status"/>
     </exec>
@@ -123,7 +103,7 @@
 
     <exec executable="git">
       <arg value="add"/>
-      <arg value="-all"/>
+      <arg value="."/>
     </exec>
 
     <exec executable="git">
