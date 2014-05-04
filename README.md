@@ -1,14 +1,11 @@
 [![Build Status](https://travis-ci.org/jknack/antlr4ide.png?branch=master)](https://travis-ci.org/jknack/antlr4ide)
+[ ![Download](https://api.bintray.com/packages/jknack/antlr4ide/antlr4ide/images/download.png) ](https://bintray.com/jknack/antlr4ide/antlr4ide/_latestVersion)
 
 ANTLR 4 IDE
 =========
 
 ![ANTLR 4 IDE](https://raw.github.com/jknack/antlr4ide/master/updates/screenshots/full.png)
 
-
-Current Version
-=========
- Latest release version is: 0.3.3
 
 Features
 =========
@@ -58,7 +55,7 @@ ANTLR 4 IDE **isn't** available in the Eclipse Market Place yet, so you MUST ins
 
 Manual Installation
 =========
-You can [download the plugin](https://bintray.com/jknack/antlr4ide/antlr4ide/view) and the save it in the ```dropins``` directory of your Eclipse installation.
+You can [download the plugin](https://bintray.com/jknack/antlr4ide/antlr4ide/) and the save it in the ```dropins``` directory of your Eclipse installation.
 
 
 Usage
