@@ -8,7 +8,7 @@
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>site</artifactId>
+  <artifactId>antlr4ide-plugin</artifactId>
   <packaging>eclipse-repository</packaging>
 
   <name>ANTLR 4 IDE - Update Site</name>

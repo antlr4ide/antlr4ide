@@ -14,6 +14,8 @@
   <target name="make-release">
     <antcall target="release-version" />
 
+    <antcall target="bintray-release" />
+
     <antcall target="development-version" />
 
   </target>
@@ -135,5 +137,77 @@
       <arg value="origin"/>
     </exec>
 
+  </target>
+
+  <target name="bintray-release">
+    <property file="${user.home}/.ant.properties" />
+
+    <echo message="creting version: ${release.version}"/>
+    <exec executable="curl">
+      <arg value="-X" />
+      <arg value="POST" />
+      <arg value="-H"/>
+      <arg value="Content-Type: application/json"/>
+      <arg value="-ujknack:${bintray.key}"/>
+      <arg value="-d" />
+      <arg value="{&quot;name&quot;:&quot;${release.version}&quot;,&quot;desc&quot;:&quot;ANTLR 4 IDE ${release.version}&quot;,&quot;vcs_tag&quot;:&quot;v${release.version}&quot;}" />
+      <arg value="https://api.bintray.com/packages/jknack/antlr4ide/antlr4ide/versions" />
+    </exec>
+
+    <echo message="uploading site..."/>
+    <echo message="  antlr4ide.sdk_${release.version}.jar"/>
+    <exec executable="curl">
+      <arg value="-X"/>
+      <arg value="PUT"/>
+      <arg value="-T"/>
+      <arg value="updates/target/repository/features/antlr4ide.sdk_${release.version}.jar"/>
+      <arg value="-ujknack:${bintray.key}"/>
+      <arg value="https://api.bintray.com/content/jknack/antlr4ide/antlr4ide/${release.version}/features/antlr4ide.sdk_${release.version}.jar" />
+    </exec>
+    <echo message="  antlr4ide.core_${release.version}.jar"/>
+    <exec executable="curl">
+      <arg value="-X"/>
+      <arg value="PUT"/>
+      <arg value="-T"/>
+      <arg value="updates/target/repository/plugins/antlr4ide.core_${release.version}.jar"/>
+      <arg value="-ujknack:${bintray.key}"/>
+      <arg value="https://api.bintray.com/content/jknack/antlr4ide/antlr4ide/${release.version}/plugins/antlr4ide.core_${release.version}.jar" />
+    </exec>
+    <echo message="  antlr4ide.ui_${release.version}.jar"/>
+    <exec executable="curl">
+      <arg value="-T"/>
+      <arg value="updates/target/repository/plugins/antlr4ide.ui_${release.version}.jar"/>
+      <arg value="-ujknack:${bintray.key}"/>
+      <arg value="https://api.bintray.com/content/jknack/antlr4ide/antlr4ide/${release.version}/plugins/antlr4ide.ui_${release.version}.jar" />
+    </exec>
+    <echo message="  artifacts.jar"/>
+    <exec executable="curl">
+      <arg value="-T"/>
+      <arg value="updates/target/repository/artifacts.jar"/>
+      <arg value="-ujknack:${bintray.key}"/>
+      <arg value="https://api.bintray.com/content/jknack/antlr4ide/antlr4ide/${release.version}/artifacts.jar" />
+    </exec>
+    <echo message="  content.jar"/>
+    <exec executable="curl">
+      <arg value="-T"/>
+      <arg value="updates/target/repository/content.jar"/>
+      <arg value="-ujknack:${bintray.key}"/>
+      <arg value="https://api.bintray.com/content/jknack/antlr4ide/antlr4ide/${release.version}/content.jar" />
+    </exec>
+    <echo message="  antlr4ide-plugin-${release.version}.zip"/>
+    <exec executable="curl">
+      <arg value="-T"/>
+      <arg value="updates/target/antlr4ide-plugin-${release.version}.zip"/>
+      <arg value="-ujknack:${bintray.key}"/>
+      <arg value="https://api.bintray.com/content/jknack/antlr4ide/antlr4ide/${release.version}/${release.version}/antlr4ide-plugin-${release.version}.zip" />
+    </exec>
+
+    <echo message="publishing ${release.version}"/>
+    <exec executable="curl">
+      <arg value="-X" />
+      <arg value="POST" />
+      <arg value="-ujknack:${bintray.key}"/>
+      <arg value="https://api.bintray.com//content/jknack/antlr4ide/antlr4ide/${release.version}/publish" />
+    </exec>
   </target>
 </project>
