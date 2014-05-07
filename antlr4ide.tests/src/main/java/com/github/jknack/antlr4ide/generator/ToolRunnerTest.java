@@ -99,6 +99,7 @@ public class ToolRunnerTest {
     expect(fileParent.getLocation()).andReturn(fileParentPath).times(3);
 
     expect(options.getAntlrTool()).andReturn(toolPath.toOSString());
+    expect(options.isCleanUpDerivedResources()).andReturn(true);
     expect(options.vmArguments()).andReturn(vmArgs);
     expect(options.getLibDirectory()).andReturn("libdir");
     expect(options.command(file)).andReturn(command);

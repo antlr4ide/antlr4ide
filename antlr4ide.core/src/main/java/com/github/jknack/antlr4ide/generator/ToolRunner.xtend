@@ -70,7 +70,12 @@ class ToolRunner {
     val String[] command = bootArgs + toolArgs
 
     console.info("%s %s", fileName, toolArgs.join(" "))
-    cleanupResources(file)
+
+    // clean up derived resources?
+    if (options.cleanUpDerivedResources) {
+      cleanupResources(file)
+    }
+
     val process = new ProcessBuilder(command).directory(file.parent.location.toFile).start
 
     /**

@@ -64,6 +64,7 @@ class DefaultToolOptionsProvider implements ToolOptionsProvider {
       encoding = getString(ToolOptions.BUILD_ENCODING, store, "UTF-8")
       vmArgs = getString(ToolOptions.VM_ARGS, store, "")
       derived = output.setDerivedProperty
+      cleanUpDerivedResources = output.cleanUpDerivedResources
     ]
 
     return options(file, defaults)

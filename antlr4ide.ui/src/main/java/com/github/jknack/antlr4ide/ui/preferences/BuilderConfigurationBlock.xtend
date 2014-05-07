@@ -116,11 +116,15 @@ class BuilderConfigurationBlock extends OptionsConfigurationBlock {
     addCheckBox(othersComposite, "Generate parse tree visitors (-visitor)", ToolOptions.BUILD_VISITOR,
       trueFalseValues, 0)
 
-    addTextField(othersComposite, "Encoding", ToolOptions.BUILD_ENCODING, 0, 100)
+    addCheckBox(othersComposite, "Delete generated files, when clean build is triggered",
+          BuilderPreferenceAccess.getKey(outputConfiguration,
+              EclipseOutputConfigurationProvider.OUTPUT_CLEANUP_DERIVED), trueFalseValues, 0);
 
     addCheckBox(othersComposite, "Mark generated files as derived",
       BuilderPreferenceAccess.getKey(outputConfiguration,
         EclipseOutputConfigurationProvider.OUTPUT_DERIVED), trueFalseValues, 0)
+
+    addTextField(othersComposite, "Encoding", ToolOptions.BUILD_ENCODING, 0, 100)
 
     excomposite = createStyleSection(composite, "VM Arguments", columns)
     othersComposite = new Composite(excomposite, SWT.NONE)

@@ -69,7 +69,11 @@ class ToolOptions {
 
   @Property
   boolean packageInsideAction = false
-  
+
+
+  @Property
+  boolean cleanUpDerivedResources = true
+
   /**
    * Produces output options like absolute, workspace relative output directory and package name.
    * It tries to detect/guess a package's name for files under <code>src/main/antlr4</code>,
