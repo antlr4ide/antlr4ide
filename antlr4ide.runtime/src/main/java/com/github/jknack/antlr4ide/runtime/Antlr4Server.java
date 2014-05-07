@@ -48,13 +48,15 @@ public class Antlr4Server extends Thread
       PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
       BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-      String line = in.readLine();
-      String[] command = line.split(" ");
-      if ("parsetree".equals(command[0])) {
-        String sexpression = new ParseTreeCommand(out).run(unespace(command[1]), command[2], unespace(command[3]));
+      String command = in.readLine();
+      if ("parsetree".equals(command)) {
+        String file = in.readLine();
+        String startRule = in.readLine();
+        String input = unescape(in.readLine());
+        String sexpression = new ParseTreeCommand(out).run(file, startRule, input);
         out.println(sexpression);
       } else {
-        System.err.println("error: unknown command " + command[0]);
+        System.err.println("error: unknown command " + command);
       }
 
       out.close();
@@ -66,8 +68,9 @@ public class Antlr4Server extends Thread
     }
   }
 
-  private String unespace(final String string) {
-    return string.replace("\u00B7", " ").replace("\\t", "\t").replace("\\r", "\r")
-        .replace("\\n", "\n");
+  private String unescape(final String string) {
+    return string
+        .replace("___creturn__", "\r")
+        .replace("___nline__", "\n");
   }
 }

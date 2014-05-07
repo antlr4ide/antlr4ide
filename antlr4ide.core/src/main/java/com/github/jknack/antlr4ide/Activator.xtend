@@ -22,13 +22,6 @@ class Activator extends Plugin {
     super.start(context)
 
     val bundle = context.bundle
-    // setup antlr4ide runtime.
-    val rjar = "antlr4ide.runtime-" + bundle.headers.get("Bundle-Version")
-      .replace(".qualifier", "-SNAPSHOT").replaceAll("\\.\\d{12}", "-SNAPSHOT") + ".jar";
-
-    System.setProperty("antlr4ide.runtime.jar",
-      new File(System.getProperty("java.io.tmpdir"), rjar).absolutePath
-    );
 
     val jars = #[
       new File(Distributions.defaultDistribution.value),
@@ -36,14 +29,12 @@ class Activator extends Plugin {
     ]
 
     jars.forEach[
-      if (!it.exists) {
-        val fname = "lib/" + it.name
-        val toolUrl = bundle.getResource(fname)
-        if (toolUrl == null) {
-          throw new FileNotFoundException(fname)
-        }
-        copy(toolUrl.openStream, new BufferedOutputStream(new FileOutputStream(it)))
+      val fname = "lib/" + it.name
+      val toolUrl = bundle.getResource(fname)
+      if (toolUrl == null) {
+        throw new FileNotFoundException(fname)
       }
+      copy(toolUrl.openStream, new BufferedOutputStream(new FileOutputStream(it)))
     ]
   }
 

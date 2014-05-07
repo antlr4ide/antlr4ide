@@ -72,7 +72,7 @@ public class ParseTreeGeneratorTest {
     expect(options.getAntlrTool()).andReturn(toolPath);
     expect(options.vmArguments()).andReturn(vmArgs);
 
-    IPath location = Path.fromPortableString("/home/edgar/ws/project/G4.g4");
+    IPath location = Path.fromPortableString("/home/edgar/ws space/project/G4.g4");
 
     IWorkspaceRoot workspaceRoot = createMock(IWorkspaceRoot.class);
     IFile file = createMock(IFile.class);
@@ -116,7 +116,10 @@ public class ParseTreeGeneratorTest {
     OutputStream out = createMock(OutputStream.class);
 
     PrintWriter writer = PowerMock.createMockAndExpectNew(PrintWriter.class, out, true);
-    writer.println("parsetree /home/edgar/ws/project/G4.g4 rule 3+4*5");
+    writer.println("parsetree");
+    writer.println("/home/edgar/ws space/project/G4.g4");
+    writer.println("rule");
+    writer.println("3+4*5");
     writer.close();
 
     InputStream in = createMock(InputStream.class);

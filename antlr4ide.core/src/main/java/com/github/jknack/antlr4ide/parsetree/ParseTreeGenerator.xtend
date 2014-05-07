@@ -162,12 +162,16 @@ class ParseTreeGenerator {
     val process = entry.value
 
     val escape = [ String string |
-      return string.replace(" ", "\u00B7").replace("\t", "\\t").replace("\r", "\\r").replace("\n", "\\n")
+      return string
+          .replace("\r", "___creturn__")
+          .replace("\n", "___nline__")
     ]
 
     connect(process, port) [ socket, out, in |
-      out.println(
-        "parsetree " + escape.apply(file.location.toOSString) + " " + rule.name + " " + escape.apply(input))
+      out.println("parsetree")
+      out.println(file.location.toOSString)
+      out.println(rule.name)
+      out.println(escape.apply(input))
       var line = ""
       var sexpression = "( )"
       while ((line = in.readLine) != null) {
