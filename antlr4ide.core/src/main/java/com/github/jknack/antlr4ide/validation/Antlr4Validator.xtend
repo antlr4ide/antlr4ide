@@ -3,6 +3,7 @@ package com.github.jknack.antlr4ide.validation
 import com.github.jknack.antlr4ide.lang.Grammar
 import com.github.jknack.antlr4ide.lang.ParserRule
 import com.github.jknack.antlr4ide.lang.Rule
+import static extension org.eclipse.xtext.nodemodel.util.NodeModelUtils.*
 import java.util.Set
 import org.eclipse.xtext.validation.Check
 import org.eclipse.emf.ecore.EObject
@@ -36,6 +37,7 @@ import com.github.jknack.antlr4ide.validation.AbstractAntlr4Validator
 import com.github.jknack.antlr4ide.lang.LexerCommand
 import com.google.common.collect.Sets
 import java.util.regex.Pattern
+import com.github.jknack.antlr4ide.lang.LexerCommandArg
 
 /**
  * Custom validation rules. 
@@ -229,15 +231,17 @@ class Antlr4Validator extends AbstractAntlr4Validator {
       val references = Sets.newHashSet(MODES)
       val constant = switch (ref) {
         Mode : {
-          references.add(ref.id)
+          references += ref.id
           ref.id
         }
         LexerRule : {
-          references.add(ref.name)
+          references += ref.name
           ref.name
         }
         V3Token : ref.id
         V4Token : ref.name
+        LexerCommandArg :
+          args.findNodesForFeature(LangPackage.Literals.LEXER_COMMAND_EXPR__REF)?.head?.text
         default: null
       }
       if (!references.contains(constant)) {

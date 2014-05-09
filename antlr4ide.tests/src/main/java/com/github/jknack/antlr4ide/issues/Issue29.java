@@ -5,14 +5,19 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
+import java.util.Arrays;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.xtext.nodemodel.INode;
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import com.github.jknack.antlr4ide.lang.LangPackage;
 import com.github.jknack.antlr4ide.lang.LexerCommand;
 import com.github.jknack.antlr4ide.lang.LexerCommandArg;
 import com.github.jknack.antlr4ide.lang.LexerCommandExpr;
@@ -24,7 +29,7 @@ import com.github.jknack.antlr4ide.lang.V4Token;
 import com.github.jknack.antlr4ide.validation.Antlr4Validator;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Antlr4Validator.class })
+@PrepareForTest({Antlr4Validator.class, NodeModelUtils.class })
 public class Issue29 {
 
   @Test
@@ -152,6 +157,41 @@ public class Issue29 {
   }
 
   @Test
+  public void warnCommandWithDefaultChannel() throws Exception {
+    Rule rule = createMock(Rule.class);
+
+    LexerCommandArg ref = createMock(LexerCommandArg.class);
+
+    EStructuralFeature feature = createMock(EStructuralFeature.class);
+
+    LexerCommandExpr args = createMock(LexerCommandExpr.class);
+    expect(args.getRef()).andReturn(ref);
+
+    LexerCommand command = createMock(LexerCommand.class);
+    expect(command.getArgs()).andReturn(args);
+    expect(command.eContainer()).andReturn(rule);
+
+    INode node = createMock(INode.class);
+    expect(node.getText()).andReturn("HIDDEN");
+
+    PowerMock.mockStatic(NodeModelUtils.class);
+    expect(NodeModelUtils.findNodesForFeature(args, LangPackage.Literals.LEXER_COMMAND_EXPR__REF))
+        .andReturn(Arrays.asList(node));
+
+    Antlr4Validator validator = PowerMock.createPartialMock(Antlr4Validator.class, "warning");
+
+    Object[] mocks = {rule, command, args, ref, feature, validator, node };
+    PowerMock.replay(NodeModelUtils.class);
+
+    replay(mocks);
+
+    validator.commandWithUnrecognizedConstantValue(command);
+
+    verify(mocks);
+    PowerMock.verify(NodeModelUtils.class);
+  }
+
+  @Test
   public void warnCommandWithAnythingElse() throws Exception {
     Rule rule = createMock(Rule.class);
     expect(rule.getName()).andReturn("RULE");
@@ -171,6 +211,13 @@ public class Issue29 {
     expect(command.getArgs()).andReturn(args);
     expect(command.eContainer()).andReturn(rule);
 
+    INode node = createMock(INode.class);
+    expect(node.getText()).andReturn("Something");
+
+    PowerMock.mockStatic(NodeModelUtils.class);
+    expect(NodeModelUtils.findNodesForFeature(args, LangPackage.Literals.LEXER_COMMAND_EXPR__REF))
+        .andReturn(Arrays.asList(node));
+
     Antlr4Validator validator = PowerMock.createPartialMock(Antlr4Validator.class, "warning");
 
     PowerMock.expectPrivate(validator, "warning",
@@ -178,13 +225,15 @@ public class Issue29 {
             "constant value; lexer interpreters may produce incorrect output",
         args, feature);
 
-    Object[] mocks = {rule, command, args, ref, eClass, feature, validator };
+    Object[] mocks = {rule, command, args, ref, eClass, feature, validator, node };
+    PowerMock.replay(NodeModelUtils.class);
 
     replay(mocks);
 
     validator.commandWithUnrecognizedConstantValue(command);
 
     verify(mocks);
+    PowerMock.verify(NodeModelUtils.class);
   }
 
   @Test
@@ -224,7 +273,7 @@ public class Issue29 {
 
   @Test
   public void validCommands() throws Exception {
-    String[] commands = {"skip", "more", "popMode", "type", "channel", "mode", "pushMode"};
+    String[] commands = {"skip", "more", "popMode", "type", "channel", "mode", "pushMode" };
     for (String comamndName : commands) {
       LexerCommand command = createMock(LexerCommand.class);
       expect(command.getName()).andReturn(comamndName);

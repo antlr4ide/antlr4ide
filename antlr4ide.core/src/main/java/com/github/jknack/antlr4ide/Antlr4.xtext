@@ -396,7 +396,7 @@ ElementOption
 LexerRule
   :
     ^fragment?='fragment'?
-    name=TOKEN_REF COLON body=LexerRuleBlock? semicolonSymbol=';'
+    name=TOKEN_REF COLON body=LexerRuleBlock semicolonSymbol=';'
   ;
 
 LexerRuleBlock
@@ -406,18 +406,18 @@ LexerRuleBlock
 
 LexerAltList
   :
-    alternatives+=LexerAlt ('|' alternatives+=LexerAlt | '|')*
+    alternatives+=LexerAlt ('|' alternatives+=LexerAlt)*
   ;
 
 LexerAlt
   :
-    {LexerAlt}
     body=LexerElements commands=LexerCommands?
   ;
 
 LexerElements
   :
-    elements+=LexerElement+
+    {LexerElements}
+    elements+=LexerElement*
   ;
 
 LexerElement

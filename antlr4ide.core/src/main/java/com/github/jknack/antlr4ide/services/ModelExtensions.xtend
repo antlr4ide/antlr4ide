@@ -13,6 +13,8 @@ import java.util.Map
 import com.github.jknack.antlr4ide.lang.Imports
 import java.util.Set
 import com.github.jknack.antlr4ide.lang.Import
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 
 /**
  * Utility methods for model objects.
@@ -83,4 +85,8 @@ class ModelExtensions {
     return imports
   }
 
+  def static String unresolvedName(EObject source, EReference reference) {
+    val refs = NodeModelUtils.findNodesForFeature(source, reference)
+    return refs?.head?.text
+  }
 }
