@@ -417,7 +417,8 @@ LexerAlt
 
 LexerElements
   :
-    elements+=LexerElement+
+  	{LexerElements}
+    elements+=LexerElement*
   ;
 
 LexerElement
