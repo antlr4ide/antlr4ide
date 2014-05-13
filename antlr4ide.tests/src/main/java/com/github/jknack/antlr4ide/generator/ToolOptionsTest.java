@@ -358,10 +358,10 @@ public class ToolOptionsTest {
     OutputOption output = options.output(file);
     assertNotNull(output);
     assertEquals(projectPath.append(outputPath).toPortableString(), output.getAbsolute()
-        .toPortableString());
+        .toPortableString().replace("\\", "/"));
     assertEquals(Path.fromPortableString("/").append(outputPath).toPortableString(), output
         .getRelative()
-        .toPortableString());
+        .toPortableString().replace("\\", "/"));
     assertEquals("", output.getPackageName());
 
     verify(mocks);

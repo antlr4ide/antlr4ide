@@ -117,7 +117,7 @@ public class ParseTreeGeneratorTest {
 
     PrintWriter writer = PowerMock.createMockAndExpectNew(PrintWriter.class, out, true);
     writer.println("parsetree");
-    writer.println("/home/edgar/ws space/project/G4.g4");
+    writer.println(location.toOSString());
     writer.println("rule");
     writer.println("3+4*5");
     writer.close();
@@ -179,7 +179,7 @@ public class ParseTreeGeneratorTest {
             "        \"*\"\n" +
             "        \"number\"\n" +
             "          \"4\"\n",
-        dump(tree));
+        dump(tree).replace("\r", ""));
 
     verify(mocks);
     PowerMock.verify(ProcessBuilder.class, pb, ModelExtensions.class, Socket.class,
