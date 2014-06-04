@@ -68,8 +68,15 @@
         </page>
         <page
             category="com.github.jknack.antlr4ide.Antlr4"
-            class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.syntaxcoloring.SyntaxColoringPreferencePage"
+            class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.antlr4ide.ui.folding.Antlr4FoldingPage"
             id="com.github.jknack.antlr4ide.Antlr4.coloring"
+            name="Folding">
+            <keywordReference id="com.github.jknack.antlr4ide.ui.keyword_Antlr4"/>
+        </page>
+        <page
+            category="com.github.jknack.antlr4ide.Antlr4"
+            class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.syntaxcoloring.SyntaxColoringPreferencePage"
+            id="com.github.jknack.antlr4ide.Antlr4.folding"
             name="Syntax Coloring">
             <keywordReference id="com.github.jknack.antlr4ide.ui.keyword_Antlr4"/>
         </page>

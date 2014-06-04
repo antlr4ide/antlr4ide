@@ -29,6 +29,7 @@ import com.github.jknack.antlr4ide.services.GrammarResource;
 import com.github.jknack.antlr4ide.ui.console.AntlrConsoleFactory;
 import com.github.jknack.antlr4ide.ui.console.DefaultConsole;
 import com.github.jknack.antlr4ide.ui.editor.Antlr4NatureCallback;
+import com.github.jknack.antlr4ide.ui.folding.Antlr4FoldingPreferenceStoreInitializer;
 import com.github.jknack.antlr4ide.ui.folding.Antlr4FoldingRegionProvider;
 import com.github.jknack.antlr4ide.ui.folding.Antlr4FoldingStructureProvider;
 import com.github.jknack.antlr4ide.ui.generator.DefaultToolOptionsProvider;
@@ -39,6 +40,7 @@ import com.github.jknack.antlr4ide.ui.highlighting.AntlrHighlightingConfiguratio
 import com.github.jknack.antlr4ide.ui.highlighting.ShowWhitespaceCharactersActionContributor;
 import com.github.jknack.antlr4ide.ui.highlighting.TokenToAttributeIdMapper;
 import com.github.jknack.antlr4ide.ui.labeling.Antlr4HoverProvider;
+import com.github.jknack.antlr4ide.ui.preferences.Antlr4PreferenceStoreInitializer;
 import com.github.jknack.antlr4ide.ui.preferences.BuildPreferenceStoreInitializer;
 import com.github.jknack.antlr4ide.ui.services.DefaultGrammarResource;
 import com.github.jknack.antlr4ide.ui.wizard.JdtFreeProjectCreator;
@@ -73,6 +75,8 @@ public class Antlr4UiModule extends com.github.jknack.antlr4ide.ui.AbstractAntlr
 
     binder.bind(ToolOptionsProvider.class).to(DefaultToolOptionsProvider.class);
 
+    binder.bind(Antlr4FoldingPreferenceStoreInitializer.class);
+    binder.bind(BuildPreferenceStoreInitializer.class);
     binder.bind(IFoldingStructureProvider.class).to(Antlr4FoldingStructureProvider.class);
     binder.bind(IFoldingRegionProvider.class).to(Antlr4FoldingRegionProvider.class);
 
@@ -109,7 +113,7 @@ public class Antlr4UiModule extends com.github.jknack.antlr4ide.ui.AbstractAntlr
   }
 
   public Class<? extends IPreferenceStoreInitializer> bindIPreferenceStoreInitializer() {
-    return BuildPreferenceStoreInitializer.class;
+    return Antlr4PreferenceStoreInitializer.class;
   }
 
   public Class<? extends IEObjectHoverProvider> bindIEObjectHoverProvider() {
