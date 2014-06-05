@@ -28,10 +28,12 @@ import java.util.Set
 import org.eclipse.xtext.xbase.lib.Functions.Function3
 import com.github.jknack.antlr4ide.generator.ToolOptions
 import java.util.List
-import com.github.jknack.antlr4ide.services.Caches
 import java.util.Map
 import org.eclipse.core.runtime.jobs.Job
 import com.google.common.collect.Maps
+import com.google.common.cache.CacheBuilder
+import java.util.concurrent.TimeUnit
+import com.google.common.cache.CacheLoader
 
 /**
  * Given a start rule and grammar this class generate a parse tree for matching input.
@@ -69,14 +71,14 @@ class ParseTreeGenerator {
   Map<Process, Job> jobs = Maps.newHashMap
 
   /** Cache JVM and reduce startup time. */
-  val processCache = new Caches<Pair<String, Set<String>>, Pair<String, Process>> (2)
-    .removalListener[
-      val process = it.value
-      jobs.remove(process).cancel
-
-      process.destroy
-    ]
-    .build[key|
+  val processCache = CacheBuilder.newBuilder
+    .maximumSize(2)
+    .expireAfterAccess(1, TimeUnit.HOURS)
+  .removalListener [
+    // destroy process
+    destroy(it.value)
+  ].build(
+    CacheLoader.from [ Pair<String, Set<String>> key |
       val cp = key.key
       val vmArgs = key.value
       val port = freePort.toString
@@ -88,6 +90,7 @@ class ParseTreeGenerator {
       val process = newProcess(command)
       port -> process
     ]
+  )
 
   /**
    * Build a parse tree for the given rule & input.
@@ -105,7 +108,7 @@ class ParseTreeGenerator {
    * Disconnect the parse tree evaluator and destroy any live process.
    */
   def disconnect() {
-    processCache.clear
+    processCache.invalidateAll
   }
 
   /**
@@ -136,6 +139,15 @@ class ParseTreeGenerator {
     Thread.sleep(500)
 
     return process
+  }
+
+  /**
+   * Destroy the JVM process.
+   */
+  private def destroy(Pair<String, Process> entry) {
+    val process = entry.value
+    jobs.remove(process).cancel
+    process.destroy
   }
 
   /**
