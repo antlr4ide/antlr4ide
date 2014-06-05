@@ -37,7 +37,7 @@ Now, the **new** IDE was built on [XText](http://www.eclipse.org/Xtext). [XText]
 Requirements
 =========
 * Eclipse 4.3 (Kepler)
-* XText 2.5.4
+* XText 2.5.x/2.6
 
 Installation
 =========
@@ -45,7 +45,7 @@ ANTLR 4 IDE **isn't** available in the Eclipse Market Place yet, so you MUST ins
 
 * Open Eclipse Kepler (4.3)
 * Go to: ```Help > Install New Software...```
-* You need to Install XText 2.5.4
+* You need to Install XText 2.5.x/2.6
 * Copy and paste this url: http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/ in the **Work with** text field
 * Hit Enter
 * Choose **XText 2.5.4**. NOTE: DON'T confuse with Xtend, you must choose Xtext
