@@ -137,13 +137,13 @@
   </build>
 
   <properties>
-    <tycho-version>0.20.0</tycho-version>
+    <tycho-version>0.21.0</tycho-version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <xtext.version>2.6.0</xtext.version>
+    <xtext.version>2.7.0</xtext.version>
     <maven.compiler.source>1.6</maven.compiler.source>
     <maven.compiler.target>1.6</maven.compiler.target>
 
-    <antlr-generator>antlr-generator-3.2.0.jar</antlr-generator>
+    <antlr-generator>antlr-generator-3.2.0-patch.jar</antlr-generator>
     <antlr4-version>4.2.2</antlr4-version>
     <antlr4.jar>antlr-${antlr4-version}-complete.jar</antlr4.jar>
     <powermock-version>1.5.4</powermock-version>
@@ -151,9 +151,9 @@
 
   <repositories>
     <repository>
-      <id>kepler</id>
+      <id>luna</id>
       <layout>p2</layout>
-      <url>http://download.eclipse.org/releases/kepler</url>
+      <url>http://download.eclipse.org/releases/luna</url>
     </repository>
     <repository>
       <id>Xtext Update Site</id>

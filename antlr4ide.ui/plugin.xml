@@ -193,14 +193,6 @@
       <persistent value="true"/>
   </extension>
 
-   <!-- Custom build 3 participant -->
-   <extension
-         point="org.eclipse.xtext.builder.participant">
-      <participant
-            class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.antlr4ide.ui.generator.Antlr3BuilderParticipant">
-      </participant>
-   </extension>
-
    <extension
          point="org.eclipse.xtext.builder.participant">
       <participant

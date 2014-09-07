@@ -18,7 +18,7 @@ Grammar
 
 enum GrammarType
   :
-     DEFAULT='___default_hack_'
+     DEFAULT='default_hack_'
   |  LEXER='lexer'
   |  PARSER='parser'
   |  TREE='tree'
@@ -346,7 +346,6 @@ Terminal
   :
     reference=[TokenRef|TOKEN_REF] options=ElementOptions?
   | literal=STRING options=ElementOptions?
-  | literal='EOF'
   ;
 
 TokenRef

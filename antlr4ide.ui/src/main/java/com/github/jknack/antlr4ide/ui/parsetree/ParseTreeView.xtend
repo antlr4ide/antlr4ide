@@ -136,7 +136,7 @@ class ParseTreeView extends GraphView {
     // symbols
     fn.apply(SYMBOL.matcher(input), AntlrHighlightingConfiguration.STRING_ID, SWT.NONE, 0)
     val offsets = newLinkedList(0)
-    this.text.styleRanges = styles.sort [ style1, style2 |
+    this.text.styleRanges = styles.sortWith [ style1, style2 |
       val start = style1.start - style2.start
       return if (start == 0) style1.length - style2.length else start
     ].filter [
@@ -243,7 +243,7 @@ class ParseTreeView extends GraphView {
   }
 
   override partClosed(IWorkbenchPart part) {
-    if (part == this) {
+    if (this == part) {
       generator.disconnect
     }
   }

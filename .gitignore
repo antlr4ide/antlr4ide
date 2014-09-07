@@ -16,7 +16,7 @@ dependency-reduced-pom.xml
 *.idea
 
 lib
-.antlr-generator-3.2.0.jar
+.antlr-generator-3.2.0-patch.jar
 generated
 src-gen
 xtend-gen
