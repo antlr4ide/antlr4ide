@@ -48,15 +48,15 @@ abstract class AbstractNode extends CrossPoint implements IEObjectReferer, ISele
     backgroundColor = unselectedBackgroundColor
     label = new Label(text)
     add(label)
-    border = createBorder()
-    this.font = font
+    setBorder(createBorder())
+    setFont(font)
     this.textRegion = textRegion
   }
 
   protected abstract def Border createBorder()
 
   override setFont(Font f) {
-    super.font = f
+    super.setFont = f
     label.font = f
   }
 

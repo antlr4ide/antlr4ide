@@ -9,7 +9,6 @@ import org.eclipse.xtext.ui.editor.folding.DefaultFoldedPosition
 class Antlr4FoldedPosition extends DefaultFoldedPosition {
 
   /** The region type. */
-  @Property
   String regionType
 
   new(String regionType, int offset, int length, int contentStart, int contentLength) {
@@ -17,4 +16,7 @@ class Antlr4FoldedPosition extends DefaultFoldedPosition {
     this.regionType = regionType
   }
 
+  def getRegionType() {
+    return regionType
+  }
 }

@@ -13,7 +13,6 @@ import org.eclipse.xtext.util.ITextRegion
 class Antlr4FoldingRegionAcceptor extends DefaultFoldingRegionAcceptor {
 
   /** The folded region type. */
-  @Property
   String regionType
 
   new(IXtextDocument document, Collection<FoldedPosition> result) {
@@ -44,4 +43,11 @@ class Antlr4FoldingRegionAcceptor extends DefaultFoldingRegionAcceptor {
     )
   }
 
+  def getRegionType() {
+    return regionType
+  }
+
+  def setRegionType(String regionType) {
+    this.regionType = regionType
+  }
 }

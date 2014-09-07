@@ -29,7 +29,6 @@ class DefaultToolOptionsProvider implements ToolOptionsProvider {
 
   /** Launch manager. */
   @Inject
-  @Property
   ILaunchManager launchManager
 
   static val PKG_NAME = Pattern.compile("package\\s+(([a-zA_Z_][\\.\\w]*))\\s*;")
@@ -119,5 +118,9 @@ class DefaultToolOptionsProvider implements ToolOptionsProvider {
     } else {
       defaultValue
     }
+  }
+
+  def getLaunchManager() {
+    return launchManager
   }
 }

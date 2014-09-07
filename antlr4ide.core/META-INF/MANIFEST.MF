@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.xtext;bundle-version="2.5.0";visibility:=reexport,
  org.eclipse.equinox.common,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,
- org.eclipse.debug.core
+ org.eclipse.debug.core,
+ org.eclipse.xtext.xbase.lib
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.xbase.lib
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
@@ -46,5 +47,4 @@ Export-Package: com.github.jknack.antlr4ide,
  org.abego.treelayout.internal.util.java.util,
  org.abego.treelayout.util
 Bundle-Activator: com.github.jknack.antlr4ide.Activator
-Bundle-ClassPath: lib/treelayout.core-1.0.1.jar,
- .
+Bundle-ClassPath: lib/treelayout.core-1.0.1.jar,.

@@ -1,17 +1,16 @@
 package com.github.jknack.antlr4ide.ui.editor
 
-import org.eclipse.xtext.ui.editor.AbstractDirtyStateAwareEditorCallback
 import org.eclipse.xtext.ui.editor.XtextEditor
 import org.eclipse.xtext.ui.XtextProjectHelper
 import org.eclipse.core.resources.IProject
+import org.eclipse.xtext.ui.editor.IXtextEditorCallback
 
 /**
  * Add Xtext nature without prompt users.
  */
-class Antlr4NatureCallback extends AbstractDirtyStateAwareEditorCallback {
+class Antlr4NatureCallback implements IXtextEditorCallback {
 
   override afterCreatePartControl(XtextEditor editor) {
-    super.afterCreatePartControl(editor)
     val resource = editor.resource
     if (resource != null && !XtextProjectHelper.hasNature(resource.project) && resource.project.accessible &&
       !resource.project.hidden) {
@@ -30,6 +29,22 @@ class Antlr4NatureCallback extends AbstractDirtyStateAwareEditorCallback {
     newNatures += XtextProjectHelper.NATURE_ID
     description.natureIds = newNatures
     project.setDescription(description, null)
+  }
+  
+  override afterSave(XtextEditor editor) {
+  }
+  
+  override afterSetInput(XtextEditor xtextEditor) {
+  }
+  
+  override beforeDispose(XtextEditor editor) {
+  }
+  
+  override beforeSetInput(XtextEditor xtextEditor) {
+  }
+  
+  override onValidateEditorInputState(XtextEditor editor) {
+    return true;
   }
 
 }

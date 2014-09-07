@@ -23,71 +23,69 @@ import {{lexer}};
 
 
 
-KEYWORD_33 : '___default_hack_';
+Default_hack_ : 'default_hack_';
 
-KEYWORD_32 : 'fragment';
+Fragment : 'fragment';
 
-KEYWORD_29 : 'finally';
+Finally : 'finally';
 
-KEYWORD_30 : 'grammar';
+Grammar : 'grammar';
 
-KEYWORD_31 : 'returns';
+Returns : 'returns';
 
-KEYWORD_25 : 'import';
+Import : 'import';
 
-KEYWORD_26 : 'locals';
+Locals : 'locals';
 
-KEYWORD_27 : 'parser';
+Parser : 'parser';
 
-KEYWORD_28 : 'throws';
+Throws : 'throws';
 
-KEYWORD_23 : 'catch';
+Catch : 'catch';
 
-KEYWORD_24 : 'lexer';
+Lexer : 'lexer';
 
-KEYWORD_21 : 'mode';
+Mode : 'mode';
 
-KEYWORD_22 : 'tree';
+Tree : 'tree';
 
-KEYWORD_20 : 'EOF';
+PlusSignEqualsSign : '+=';
 
-KEYWORD_17 : '+=';
+FullStopFullStop : '..';
 
-KEYWORD_18 : '..';
+ColonColon : '::';
 
-KEYWORD_19 : '::';
+NumberSign : '#';
 
-KEYWORD_1 : '#';
+LeftParenthesis : '(';
 
-KEYWORD_2 : '(';
+RightParenthesis : ')';
 
-KEYWORD_3 : ')';
+Asterisk : '*';
 
-KEYWORD_4 : '*';
+PlusSign : '+';
 
-KEYWORD_5 : '+';
+Comma : ',';
 
-KEYWORD_6 : ',';
+FullStop : '.';
 
-KEYWORD_7 : '.';
+Semicolon : ';' {isLexerRule=null;};
 
-KEYWORD_8 : ';' {isLexerRule=null;};
+LessThanSign : '<';
 
-KEYWORD_9 : '<';
+EqualsSign : '=';
 
-KEYWORD_10 : '=';
+GreaterThanSign : '>';
 
-KEYWORD_11 : '>';
+QuestionMark : '?';
 
-KEYWORD_12 : '?';
+CommercialAt : '@';
 
-KEYWORD_13 : '@';
+VerticalLine : '|';
 
-KEYWORD_14 : '|';
+RightCurlyBracket : '}';
 
-KEYWORD_15 : '}';
-
-KEYWORD_16 : '~';
+Tilde : '~';
 
 
 

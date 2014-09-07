@@ -27,6 +27,10 @@ class Antlr4MissingReferenceMessageProvider extends LinkingDiagnosticMessageProv
     val context = diagnosticContext.context
     val command = context.getContainerOfType(LexerCommands) != null
 
+    if ("EOF" == linkText) {
+      // EOF is OK
+      return null
+    }
     if (command) {
       // modes are OK
       return null
