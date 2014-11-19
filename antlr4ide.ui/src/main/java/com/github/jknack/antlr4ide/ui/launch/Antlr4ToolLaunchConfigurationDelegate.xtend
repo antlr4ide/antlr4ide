@@ -52,6 +52,7 @@ class Antlr4ToolLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
       options.outputDirectory = defaults.outputDirectory
     }
     options.antlrTool = defaults.antlrTool
+    options.cleanUpDerivedResources = defaults.cleanUpDerivedResources
     options.vmArgs = vmArgs
     generator.generate(file, options)
   }
