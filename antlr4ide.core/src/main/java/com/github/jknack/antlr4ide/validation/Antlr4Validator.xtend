@@ -379,7 +379,8 @@ class Antlr4Validator extends AbstractAntlr4Validator {
     val scope = new StringBuilder
     // initialize default/global attributes
     // See https://github.com/jknack/antlr4ide/issues/43
-    scope.append("ctx ")
+    // See https://theantlrguy.atlassian.net/wiki/display/ANTLR4/Actions+and+Attributes
+    scope.append("ctx start stop parser text ")
 
     val append = [ String it |
       if (it != null) {
