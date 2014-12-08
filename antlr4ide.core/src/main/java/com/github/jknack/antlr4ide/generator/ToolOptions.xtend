@@ -98,11 +98,17 @@ class ToolOptions {
       } else {
         removeSegment(
           removeSegment(
-            removeSegment(removeSegment(prefix, "src", "main", "antlr4"), "src", "main", "java"),
-            "src",
-            "main",
-            "resources"
-          ),
+            removeSegment(
+              removeSegment(
+                removeSegment(removeSegment(prefix, "src", "main", "antlr4"), "src", "main", "java"),
+                "src",
+                "main",
+                "resources"
+                ),
+                "antlr-src"
+              ),
+            "antlr-source"
+            ),
           "src"
         )
       }
