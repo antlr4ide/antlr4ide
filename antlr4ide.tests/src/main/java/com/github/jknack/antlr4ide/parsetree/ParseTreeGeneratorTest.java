@@ -27,9 +27,12 @@ import org.abego.treelayout.TreeLayout;
 import org.abego.treelayout.TreeLayout.DumpConfiguration;
 import org.abego.treelayout.util.DefaultConfiguration;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -45,6 +48,7 @@ import com.github.jknack.antlr4ide.lang.Grammar;
 import com.github.jknack.antlr4ide.lang.LangFactory;
 import com.github.jknack.antlr4ide.lang.LexerRule;
 import com.github.jknack.antlr4ide.lang.ParserRule;
+import com.github.jknack.antlr4ide.lang.PrequelConstruct;
 import com.github.jknack.antlr4ide.lang.Rule;
 import com.github.jknack.antlr4ide.lang.Terminal;
 import com.github.jknack.antlr4ide.services.ModelExtensions;
@@ -70,13 +74,19 @@ public class ParseTreeGeneratorTest {
     String[] vmArgs = {};
     ToolOptions options = createMock(ToolOptions.class);
     expect(options.getAntlrTool()).andReturn(toolPath);
+    expect(options.getOutputDirectory()).andReturn("target/antlr4/generated-sources");
     expect(options.vmArguments()).andReturn(vmArgs);
 
     IPath location = Path.fromPortableString("/home/edgar/ws space/project/G4.g4");
+    IPath prolocation = location.removeLastSegments(1);
+
+    IProject project = createMock(IProject.class);
+    expect(project.getLocation()).andReturn(prolocation);
 
     IWorkspaceRoot workspaceRoot = createMock(IWorkspaceRoot.class);
     IFile file = createMock(IFile.class);
     expect(file.getLocation()).andReturn(location);
+    expect(file.getProject()).andReturn(project);
 
     LexerRule plusRule = createMock(LexerRule.class);
     expect(plusRule.getName()).andReturn("+");
@@ -94,8 +104,10 @@ public class ParseTreeGeneratorTest {
     Resource resource = createMock(Resource.class);
     expect(resource.getURI()).andReturn(resourceURI);
 
+    EList<PrequelConstruct> prequels = new BasicEList<PrequelConstruct>();
     Grammar grammar = createMock(Grammar.class);
     expect(grammar.eResource()).andReturn(resource);
+    expect(grammar.getPrequels()).andReturn(prequels);
 
     Rule rule = createMock(Rule.class);
     expect(rule.getName()).andReturn(ruleName);
@@ -111,6 +123,7 @@ public class ParseTreeGeneratorTest {
     Process process = createMock(Process.class);
 
     ProcessBuilder pb = PowerMock.createMockAndExpectNew(ProcessBuilder.class, command);
+    expect(pb.directory(prolocation.toFile())).andReturn(pb);
     expect(pb.start()).andReturn(process);
 
     OutputStream out = createMock(OutputStream.class);
@@ -118,6 +131,8 @@ public class ParseTreeGeneratorTest {
     PrintWriter writer = PowerMock.createMockAndExpectNew(PrintWriter.class, out, true);
     writer.println("parsetree");
     writer.println(location.toOSString());
+    writer.println("null");
+    writer.println("target/antlr4/generated-sources");
     writer.println("rule");
     writer.println("3+4*5");
     writer.close();
@@ -150,7 +165,7 @@ public class ParseTreeGeneratorTest {
     ruleMap.put("lexerRule", lexerRule);
     expect(ModelExtensions.ruleMap(grammar, true)).andReturn(ruleMap);
 
-    Object[] mocks = {rule, grammar, resource, workspaceRoot, optionsProvider, file,
+    Object[] mocks = {rule, grammar, resource, workspaceRoot, optionsProvider, project, file,
         options, process, parserRule, lexerRule, three, langFactory,
         plusRule, starRule, serverSocket, socket, out, in, writer, reader, streamReader };
 

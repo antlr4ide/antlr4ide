@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.antlr.v4.Tool;
-import org.antlr.v4.parse.ANTLRParser;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -14,6 +13,7 @@ import org.antlr.v4.runtime.ParserInterpreter;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.atn.PredictionMode;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.misc.Nullable;
 import org.antlr.v4.runtime.misc.Utils;
@@ -35,49 +35,27 @@ public class ParseTreeCommand {
     this.out = out;
   }
 
-  public String run(final String grammarFileName, final String startRule,
-      final String inputText) {
+  public String run(final String grammarFileName, final String lexerFileName,
+      final String outdir, final String startRule, final String inputText) {
     Tool antlr = new Tool();
-
-    String combinedGrammarFileName = null;
-    String lexerGrammarFileName = null;
-    String parserGrammarFileName = null;
+    antlr.libDirectory = outdir;
 
     // load to examine it
-    Grammar g = antlr.loadGrammar(grammarFileName);
+    Grammar g = loadGrammar(antlr, grammarFileName, null);
 
-    // examine's Grammar AST from v4 itself;
-    // hence use ANTLRParser.X not ANTLRv4Parser from this plugin
-    switch (g.getType()) {
-      case ANTLRParser.PARSER:
-        parserGrammarFileName = grammarFileName;
-        int i = grammarFileName.indexOf("Parser");
-        lexerGrammarFileName = grammarFileName.substring(0, i) + "Lexer.g4";
-        break;
-      case ANTLRParser.LEXER:
-        lexerGrammarFileName = grammarFileName;
-        int i2 = grammarFileName.indexOf("Lexer");
-        parserGrammarFileName = grammarFileName.substring(0, i2) + "Parser.g4";
-        break;
-      case ANTLRParser.COMBINED:
-        combinedGrammarFileName = grammarFileName;
-        break;
+    final LexerGrammar lg;
+    if (g instanceof LexerGrammar) {
+      lg = (LexerGrammar) g;
+    } else if (lexerFileName != null) {
+      lg = (LexerGrammar) antlr.loadGrammar(lexerFileName);
+      g = loadGrammar(antlr, grammarFileName, lg);
+    } else {
+      // combined?
+      lg = g.getImplicitLexer();
     }
 
-    ANTLRInputStream input = new ANTLRInputStream(inputText);
-    LexerInterpreter lexEngine;
-    if (combinedGrammarFileName != null) {
-      lexEngine = g.createLexerInterpreter(input);
-    }
-    else {
-      LexerGrammar lg = null;
-      try {
-        lg = (LexerGrammar) Grammar.load(lexerGrammarFileName);
-      } catch (ClassCastException cce) {
-        out.println("File " + lexerGrammarFileName + " isn't a lexer grammar");
-      }
-      g = loadGrammar(antlr, parserGrammarFileName, lg);
-      lexEngine = lg.createLexerInterpreter(input);
+    if (lg == null) {
+      return "No lexer grammar found for: " + grammarFileName;
     }
 
     final String gname = g.name;
@@ -90,12 +68,16 @@ public class ParseTreeCommand {
       }
     };
 
+    ANTLRInputStream input = new ANTLRInputStream(inputText);
+    LexerInterpreter lexEngine = lg.createLexerInterpreter(input);
+
     lexEngine.removeErrorListeners();
     lexEngine.addErrorListener(printError);
 
     CommonTokenStream tokens = new CommonTokenStream(lexEngine);
 
     ParserInterpreter parser = g.createParserInterpreter(tokens);
+    parser.getInterpreter().setPredictionMode(PredictionMode.LL_EXACT_AMBIG_DETECTION);
     parser.removeErrorListeners();
     parser.addErrorListener(printError);
     Rule start = g.getRule(startRule);
@@ -118,7 +100,9 @@ public class ParseTreeCommand {
     GrammarRootAST grammarRootAST = tool.parseGrammar(fileName);
     final Grammar g = tool.createGrammar(grammarRootAST);
     g.fileName = fileName;
-    g.importVocab(lexerGrammar);
+    if (lexerGrammar != null) {
+      g.importVocab(lexerGrammar);
+    }
     tool.process(g, false);
     return g;
   }

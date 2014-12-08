@@ -51,9 +51,12 @@ public class Antlr4Server extends Thread
       String command = in.readLine();
       if ("parsetree".equals(command)) {
         String file = in.readLine();
+        String lexerFile = in.readLine();
+        String outdir = in.readLine();
         String startRule = in.readLine();
         String input = unescape(in.readLine());
-        String sexpression = new ParseTreeCommand(out).run(file, startRule, input);
+        String sexpression = new ParseTreeCommand(out).run(file, lexerFile.equals("null") ? null
+            : lexerFile, outdir, startRule, input);
         out.println(sexpression);
       } else {
         System.err.println("error: unknown command " + command);

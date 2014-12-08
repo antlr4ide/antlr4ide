@@ -17,6 +17,8 @@ import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import com.github.jknack.antlr4ide.lang.Grammar;
+import com.github.jknack.antlr4ide.lang.GrammarType;
 import com.github.jknack.antlr4ide.lang.LangPackage;
 import com.github.jknack.antlr4ide.lang.LexerCommand;
 import com.github.jknack.antlr4ide.lang.LexerCommandArg;
@@ -34,7 +36,11 @@ public class Issue29 {
 
   @Test
   public void commandWithModeRefOK() throws Exception {
+    Grammar grammar = createMock(Grammar.class);
+    expect(grammar.getType()).andReturn(GrammarType.DEFAULT);
+
     Rule rule = createMock(Rule.class);
+    expect(rule.eContainer()).andReturn(grammar);
 
     Mode ref = createMock(Mode.class);
     expect(ref.getId()).andReturn("VAR").times(2);
@@ -48,7 +54,7 @@ public class Issue29 {
 
     Antlr4Validator validator = PowerMock.createPartialMock(Antlr4Validator.class, "error");
 
-    Object[] mocks = {rule, command, args, ref, validator };
+    Object[] mocks = {grammar, rule, command, args, ref, validator };
 
     replay(mocks);
 
@@ -59,7 +65,11 @@ public class Issue29 {
 
   @Test
   public void commandWithLexerRuleRefOK() throws Exception {
+    Grammar grammar = createMock(Grammar.class);
+    expect(grammar.getType()).andReturn(GrammarType.DEFAULT);
+
     Rule rule = createMock(Rule.class);
+    expect(rule.eContainer()).andReturn(grammar);
 
     LexerRule ref = createMock(LexerRule.class);
     expect(ref.getName()).andReturn("VAR").times(2);
@@ -73,7 +83,7 @@ public class Issue29 {
 
     Antlr4Validator validator = PowerMock.createPartialMock(Antlr4Validator.class, "error");
 
-    Object[] mocks = {rule, command, args, ref, validator };
+    Object[] mocks = {grammar, rule, command, args, ref, validator };
 
     replay(mocks);
 
@@ -84,7 +94,11 @@ public class Issue29 {
 
   @Test
   public void warnCommandWithV3Token() throws Exception {
+    Grammar grammar = createMock(Grammar.class);
+    expect(grammar.getType()).andReturn(GrammarType.DEFAULT);
+
     Rule rule = createMock(Rule.class);
+    expect(rule.eContainer()).andReturn(grammar);
     expect(rule.getName()).andReturn("RULE");
 
     V3Token ref = createMock(V3Token.class);
@@ -110,7 +124,7 @@ public class Issue29 {
             "constant value; lexer interpreters may produce incorrect output",
         args, feature);
 
-    Object[] mocks = {rule, command, args, ref, eClass, feature, validator };
+    Object[] mocks = {grammar, rule, command, args, ref, eClass, feature, validator };
 
     replay(mocks);
 
@@ -121,7 +135,11 @@ public class Issue29 {
 
   @Test
   public void warnCommandWithV4Token() throws Exception {
+    Grammar grammar = createMock(Grammar.class);
+    expect(grammar.getType()).andReturn(GrammarType.DEFAULT);
+
     Rule rule = createMock(Rule.class);
+    expect(rule.eContainer()).andReturn(grammar);
     expect(rule.getName()).andReturn("RULE");
 
     V4Token ref = createMock(V4Token.class);
@@ -147,7 +165,7 @@ public class Issue29 {
             "constant value; lexer interpreters may produce incorrect output",
         args, feature);
 
-    Object[] mocks = {rule, command, args, ref, eClass, feature, validator };
+    Object[] mocks = {grammar, rule, command, args, ref, eClass, feature, validator };
 
     replay(mocks);
 
@@ -158,7 +176,11 @@ public class Issue29 {
 
   @Test
   public void warnCommandWithDefaultChannel() throws Exception {
+    Grammar grammar = createMock(Grammar.class);
+    expect(grammar.getType()).andReturn(GrammarType.DEFAULT);
+
     Rule rule = createMock(Rule.class);
+    expect(rule.eContainer()).andReturn(grammar);
 
     LexerCommandArg ref = createMock(LexerCommandArg.class);
 
@@ -180,7 +202,7 @@ public class Issue29 {
 
     Antlr4Validator validator = PowerMock.createPartialMock(Antlr4Validator.class, "warning");
 
-    Object[] mocks = {rule, command, args, ref, feature, validator, node };
+    Object[] mocks = {grammar, rule, command, args, ref, feature, validator, node };
     PowerMock.replay(NodeModelUtils.class);
 
     replay(mocks);
@@ -193,7 +215,11 @@ public class Issue29 {
 
   @Test
   public void warnCommandWithAnythingElse() throws Exception {
+    Grammar grammar = createMock(Grammar.class);
+    expect(grammar.getType()).andReturn(GrammarType.DEFAULT);
+
     Rule rule = createMock(Rule.class);
+    expect(rule.eContainer()).andReturn(grammar);
     expect(rule.getName()).andReturn("RULE");
 
     LexerCommandArg ref = createMock(LexerCommandArg.class);
@@ -225,7 +251,7 @@ public class Issue29 {
             "constant value; lexer interpreters may produce incorrect output",
         args, feature);
 
-    Object[] mocks = {rule, command, args, ref, eClass, feature, validator, node };
+    Object[] mocks = {grammar, rule, command, args, ref, eClass, feature, validator, node };
     PowerMock.replay(NodeModelUtils.class);
 
     replay(mocks);

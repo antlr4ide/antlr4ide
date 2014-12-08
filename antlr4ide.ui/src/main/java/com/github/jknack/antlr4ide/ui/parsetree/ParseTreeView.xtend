@@ -75,14 +75,14 @@ class ParseTreeView extends GraphView {
   ]
 
   /** The eval tree job. */
-  val eval = stateJob("building parse tree", lock) [ monitor, state |
+  val eval = stateJob("building parse tree job", lock) [ monitor, state |
     // access to input & grammar from UI Thread
     val text = this.text.text
     if (text.empty || lock.get != state) {
       return Status.CANCEL_STATUS
     }
     // build tree in a none UI Thread
-    schedule("building parse tree") [ m |
+    schedule("building parse tree scheduler") [ m |
       if (lock.get != state) {
         m.canceled
         return Status.CANCEL_STATUS
@@ -99,7 +99,7 @@ class ParseTreeView extends GraphView {
         // clear canvas
         clearCanvas
 
-        rootFigure.add(new ParseTreeDiagram(tree, colorProvider))
+        rootFigure?.add(new ParseTreeDiagram(tree, colorProvider))
 
         return Status.OK_STATUS
       ].schedule

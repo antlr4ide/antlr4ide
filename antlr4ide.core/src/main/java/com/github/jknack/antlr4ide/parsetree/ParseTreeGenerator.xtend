@@ -34,6 +34,9 @@ import com.google.common.collect.Maps
 import com.google.common.cache.CacheBuilder
 import java.util.concurrent.TimeUnit
 import com.google.common.cache.CacheLoader
+import com.github.jknack.antlr4ide.lang.Options
+import com.github.jknack.antlr4ide.lang.TokenVocab
+import org.eclipse.core.resources.IFile
 
 /**
  * Given a start rule and grammar this class generate a parse tree for matching input.
@@ -78,16 +81,16 @@ class ParseTreeGenerator {
     // destroy process
     destroy(it.value)
   ].build(
-    CacheLoader.from [ Pair<String, Set<String>> key |
-      val cp = key.key
+    CacheLoader.from [ Pair<Pair<String, String>, Set<String>> key |
+      val dir = key.key
       val vmArgs = key.value
       val port = freePort.toString
       val command = Lists.newArrayList("java", "-cp")
       command += vmArgs
-      command += cp
+      command += dir.value
       command += MAIN
       command += port
-      val process = newProcess(command)
+      val process = newProcess(dir.key, command)
       port -> process
     ]
   )
@@ -114,19 +117,19 @@ class ParseTreeGenerator {
   /**
    * Build a cache key for the given options.
    */
-  private def processKey(ToolOptions options) {
+  private def processKey(IFile file, ToolOptions options) {
 
     // classpath
     val cp = #[options.antlrTool, ToolOptionsProvider.RUNTIME_JAR].join(File.pathSeparator)
 
-    cp -> options.vmArguments.toSet
+    (file.project.location.toOSString -> cp) -> options.vmArguments.toSet
   }
 
   /**
    * Creates a new process.
    */
-  private def newProcess(List<String> command) {
-    val process = new ProcessBuilder(command).start
+  private def newProcess(String dir, List<String> command) {
+    val process = new ProcessBuilder(command).directory(new File(dir)).start
 
     val job = Jobs.system("parse tree server") [
       processOutput(process.errorStream, console)
@@ -165,11 +168,18 @@ class ParseTreeGenerator {
     // file ref
     val path = grammar.eResource.URI.toPlatformString(true)
     val file = workspaceRoot.getFile(new Path(path))
+    val options = grammar.prequels.findFirst[it instanceof Options] as Options
+    val tokenVocabURI = if (options != null) {
+      val tokenVocab = options.options.findFirst[it instanceof TokenVocab] as TokenVocab
+      if (tokenVocab != null) {
+        workspaceRoot.getFile(new Path(tokenVocab.importURI.eResource.URI.toPlatformString(true)))
+      }
+    }
 
     // tool options
-    val options = optionsProvider.options(file)
+    val toolOptions = optionsProvider.options(file)
 
-    val entry = processCache.get(processKey(options))
+    val entry = processCache.get(processKey(file, toolOptions))
     val port = Integer.parseInt(entry.key)
     val process = entry.value
 
@@ -182,6 +192,12 @@ class ParseTreeGenerator {
     connect(process, port) [ socket, out, in |
       out.println("parsetree")
       out.println(file.location.toOSString)
+      if (tokenVocabURI != null) {
+        out.println(tokenVocabURI.location.toOSString)
+      } else {
+        out.println("null")
+      }
+      out.println(toolOptions.outputDirectory)
       out.println(rule.name)
       out.println(escape.apply(input))
       var line = ""

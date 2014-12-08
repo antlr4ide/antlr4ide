@@ -117,15 +117,15 @@ abstract class GraphView extends ViewPart implements IXtextModelListener, IPartL
    * Clear canvas.
    */
   protected def clearCanvas() {
-    val figure = canvas.contents as Figure
-    figure.removeAll
+    val figure = canvas?.contents as Figure
+    figure?.removeAll
   }
 
   /**
    * Clear canvas.
    */
   protected def rootFigure() {
-    canvas.contents
+    canvas?.contents
   }
 
   /**
