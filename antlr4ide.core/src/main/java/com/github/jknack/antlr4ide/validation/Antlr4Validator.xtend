@@ -228,6 +228,11 @@ class Antlr4Validator extends AbstractAntlr4Validator {
     if (args != null) {
       val ref = args.ref
       val rule = command.getContainerOfType(Rule)
+      val grammar = rule.getContainerOfType(Grammar)
+      if (grammar.type == GrammarType.LEXER) {
+        // nothing to do on lexer grammars, see #85
+        return;
+      }
       val references = Sets.newHashSet(MODES)
       val constant = switch (ref) {
         Mode : {
