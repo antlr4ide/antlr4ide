@@ -36,19 +36,19 @@ Now, the **new** IDE was built on [XText](http://www.eclipse.org/Xtext). [XText]
 
 Requirements
 =========
-* Eclipse 4.3 (Kepler)
-* XText 2.5.x/2.6
+* Eclipse 4.4 (Luna)
+* XText 2.7.3
 
 Installation
 =========
 ANTLR 4 IDE **isn't** available in the Eclipse Market Place yet, so you MUST installed in the old way. Please follow these instructions:
 
-* Open Eclipse Kepler (4.3)
+* Open Eclipse Luna (4.4)
 * Go to: ```Help > Install New Software...```
-* You need to Install XText 2.5.x/2.6
+* You need to Install XText 2.7.3
 * Copy and paste this url: http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/ in the **Work with** text field
 * Hit Enter
-* Choose **XText 2.5.4**. NOTE: DON'T confuse with Xtend, you must choose Xtext
+* Choose **XText 2.7.3**. NOTE: DON'T confuse with Xtend, you must choose Xtext
 * Now, copy and paste this url: http://dl.bintray.com/jknack/antlr4ide in the **Work with** text field
 * Choose: **ANTLR 4 SDK IDE**. NOTE: If you don't see it, please unmark the **Group items by category** option
 * Click: Next and follow the normal Eclipse installation procedure
@@ -90,11 +90,11 @@ Build with Maven 3.x
 Eclipse setup
 =========
 1. Make sure you built the project first.
-2. Open Eclipse Kepler (4.3)
-3. Install Xtext 2.5.3
+2. Open Eclipse Luna (4.4)
+3. Install Xtext 2.7.3
 4. Copy and paste this url: http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/ in the **Work with** text field
 5. Hit Enter
-6. Choose **XText 2.5.3**. NOTE: DON'T confuse with Xtend, you must choose Xtext
+6. Choose **XText 2.7.3**. NOTE: DON'T confuse with Xtend, you must choose Xtext
 7. Restart Eclipse after installing Xtext
 8. Import the project into Eclipse
 9. Go to: ```File > Import...``` then ```General > Existing Projects into Workspace```
