@@ -53,13 +53,93 @@ class AntlrHighlightingCalculator implements ISemanticHighlightingCalculator {
   @Inject
   IEObjectDocumentationProvider documentationProvider
 
+  val PYTHON_COMMENTS = Pattern.compile("(#.*?\n)|(?s)\"\"\".*?\"\"\"")
+
   val C_LIKE_COMMENT = Pattern.compile("(//.*?\n)|(?s)/\\*.*?\\*/")
 
   val C_LIKE_STRING = Pattern.compile("(\".*?\")|(\'.*?\')")
 
   val C_LIKE_REF = Pattern.compile("[$]([\\p{L}_$][\\p{L}\\p{N}_$]*\\.)*[\\p{L}_$][\\p{L}\\p{N}_$]*")
 
-  val LANG = #{
+  var LANG = #{
+    "python2" -> #[
+      LANG_COMMENT -> PYTHON_COMMENTS,
+      LANG_STRING_LITERAL -> C_LIKE_STRING,
+      LANG_REF -> C_LIKE_REF,
+      LANG_KEYWORD -> Pattern.compile(
+        "(" + newHashSet(
+          "and",
+          "del",
+          "from",
+          "not",
+          "while",
+          "as",
+          "elif",
+          "global",
+          "or",
+          "with",
+          "assert",
+          "else",
+          "if",
+          "pass",
+          "yield",
+          "break",
+          "except",
+          "import",
+          "print",
+          "class",
+          "exec",
+          "in",
+          "raise",
+          "continue",
+          "finally",
+          "is",
+          "return",
+          "def",
+          "for",
+          "lambda",
+          "try").join("\\b)|(\\b") + ")"
+      )
+    ],
+    "python3" -> #[
+      LANG_COMMENT -> PYTHON_COMMENTS,
+      LANG_STRING_LITERAL -> C_LIKE_STRING,
+      LANG_REF -> C_LIKE_REF,
+      LANG_KEYWORD -> Pattern.compile(
+        "(" + newHashSet(
+          "and",
+          "del",
+          "from",
+          "not",
+          "while",
+          "as",
+          "elif",
+          "global",
+          "or",
+          "with",
+          "assert",
+          "else",
+          "if",
+          "pass",
+          "yield",
+          "break",
+          "except",
+          "import",
+          "print",
+          "class",
+          "exec",
+          "in",
+          "raise",
+          "continue",
+          "finally",
+          "is",
+          "return",
+          "def",
+          "for",
+          "lambda",
+          "try").join("\\b)|(\\b") + ")"
+      )
+    ],
     "java" -> #[
       LANG_COMMENT -> C_LIKE_COMMENT,
       LANG_STRING_LITERAL -> C_LIKE_STRING,
