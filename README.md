@@ -41,17 +41,12 @@ Requirements
 
 Installation
 =========
-ANTLR 4 IDE **isn't** available in the Eclipse Market Place yet, so you MUST installed in the old way. Please follow these instructions:
 
 * Open Eclipse Luna (4.4)
-* Go to: ```Help > Install New Software...```
-* You need to Install XText 2.7.3
-* Copy and paste this url: http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/ in the **Work with** text field
-* Hit Enter
-* Choose **XText 2.7.3**. NOTE: DON'T confuse with Xtend, you must choose Xtext
-* Now, copy and paste this url: http://dl.bintray.com/jknack/antlr4ide in the **Work with** text field
-* Choose: **ANTLR 4 SDK IDE**. NOTE: If you don't see it, please unmark the **Group items by category** option
-* Click: Next and follow the normal Eclipse installation procedure
+* Go to: ```Help > Eclipse Marketplace...```
+* Search for ```antlr```
+* Choose ```ANTLR 4 IDE``` and click ```Install```
+
 
 Manual Installation
 =========

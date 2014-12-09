@@ -162,17 +162,21 @@
     </exec>
     <echo message="  artifacts.jar"/>
     <exec executable="curl">
+      <arg value="-X"/>
+      <arg value="PUT"/>
       <arg value="-T"/>
       <arg value="updates/target/repository/artifacts.jar"/>
       <arg value="-ujknack:${bintray.key}"/>
-      <arg value="https://api.bintray.com/content/jknack/antlr4ide/antlr4ide/${release.version}/artifacts.jar" />
+      <arg value="https://api.bintray.com/content/jknack/antlr4ide/artifacts.jar" />
     </exec>
     <echo message="  content.jar"/>
     <exec executable="curl">
+      <arg value="-X"/>
+      <arg value="PUT"/>
       <arg value="-T"/>
       <arg value="updates/target/repository/content.jar"/>
       <arg value="-ujknack:${bintray.key}"/>
-      <arg value="https://api.bintray.com/content/jknack/antlr4ide/antlr4ide/${release.version}/content.jar" />
+      <arg value="https://api.bintray.com/content/jknack/antlr4ide/content.jar" />
     </exec>
     <echo message="  antlr4ide-plugin-${release.version}.zip"/>
     <exec executable="curl">
