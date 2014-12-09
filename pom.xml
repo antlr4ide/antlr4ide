@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.jknack</groupId>
   <artifactId>antlr4ide</artifactId>
-  <version><![CDATA[0.3.5]]></version>
+  <version><![CDATA[0.3.6-SNAPSHOT]]></version>
   <packaging>pom</packaging>
 
   <modules>
