@@ -381,11 +381,20 @@ class Antlr4Validator extends AbstractAntlr4Validator {
   }
 
   def private Set<String> locals(ParserRule rule) {
+    val grammar = rule.getContainerOfType(Grammar)
     val scope = new StringBuilder
     // initialize default/global attributes
     // See https://github.com/jknack/antlr4ide/issues/43
     // See https://theantlrguy.atlassian.net/wiki/display/ANTLR4/Actions+and+Attributes
-    scope.append("ctx start stop parser text ")
+    scope.append(rule.name).append(" ctx start stop parser text ")
+
+    grammar.rules.filter(ParserRule).forEach [ candidate |
+      candidate.body.eAllContents.filter(RuleRef).forEach [ ref |
+        if (ref.reference == rule) {
+          scope.append(candidate.name).append(" ")
+        }
+      ]
+    ]
 
     val append = [ String it |
       if (it != null) {

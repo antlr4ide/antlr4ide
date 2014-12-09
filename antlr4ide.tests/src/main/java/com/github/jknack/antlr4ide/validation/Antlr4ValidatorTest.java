@@ -913,12 +913,14 @@ public class Antlr4ValidatorTest {
     ActionOption actionOption = createMock(ActionOption.class);
     Antlr4Validator validator = PowerMock.createPartialMock(Antlr4Validator.class, "error");
 
-    expect(grammar.getRules()).andReturn(rules);
+    expect(grammar.getRules()).andReturn(rules).times(2);
 
+    expect(rule1.getName()).andReturn("rule1");
     expect(rule1.getArgs()).andReturn(args);
     expect(rule1.getReturn()).andReturn(returns);
     expect(rule1.getLocals()).andReturn(locals);
-    expect(rule1.getBody()).andReturn(ruleBody).times(2);
+    expect(rule1.getBody()).andReturn(ruleBody).times(3);
+    expect(rule1.eContainer()).andReturn(grammar);
 
     expect(returns.getBody()).andReturn(returnBody);
 
@@ -929,6 +931,7 @@ public class Antlr4ValidatorTest {
     ruleBodyList.add(actionElement);
     ruleBodyList.add(actionOption);
 
+    expect(ruleBody.eAllContents()).andReturn(newTreeIterator(ruleBodyList));
     expect(ruleBody.eAllContents()).andReturn(newTreeIterator(ruleBodyList));
     expect(ruleBody.eAllContents()).andReturn(newTreeIterator(ruleBodyList));
 
@@ -982,12 +985,14 @@ public class Antlr4ValidatorTest {
     ActionOption actionOption = createMock(ActionOption.class);
     Antlr4Validator validator = PowerMock.createPartialMock(Antlr4Validator.class, "error");
 
-    expect(grammar.getRules()).andReturn(rules);
+    expect(grammar.getRules()).andReturn(rules).times(2);
 
+    expect(rule1.getName()).andReturn("rule1");
     expect(rule1.getArgs()).andReturn(args);
     expect(rule1.getReturn()).andReturn(returns);
     expect(rule1.getLocals()).andReturn(locals);
-    expect(rule1.getBody()).andReturn(ruleBody).times(2);
+    expect(rule1.getBody()).andReturn(ruleBody).times(3);
+    expect(rule1.eContainer()).andReturn(grammar);
 
     expect(returns.getBody()).andReturn(returnBody);
 
@@ -998,6 +1003,7 @@ public class Antlr4ValidatorTest {
     ruleBodyList.add(actionElement);
     ruleBodyList.add(actionOption);
 
+    expect(ruleBody.eAllContents()).andReturn(newTreeIterator(ruleBodyList));
     expect(ruleBody.eAllContents()).andReturn(newTreeIterator(ruleBodyList));
     expect(ruleBody.eAllContents()).andReturn(newTreeIterator(ruleBodyList));
 
