@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ANTLRv4 IDE
 Bundle-SymbolicName: antlr4ide.app;singleton:=true
-Bundle-Version: 0.3.5.qualifier
+Bundle-Version: 0.3.5
 Bundle-Vendor: Edgar Espina
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.core.runtime,

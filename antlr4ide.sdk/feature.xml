@@ -2,7 +2,7 @@
 <feature
       id="antlr4ide.sdk"
       label="ANTLR 4 SDK"
-      version="0.3.5.qualifier"
+      version="0.3.5"
       provider-name="Edgar Espina">
 
    <plugin
