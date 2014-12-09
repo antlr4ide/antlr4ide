@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Antlr4Server extends Thread
 {
@@ -53,10 +55,16 @@ public class Antlr4Server extends Thread
         String file = in.readLine();
         String lexerFile = in.readLine();
         String outdir = in.readLine();
+        int importSize = Integer.parseInt(in.readLine());
+        List<String> imports = new ArrayList<String>();
+        for(int i = 0; i < importSize; i++) {
+          String imported = in.readLine();
+          imports.add(imported);
+        }
         String startRule = in.readLine();
         String input = unescape(in.readLine());
         String sexpression = new ParseTreeCommand(out).run(file, lexerFile.equals("null") ? null
-            : lexerFile, outdir, startRule, input);
+            : lexerFile, outdir, imports, startRule, input);
         out.println(sexpression);
       } else {
         System.err.println("error: unknown command " + command);

@@ -45,6 +45,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import com.github.jknack.antlr4ide.generator.ToolOptions;
 import com.github.jknack.antlr4ide.generator.ToolOptionsProvider;
 import com.github.jknack.antlr4ide.lang.Grammar;
+import com.github.jknack.antlr4ide.lang.Import;
 import com.github.jknack.antlr4ide.lang.LangFactory;
 import com.github.jknack.antlr4ide.lang.LexerRule;
 import com.github.jknack.antlr4ide.lang.ParserRule;
@@ -53,6 +54,7 @@ import com.github.jknack.antlr4ide.lang.Rule;
 import com.github.jknack.antlr4ide.lang.Terminal;
 import com.github.jknack.antlr4ide.services.ModelExtensions;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 @RunWith(PowerMockRunner.class)
 public class ParseTreeGeneratorTest {
@@ -133,6 +135,7 @@ public class ParseTreeGeneratorTest {
     writer.println(location.toOSString());
     writer.println("null");
     writer.println("target/antlr4/generated-sources");
+    writer.println("0");
     writer.println("rule");
     writer.println("3+4*5");
     writer.close();
@@ -164,6 +167,7 @@ public class ParseTreeGeneratorTest {
     ruleMap.put("parserRule", parserRule);
     ruleMap.put("lexerRule", lexerRule);
     expect(ModelExtensions.ruleMap(grammar, true)).andReturn(ruleMap);
+    expect(ModelExtensions.imports(grammar)).andReturn(Sets.<Import> newHashSet());
 
     Object[] mocks = {rule, grammar, resource, workspaceRoot, optionsProvider, project, file,
         options, process, parserRule, lexerRule, three, langFactory,

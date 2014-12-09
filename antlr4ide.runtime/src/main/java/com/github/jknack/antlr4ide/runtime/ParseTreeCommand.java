@@ -1,5 +1,6 @@
 package com.github.jknack.antlr4ide.runtime;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
@@ -36,8 +37,12 @@ public class ParseTreeCommand {
   }
 
   public String run(final String grammarFileName, final String lexerFileName,
-      final String outdir, final String startRule, final String inputText) {
+      final String outdir, final List<String> imports, final String startRule,
+      final String inputText) {
     Tool antlr = new Tool();
+    if (imports.size() > 0) {
+      antlr.inputDirectory = new File(imports.iterator().next()).getParentFile();
+    }
     antlr.libDirectory = outdir;
 
     // load to examine it
@@ -54,10 +59,6 @@ public class ParseTreeCommand {
       lg = g.getImplicitLexer();
     }
 
-    if (lg == null) {
-      return "No lexer grammar found for: " + grammarFileName;
-    }
-
     final String gname = g.name;
     BaseErrorListener printError = new BaseErrorListener() {
       @Override
@@ -69,7 +70,7 @@ public class ParseTreeCommand {
     };
 
     ANTLRInputStream input = new ANTLRInputStream(inputText);
-    LexerInterpreter lexEngine = lg.createLexerInterpreter(input);
+    LexerInterpreter lexEngine = (lg == null? g : lg).createLexerInterpreter(input);
 
     lexEngine.removeErrorListeners();
     lexEngine.addErrorListener(printError);

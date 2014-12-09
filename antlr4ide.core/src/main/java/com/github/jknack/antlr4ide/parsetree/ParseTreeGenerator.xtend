@@ -175,6 +175,8 @@ class ParseTreeGenerator {
         workspaceRoot.getFile(new Path(tokenVocab.importURI.eResource.URI.toPlatformString(true)))
       }
     }
+    val imports = grammar.imports
+      .map[workspaceRoot.getFile(new Path(it.importURI.eResource.URI.toPlatformString(true)))]
 
     // tool options
     val toolOptions = optionsProvider.options(file)
@@ -198,6 +200,10 @@ class ParseTreeGenerator {
         out.println("null")
       }
       out.println(toolOptions.outputDirectory)
+      // imports
+      out.println(imports.size.toString)
+      imports.forEach[out.println(it.location.toOSString)]
+
       out.println(rule.name)
       out.println(escape.apply(input))
       var line = ""
