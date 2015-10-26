@@ -97,6 +97,10 @@ class DefaultToolOptionsProvider implements ToolOptionsProvider {
       if (options.outputDirectory == null) {
         options.outputDirectory = defaults.outputDirectory
       }
+      if (options.packageName == null ) {
+        options.packageName = defaults.packageName
+        options.packageInsideAction = defaults.packageInsideAction
+      }
       options.antlrTool = defaults.antlrTool
       return options
     } else {
