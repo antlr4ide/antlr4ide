@@ -99,6 +99,12 @@
                   <version>3.12.1.GA</version>
                   <type>jar</type>
                 </artifactItem>
+                <artifactItem>
+                  <groupId>log4j</groupId>
+                  <artifactId>log4j</artifactId>
+                  <version>1.2.17</version>
+                  <type>jar</type>
+                </artifactItem>
               </artifactItems>
               <outputDirectory>${project.basedir}/lib</outputDirectory>
               <overWriteReleases>false</overWriteReleases>
