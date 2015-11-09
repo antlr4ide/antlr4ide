@@ -80,9 +80,9 @@ class Distributions {
    * @return Distributions created from the given string.
    */
   def static fromString(String string) {
-    return string.split("e\\.jar:?").filter[it.trim.length > 0].map [
+    return string.split(".jar:?").filter[it.trim.length > 0].map [
       val distri = it.trim.split("@")
-      return distri.get(0) -> distri.get(1)+"e.jar"
+      return distri.get(0) -> distri.get(1)+".jar"
     ].toSet
   }
 
