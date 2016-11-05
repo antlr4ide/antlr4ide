@@ -45,6 +45,7 @@ import org.eclipse.jface.dialogs.MessageDialog
 @SuppressWarnings("restriction")
 class BuilderConfigurationBlock extends OptionsConfigurationBlock {
   static val SETTINGS_SECTION_NAME = "BuilderConfigurationBlock"
+  static val DEBUG = false
 
   EclipseOutputConfigurationProvider configurationProvider
 
@@ -62,6 +63,8 @@ class BuilderConfigurationBlock extends OptionsConfigurationBlock {
   }
 
   override Control doCreateContents(Composite parent) {
+    if(DEBUG) System::out.println("BuilderConfigurationBlock doCreateContents ")
+    
     val pixelConverter = new PixelConverter(parent)
     shell = parent.shell
     val mainComp = new Composite(parent, SWT.NONE)
@@ -79,6 +82,8 @@ class BuilderConfigurationBlock extends OptionsConfigurationBlock {
   }
 
   private def Composite createBuildPathTabContent(Composite parent) {
+    if(DEBUG) System::out.println("BuilderConfigurationBlock createBuildPathTabContent ")
+    
     val trueFalseValues = #[IPreferenceStore.TRUE, IPreferenceStore.FALSE]
     val columns = 3
     val pageContent = new ScrolledPageContent(parent)
@@ -140,6 +145,7 @@ class BuilderConfigurationBlock extends OptionsConfigurationBlock {
   }
 
   private def Composite createSubsection(Composite parent, String label) {
+    if(DEBUG) System::out.println("BuilderConfigurationBlock createSubSection ")
     val group = new Group(parent, SWT.SHADOW_NONE)
     group.text = label
     group.layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false)
@@ -147,6 +153,7 @@ class BuilderConfigurationBlock extends OptionsConfigurationBlock {
   }
 
   private def Composite createPackagePanel(Composite parent) {
+    if(DEBUG) System::out.println("BuilderConfigurationBlock createPackagePanel ")
     val composite = createSubsection(parent, "Distributions")
 
     val layout = new GridLayout(2, false)
@@ -274,15 +281,108 @@ class BuilderConfigurationBlock extends OptionsConfigurationBlock {
   }
 
   override validateSettings(String changedKey, String oldValue, String newValue) {
+          if(DEBUG) System::out.println("BuilderConfigurationBlock validateSettings changedKey>"+changedKey+"< oldValue>"+oldValue+"< newValue>"+newValue+"<")
   }
 
+
+/* 
+ * HACK HACK HACK HACK HACK HACK HACK HACK HACK HACK HACK
+ * 
+ * Added getPropertyPrefix() to avoid
+ * 
+ * java.lang.AbstractMethodError: org.eclipse.xtext.ui.preferences.OptionsConfigurationBlock.getPropertyPrefix()Ljava/lang/String;
+ *       at org.eclipse.xtext.ui.preferences.OptionsConfigurationBlock.hasProjectSpecificOptions(OptionsConfigurationBlock.java:241)
+ *       at org.eclipse.xtext.ui.preferences.OptionsConfigurationBlock.updateDisabledProjSettings(OptionsConfigurationBlock.java:224)
+ *       at org.eclipse.xtext.ui.preferences.OptionsConfigurationBlock.createContents(OptionsConfigurationBlock.java:262)
+ *       at com.github.jknack.antlr4ide.ui.preferences.BuilderPreferencePage.createPreferenceContent(BuilderPreferencePage.java:99)
+ *       at org.eclipse.xtext.ui.preferences.PropertyAndPreferencePage.createContents(PropertyAndPreferencePage.java:158)
+ *       at org.eclipse.jface.preference.PreferencePage.createControl(PreferencePage.java:233)
+ *       at com.github.jknack.antlr4ide.ui.preferences.BuilderPreferencePage.createControl(BuilderPreferencePage.java:91)
+ *       at org.eclipse.jface.preference.PreferenceDialog.createPageControl(PreferenceDialog.java:1537)
+ *       at org.eclipse.jface.preference.PreferenceDialog$13.run(PreferenceDialog.java:1289)
+ * 
+ */
+  public def String getPropertyPrefix() {
+    if(DEBUG) System::out.println("BuilderConfigurationBlock getPropertyPrefix ")
+    //languageName=com.github.jknack.antlr4ide.Antlr4 ?
+    return "antlr4ide"
+  }
+
+
+  override hasProjectSpecificOptions(IProject project) {
+          if(DEBUG) System::out.println("BuilderConfigurationBlock hasProjectSpecificOptions project>"+project+"< getProject>"+getProject()+"<")
+          
+          /*
+           * HACK HACK HACK HACK HACK
+           * 
+           * Avoid NPE: 
+           * java.lang.NullPointerException
+           *     at org.eclipse.xtext.ui.preferences.OptionsConfigurationBlock.hasProjectSpecificOptions(OptionsConfigurationBlock.java:237)
+           *     at com.github.jknack.antlr4ide.ui.preferences.BuilderPreferencePage.hasProjectSpecificOptions(BuilderPreferencePage.java:95)
+           *     at org.eclipse.xtext.ui.preferences.PropertyAndPreferencePage.doLinkActivated(PropertyAndPreferencePage.java:213)
+           *     at org.eclipse.xtext.ui.preferences.PropertyAndPreferencePage$2.widgetSelected(PropertyAndPreferencePage.java:177)
+           * 
+           * Looked at the source: 
+           * https://github.com/eclipse/xtext/blob/master/plugins/org.eclipse.xtext.ui/src/org/eclipse/xtext/ui/preferences/OptionsConfigurationBlock.java
+           * 
+           * And reverse-guessed-engineered from the source code:
+           * 
+           *    public boolean hasProjectSpecificOptions(IProject project) {
+           *     IPreferenceStore ps = preferenceStore;
+           *     if (project != getProject()) {
+           *         ps = preferenceStoreAccessImpl.getWritablePreferenceStore(project);
+           *     }
+           *     // backward compatibility
+           *     boolean oldSettingsUsed = ps.getBoolean(IS_PROJECT_SPECIFIC);
+           *     boolean newSettingsValue = ps.getBoolean(getIsProjectSpecificPropertyKey(getPropertyPrefix()));
+           *     if (oldSettingsUsed) {
+           *         if (!newSettingsValue) {
+           *             ps.setValue(getIsProjectSpecificPropertyKey(getPropertyPrefix()), true);
+           *             return true;
+           *         }
+           *     }
+           *     return newSettingsValue;
+           *     }
+           * 
+           *    public String getIsProjectSpecificPropertyKey(String propertyPrefix) {
+           *         String key = IS_PROJECT_SPECIFIC;
+           *         if (propertyPrefix != null) {
+           *             key = isProjectSpecificPropertyKey(propertyPrefix);
+           *         } else {
+           *             logError("Project specific key is not qualified", null);
+           *         }
+           *         return key;
+           *     }
+           *
+           *     public static String isProjectSpecificPropertyKey(String propertyPrefix) {
+           *         return propertyPrefix + "." + IS_PROJECT_SPECIFIC;
+           *     }
+           * 
+           */
+          
+        val oldSettingsUsed  = preferenceStore.getBoolean("is_project_specific") // HACK: IS_PROJECT_SPECIFIC
+        val newSettingsValue = preferenceStore.getBoolean(getPropertyPrefix()+"."+"is_project_specific")
+
+        if (oldSettingsUsed) {
+            if (!newSettingsValue) {
+                preferenceStore.setValue(getPropertyPrefix()+"."+"is_project_specific", true)
+                return true
+            }
+        }
+        return newSettingsValue
+    }
+
+
+
   override dispose() {
+    if(DEBUG) System::out.println("BuilderConfigurationBlock dispose ")
     val settings = Activator.^default.dialogSettings.addNewSection(SETTINGS_SECTION_NAME)
     storeSectionExpansionStates(settings)
     super.dispose()
   }
 
   override getFullBuildDialogStrings(boolean workspaceSettings) {
+    if(DEBUG) System::out.println("BuilderConfigurationBlock getFullBuildDialogStrings ")
     val title = "Building Settings Changed"
     val message = if (workspaceSettings) {
         "The Building settings have changed. A full rebuild is required for changes to" +
@@ -295,6 +395,7 @@ class BuilderConfigurationBlock extends OptionsConfigurationBlock {
   }
 
   override Job getBuildJob(IProject project) {
+    if(DEBUG) System::out.println("BuilderConfigurationBlock getBuildJob ")
     val buildJob = new OptionsConfigurationBlock.BuildJob("Rebuilding", project)
     buildJob.rule = ResourcesPlugin.workspace.ruleFactory.buildRule
     buildJob.user = true
@@ -302,24 +403,30 @@ class BuilderConfigurationBlock extends OptionsConfigurationBlock {
   }
 
   override protected setValue(String key, String value) {
+    if(DEBUG) System::out.println("BuilderConfigurationBlock setValue key>"+key+"< value>"+value+"<")
     transientStore.put(key, value)
   }
 
   override performDefaults() {
+    if(DEBUG) System::out.println("BuilderConfigurationBlock performDefaults")
     super.performDefaults
   }
 
   override performApply() {
+    if(DEBUG) System::out.println("BuilderConfigurationBlock performApply")
     storeTransientValues
     return super.performApply
   }
 
   override performOk() {
+    if(DEBUG) System::out.println("BuilderConfigurationBlock performOk")
     storeTransientValues
     return super.performOk
   }
 
   def private storeTransientValues() {
+    if(DEBUG) System::out.println("BuilderConfigurationBlock storeTransientValues")
+    
     transientStore.forEach [ name, value |
       this.preferenceStore.putValue(name, value)
     ]
@@ -328,6 +435,8 @@ class BuilderConfigurationBlock extends OptionsConfigurationBlock {
   }
 
   override setPreferenceStore(IPreferenceStore preferenceStore) {
+    if(DEBUG) System::out.println("BuilderConfigurationBlock setPreferenceStore")
+      
     super.preferenceStore = preferenceStore
     this.preferenceStore = preferenceStore
   }

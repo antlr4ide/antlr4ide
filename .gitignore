@@ -27,3 +27,4 @@ site/features
 site/plugins
 site/artifacts.jar
 site/content.jar
+/.settings/
