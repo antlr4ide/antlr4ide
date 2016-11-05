@@ -38,6 +38,11 @@ class ToolRunner {
    * The embedded jar will be used unless options#antlrTool path is set to something else.
    */
   def run(IFile file, ToolOptions options, Console console) {
+    val ex=new Exception()
+    System::out.println("---\n--- ToolRunner run file>"+file+"<")
+    for(StackTraceElement s: ex.stackTrace) System::out.println("    "+s.toString)
+
+
     val startBuild = System.currentTimeMillis();
 
     val fileName = file.name
@@ -123,6 +128,8 @@ class ToolRunner {
   def private validate(File jar, Console console) {
     val distribution = Distributions.get(jar)
     val version = distribution.key
+
+    System::out.println("    ToolRunner validate file>"+jar+"< version>"+version+"<")
 
     if (version != "") {
       console.info("ANTLR Tool v%s (%s)", version, jar)
