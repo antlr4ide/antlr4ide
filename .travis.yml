@@ -2,4 +2,6 @@ language: java
 jdk:
   - openjdk7
   - openjdk6
+addons:
+   hostname: short-hostname
 script: mvn package
