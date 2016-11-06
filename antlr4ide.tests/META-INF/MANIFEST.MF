@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ANTLR 4 IDE Tests
 Bundle-Vendor: Edgar Espina
-Bundle-Version: 0.3.6.qualifier
+Bundle-Version: 0.3.7.qualifier
 Bundle-SymbolicName: antlr4ide.tests; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: antlr4ide.core,
