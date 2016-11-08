@@ -38,10 +38,12 @@ class Antlr4ToolLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
    * Launch ANTLR.
    */
   override launch(ILaunchConfiguration config, String mode, ILaunch launch, IProgressMonitor monitor) {
-    val path = Path.fromOSString(config.getAttribute(LaunchConstants.GRAMMAR, ""))
+    val path = config.getAttribute(LaunchConstants.GRAMMAR, "");
+    val path2 = VariableButtonListener.substituteVariables(path);
+    val path3 = Path.fromOSString(path2)
     val args = config.getAttribute(LaunchConstants.ARGUMENTS, "")
     val vmArgs = config.getAttribute(LaunchConstants.VM_ARGUMENTS, "")
-    val file = workspaceRoot.getFile(path)
+    val file = workspaceRoot.getFile(path3)
     val defaults = optionsProvider.options(file)
     val options = ToolOptions.parse(args) [ message |
       console.error(message)
