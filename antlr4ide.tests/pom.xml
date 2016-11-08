@@ -94,9 +94,9 @@
                   <type>jar</type>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>javassist</groupId>
+                  <groupId>org.javassist</groupId>
                   <artifactId>javassist</artifactId>
-                  <version>3.12.1.GA</version>
+                  <version>3.22.0-CR1</version>
                   <type>jar</type>
                 </artifactItem>
                 <artifactItem>

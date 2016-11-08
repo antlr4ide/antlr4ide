@@ -80,7 +80,7 @@
             <configuration>
               <rules>
                 <requireJavaVersion>
-                  <version>[1.6.0,1.8.0)</version>
+                  <version>[1.6.0,1.9.0)</version>
                 </requireJavaVersion>
               </rules>    
             </configuration>
@@ -170,7 +170,7 @@
     <antlr-generator>antlr-generator-3.2.0-patch.jar</antlr-generator>
     <antlr4-version>4.3</antlr4-version>
     <antlr4.jar>antlr-4.4-complete.jar</antlr4.jar>
-    <powermock-version>1.5.4</powermock-version>
+    <powermock-version>1.6.5</powermock-version>
   </properties>
 
   <repositories>
