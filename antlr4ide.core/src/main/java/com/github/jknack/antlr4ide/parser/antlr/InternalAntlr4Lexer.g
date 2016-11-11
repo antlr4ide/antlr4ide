@@ -133,7 +133,7 @@ fragment RULE_LEXER_CHAR_SET : '[' ('\\' ~(('\r'|'\n'))|~(('\r'|'\n'|'\\'|']')))
 
 fragment RULE_ARG_ACTION : '[' (RULE_ARG_ACTION|('"')=>RULE_ACTION_STRING_LITERAL|('\'')=>RULE_ACTION_CHAR_LITERAL|~(('['|']')))* ']';
 
-RULE_SL_COMMENT : '//' ~(('\r'|'\n'))* '\r'? '\n';
+RULE_SL_COMMENT : '//' ~(('\r'|'\n'))* '\r'? '\n'?;
 
 RULE_ML_COMMENT : '/*' ( options {greedy=false;} : . )*'*/';
 
