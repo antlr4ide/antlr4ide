@@ -1,5 +1,6 @@
 package com.github.jknack.antlr4ide.ui.launch
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab
 import org.eclipse.swt.widgets.Composite
 import org.eclipse.debug.core.ILaunchConfiguration
@@ -27,7 +28,7 @@ import java.util.List
 import org.eclipse.swt.widgets.Button
 import static extension com.github.jknack.antlr4ide.ui.Widgets.*
 
-class MainTab extends AbstractLaunchConfigurationTab {
+class MainTab extends AbstractLaunchConfigurationTab implements ITabUtilities {
 
   @Inject
   IImageHelper imageHelper
@@ -118,13 +119,18 @@ class MainTab extends AbstractLaunchConfigurationTab {
     if (path == null || path.empty) {
       errors.add( "Grammar path is empty")
     } else {
-      val file = workspaceRoot.getFile(Path.fromOSString(path))
-      if (file == null || !file.exists) {
-        errors.add( "File not found: " + fGrammarText.text)
+      try {
+      	val path2 = VariableButtonListener.substituteVariables(path);
+      	val file = workspaceRoot.getFile(Path.fromOSString(path2))
+      	if (file == null || !file.exists) {
+        	errors.add( "File not found: " + fGrammarText.text + " ('" + path2 + "')")
+      	}
+      	ToolOptions.parse(fArgsText.text) [message|
+        	errors.add(message)
+      	]
+      } catch (CoreException ex) {
+      	errors.add("Variable substitution failed: '" + ex.getMessage() + "'")
       }
-      ToolOptions.parse(fArgsText.text) [message|
-        errors.add(message)
-      ]
     }
     return if (errors.size == 0) {
       true
@@ -146,7 +152,7 @@ class MainTab extends AbstractLaunchConfigurationTab {
     var gd = new GridData(GridData.FILL_HORIZONTAL)
     group.layoutData = gd
     val layout = new GridLayout
-    layout.numColumns = 2
+    layout.numColumns = 3
     group.layout = layout
     group.font = font
 
@@ -158,6 +164,12 @@ class MainTab extends AbstractLaunchConfigurationTab {
     text.addModifyListener(modifyListener)
 
     if (btn) {
+      val varButton = new Button(group, SWT.PUSH);
+      varButton.text = "Variables..."
+      varButton.addSelectionListener(new VariableButtonListener(text, this));
+      gd = new GridData(GridData.END)
+      varButton.layoutData = gd
+      
       val button = new Button(group, SWT.PUSH)
       gd = new GridData(GridData.END)
       button.layoutData = gd
@@ -209,4 +221,12 @@ class MainTab extends AbstractLaunchConfigurationTab {
     return imageHelper.getImage("g.png")
   }
 
+  override getAShell() {
+  	return getShell();
+  }
+  
+  override scheduleAnUpdateJob() {
+  	this.scheduleUpdateJob();
+  }
+  
 }
