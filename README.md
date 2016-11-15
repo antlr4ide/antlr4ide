@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/jknack/antlr4ide.png?branch=master)](https://travis-ci.org/jknack/antlr4ide)
+[![Build Status](https://travis-ci.org/antlr4ide/antlr4ide.png?branch=master)](https://travis-ci.org/antlr4ide/antlr4ide)
 [ ![Download](https://api.bintray.com/packages/jknack/antlr4ide/antlr4ide/images/download.png) ](https://bintray.com/jknack/antlr4ide/antlr4ide/_latestVersion)
 
 ANTLR 4 IDE
