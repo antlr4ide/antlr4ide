@@ -18,7 +18,8 @@ import com.github.jknack.antlr4ide.services.GrammarResource
  * see http://www.eclipse.org/Xtext/documentation.html#TutorialCodeGeneration
  */
 class Antlr4Generator implements IGenerator {
-
+  static val DEBUG = false
+  
   /** The tool runner. */
   @Inject
   @Property
@@ -51,6 +52,8 @@ class Antlr4Generator implements IGenerator {
    * @param fsa The Xtext file system access (not used).
    */
   override doGenerate(Resource resource, IFileSystemAccess fsa) {
+  if(DEBUG) System::out.println("Antlr4Generator doGenerate #0. optionsProvider.class >"+optionsProvider.getClass()+"<")
+  
     checkNotNull(resource)
     checkNotNull(fsa)
     checkNotNull(toolRunner)
@@ -85,6 +88,8 @@ class Antlr4Generator implements IGenerator {
    * @param options The tools options.
    */
   private def void doGenerate(IFile file, ToolOptions options) {
+  if(DEBUG) System::out.println("Antlr4Generator doGenerate #1 ")
+  
     checkNotNull(file)
     checkNotNull(options)
 

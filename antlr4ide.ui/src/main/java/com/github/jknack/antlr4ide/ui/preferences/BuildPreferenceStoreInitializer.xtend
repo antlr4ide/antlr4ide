@@ -15,6 +15,7 @@ class BuildPreferenceStoreInitializer implements IPreferenceStoreInitializer {
     store.setDefault(BUILD_LISTENER, true)
     store.setDefault(BUILD_VISITOR, false)
     store.setDefault(BUILD_ENCODING, "UTF-8")
+    store.setDefault(BUILD_LIBDIRECTORY,"")
   }
 
 }

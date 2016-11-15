@@ -136,13 +136,16 @@ public class ToolOptionsTest {
     IFile file = createMock(IFile.class);
     IPath filePath = Path.fromOSString("home").append("project").append("Hello.g4");
     IPath outputPath = Path.fromOSString("target").append("generated-sources").append("antlr4");
-    IPath libPath = Path.fromOSString("home").append("project").append("lib");
+    IPath libPath = Path.fromOSString("lib"); // libPath is relative to project path
 
     expect(file.getProject()).andReturn(project);
     expect(file.getLocation()).andReturn(filePath);
 
     expect(project.getLocation()).andReturn(projectPath);
 
+    expect(file.getProject()).andReturn(project); // from libpath check
+    expect(project.getLocation()).andReturn(projectPath);
+    
     Object[] mocks = {file, project };
 
     replay(mocks);
@@ -152,7 +155,7 @@ public class ToolOptionsTest {
     options.setOutputDirectory(outputPath.toOSString());
     assertEquals(Lists
         .newArrayList("-o", projectPath.append(outputPath).toOSString(), "-listener",
-            "-no-visitor", "-lib", libPath.toOSString(), "-encoding", "UTF-8"),
+            "-no-visitor", "-lib", projectPath.append(libPath).toOSString(), "-encoding", "UTF-8"),
         options.command(file));
 
     verify(mocks);

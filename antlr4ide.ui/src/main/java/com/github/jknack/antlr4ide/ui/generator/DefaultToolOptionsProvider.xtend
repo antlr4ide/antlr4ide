@@ -17,6 +17,7 @@ import org.eclipse.debug.core.ILaunchManager
 import com.github.jknack.antlr4ide.generator.LaunchConstants
 
 class DefaultToolOptionsProvider implements ToolOptionsProvider {
+  static val DEBUG = false
 
   @Inject
   private EclipseOutputConfigurationProvider configurationProvider
@@ -34,6 +35,8 @@ class DefaultToolOptionsProvider implements ToolOptionsProvider {
   static val PKG_NAME = Pattern.compile("package\\s+(([a-zA_Z_][\\.\\w]*))\\s*;")
 
   override options(IFile file) {
+  if(DEBUG) System::out.println("DefaultToolOptionsProvider options #0 "+file.getClass())
+  
     val project = file.project
     val store = preferenceStore.getContextPreferenceStore(project)
     val output = configurationProvider.getOutputConfigurations(project).last
@@ -61,6 +64,7 @@ class DefaultToolOptionsProvider implements ToolOptionsProvider {
       listener = getBoolean(ToolOptions.BUILD_LISTENER, store, true)
       visitor = getBoolean(ToolOptions.BUILD_VISITOR, store, false)
       encoding = getString(ToolOptions.BUILD_ENCODING, store, "UTF-8")
+      libDirectory = getString(ToolOptions.BUILD_LIBDIRECTORY, store, "") 
       vmArgs = getString(ToolOptions.VM_ARGS, store, "")
       derived = output.setDerivedProperty
       cleanUpDerivedResources = output.cleanUpDerivedResources
@@ -74,9 +78,13 @@ class DefaultToolOptionsProvider implements ToolOptionsProvider {
    * exists, the defaults options will be used it.
    */
   private def options(IFile file, ToolOptions defaults) {
+    if(DEBUG) System::out.println("DefaultToolOptionsProvider options #1 "+file.getClass+", "+defaults.getClass())
+  
     val grammar = file.fullPath.toOSString
     val configType = launchManager.getLaunchConfigurationType(LaunchConstants.LAUNCH_ID)
     var configurations = launchManager.getLaunchConfigurations(configType)
+
+    if(DEBUG) System::out.println("  grammar>"+grammar+"< configType>"+configType+"< configurations >"+configurations+"<")
 
     val existing = configurations.filter [ launch |
       if (grammar == launch.getAttribute(LaunchConstants.GRAMMAR, "")) {
@@ -85,11 +93,16 @@ class DefaultToolOptionsProvider implements ToolOptionsProvider {
       return false
     ]
 
+    if(DEBUG) System::out.println("   existing>"+existing+"<")
+
     if (existing.size > 0) {
 
       // launch existing
       val config = existing.head
       val args = config.getAttribute(LaunchConstants.ARGUMENTS, "")
+   if(DEBUG) System::out.println("        config>"+config.getClass()+"<>"+config+"<")
+   if(DEBUG) System::out.println("        args>"+args.getClass()+"<>"+args+"<")
+      
       val options = ToolOptions.parse(args) [ message |
       ]
 
