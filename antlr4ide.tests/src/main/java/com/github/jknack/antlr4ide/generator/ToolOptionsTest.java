@@ -136,7 +136,6 @@ public class ToolOptionsTest {
     IFile file = createMock(IFile.class);
     IPath filePath = Path.fromOSString("home").append("project").append("Hello.g4");
     IPath outputPath = Path.fromOSString("target").append("generated-sources").append("antlr4");
-//    IPath libPath = Path.fromOSString("home").append("project").append("lib");
     IPath libPath = Path.fromOSString("lib"); // libPath is relative to project path
 
     expect(file.getProject()).andReturn(project);

@@ -213,7 +213,7 @@ class ToolOptions {
     )
 
     // libDirectory
-    if (libDirectory != null && !libDirectory.equals("")) {
+    if (libDirectory != null && !libDirectory.trim().equals("")) {
       options.addAll("-lib", resolvePath(file, libDirectory))
     }
 
