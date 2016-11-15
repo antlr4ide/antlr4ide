@@ -27,6 +27,8 @@ class ToolOptions {
 
   public static val BUILD_ENCODING = "antlr4.encoding"
 
+  public static val BUILD_LIBDIRECTORY = "antlr4.libdirectory"  
+
   public static val VM_ARGS = "antlr4.vmArgs"
 
   @Property
@@ -148,6 +150,22 @@ class ToolOptions {
     )
   }
 
+  def resolvePath(IFile file, String inPath)
+  { // assume path is relative to project path
+    val project = file.project
+    val projectPath = project.location
+        
+    val chkPath = new Path(inPath)    
+        
+    // Check if path is absolute
+    if (chkPath.isAbsolute) 
+      return chkPath.toOSString
+    else   
+      return projectPath.append(chkPath).toOSString
+    
+  }
+
+
   def defaults() {
     var listener = "-listener"
     if (!this.listener) {
@@ -195,8 +213,8 @@ class ToolOptions {
     )
 
     // libDirectory
-    if (libDirectory != null) {
-      options.addAll("-lib", libDirectory)
+    if (libDirectory != null && !libDirectory.equals("")) {
+      options.addAll("-lib", resolvePath(file, libDirectory))
     }
 
     // package

@@ -111,10 +111,12 @@ class BuilderConfigurationBlock extends OptionsConfigurationBlock {
     excomposite.setClient(othersComposite)
     othersComposite.setLayout(new GridLayout(columns, false))
 
-    addTextField(othersComposite, "Directory",
+    addTextField(othersComposite, "Directory (-o)",
       BuilderPreferenceAccess.getKey(outputConfiguration,
         EclipseOutputConfigurationProvider.OUTPUT_DIRECTORY), 0, 300)
-
+        
+    addTextField(othersComposite, "Library (-lib)", ToolOptions.BUILD_LIBDIRECTORY, 0, 300)
+        
     addCheckBox(othersComposite, "Generate a parse tree listener (-listener)", ToolOptions.BUILD_LISTENER,
       trueFalseValues, 0)
 
