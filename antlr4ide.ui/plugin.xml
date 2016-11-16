@@ -345,8 +345,8 @@
          point="org.eclipse.ui.newWizards">
       <wizard
             category="org.eclipse.ui.Basic"
-            class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.antlr4ide.ui.wizard.Antlr4NewProjectWizard"
-            id="com.github.jknack.antlr4ide.ui.wizard.Antlr4NewProjectWizard"
+            class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:com.github.jknack.antlr4ide.ui.wizard.Antlr4NewProjectWizardX"
+            id="com.github.jknack.antlr4ide.ui.wizard.Antlr4NewProjectWizardX"
             name="ANTLR 4 Project"
             icon="icons/g.png"
             project="true">
