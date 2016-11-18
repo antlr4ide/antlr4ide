@@ -143,7 +143,7 @@ Workflow {
       // provides a compare view
       fragment = compare.CompareFragment auto-inject {}
 
-      // provides a compare view
+      // generates New project wizard
       fragment = projectWizard.SimpleProjectWizardFragment auto-inject {
         generatorProjectName = "${projectName}.generator"
         fileExtension = fileExtensions
