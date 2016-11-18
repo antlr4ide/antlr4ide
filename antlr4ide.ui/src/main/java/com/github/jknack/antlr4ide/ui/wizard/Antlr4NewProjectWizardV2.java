@@ -1,3 +1,7 @@
+/**
+ * This class is based on the xtend generated class /antlr4ide/antlr4ide.ui/src/generated/java/com/github/jknack/antlr4ide/ui/wizard/Antlr4NewProjectWizard.java
+ * This version has the addition of storing the project location if the user select override default location.
+ */
 package com.github.jknack.antlr4ide.ui.wizard;
 
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
@@ -6,14 +10,14 @@ import org.eclipse.xtext.ui.wizard.IProjectCreator;
 import com.google.inject.Inject;
 
 
-public class Antlr4NewProjectWizardX extends org.eclipse.xtext.ui.wizard.XtextNewProjectWizard  {
+public class Antlr4NewProjectWizardV2 extends org.eclipse.xtext.ui.wizard.XtextNewProjectWizard  {
 
 	private WizardNewProjectCreationPage mainPage;
 	
 	@Inject
-	public Antlr4NewProjectWizardX(IProjectCreator projectCreator) {
+	public Antlr4NewProjectWizardV2(IProjectCreator projectCreator) {
 		super(projectCreator);
-		setWindowTitle("New Antlr4 Project.2");
+		setWindowTitle("New Antlr4 Project");
 	}
 
 	/**
@@ -23,7 +27,7 @@ public class Antlr4NewProjectWizardX extends org.eclipse.xtext.ui.wizard.XtextNe
 	@Override
 	public void addPages() {
 		mainPage = new WizardNewProjectCreationPage("basicNewProjectPage");
-		mainPage.setTitle("Antlr4 Project.2");
+		mainPage.setTitle("Antlr4 Project");
 		mainPage.setDescription("Create a new Antlr4 project.");
 		addPage(mainPage);
 	}
