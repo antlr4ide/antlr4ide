@@ -35,8 +35,9 @@ public class Antlr4BuilderParticipant extends org.eclipse.xtext.builder.BuilderP
 		List<org.eclipse.xtext.resource.IResourceDescription.Delta> result = super.getRelevantDeltas(context);
 		if (result.size()<=1) return result; // no need to sort just one entry
 		
-		List<org.eclipse.xtext.resource.IResourceDescription.Delta> resultLexers = new ArrayList(); 
-		List<org.eclipse.xtext.resource.IResourceDescription.Delta> resultOthers = new ArrayList();
+		List<org.eclipse.xtext.resource.IResourceDescription.Delta> resultLexers  = new ArrayList(); 
+		List<org.eclipse.xtext.resource.IResourceDescription.Delta> resultParsers = new ArrayList(); 
+		List<org.eclipse.xtext.resource.IResourceDescription.Delta> resultOthers  = new ArrayList();
 
 		List<org.eclipse.xtext.resource.IResourceDescription.Delta> resultFinal  = new ArrayList();
 		
@@ -50,16 +51,23 @@ public class Antlr4BuilderParticipant extends org.eclipse.xtext.builder.BuilderP
 			if (grammar.getType()==GrammarType.LEXER)
 				resultLexers.add(delta);
 			else
+  		    if (grammar.getType()==GrammarType.PARSER)
+				resultParsers.add(delta);
+			else
 				resultOthers.add(delta);
 				
 			i++;
 		}
 		
 		
-		Collections.sort(resultLexers,new CompareUri());
-		Collections.sort(resultOthers,new CompareUri());
+		Comparator compareUri = new CompareUri() ;
+		
+		Collections.sort(resultLexers, compareUri);
+		Collections.sort(resultParsers, compareUri);
+		Collections.sort(resultOthers, compareUri);
 		
 		resultFinal.addAll(resultLexers);
+		resultFinal.addAll(resultParsers);
 		resultFinal.addAll(resultOthers);
 		
 		if(DEBUG) {
