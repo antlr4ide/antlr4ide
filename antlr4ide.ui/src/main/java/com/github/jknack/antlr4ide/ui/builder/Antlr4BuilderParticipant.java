@@ -33,6 +33,7 @@ public class Antlr4BuilderParticipant extends org.eclipse.xtext.builder.BuilderP
 	          getRelevantDeltas(org.eclipse.xtext.builder.IXtextBuilderParticipant.IBuildContext context) 
 	{
 		List<org.eclipse.xtext.resource.IResourceDescription.Delta> result = super.getRelevantDeltas(context);
+		if (result.size()<=1) return result; // no need to sort just one entry
 		
 		List<org.eclipse.xtext.resource.IResourceDescription.Delta> resultLexers = new ArrayList(); 
 		List<org.eclipse.xtext.resource.IResourceDescription.Delta> resultOthers = new ArrayList();
