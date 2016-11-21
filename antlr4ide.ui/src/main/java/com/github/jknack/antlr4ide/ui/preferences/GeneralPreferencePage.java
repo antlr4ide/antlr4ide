@@ -1,10 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2011 itemis AG (http://www.itemis.eu) and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
 package com.github.jknack.antlr4ide.ui.preferences;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -21,6 +14,9 @@ import com.github.jknack.antlr4ide.console.LogLevel;
 /**
  * GeneralPreferencePage
  *
+ * @see <a href="http://help.eclipse.org/neon/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Freference%2Fref-72.htm"
+ * >Eclipse preferences</a>
+ * 
  * @see <a href="http://xtextcasts.org/episodes/21-preference-page">Xtext
  *      preferences</a>
  * @see <a
