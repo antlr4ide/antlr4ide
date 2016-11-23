@@ -96,7 +96,8 @@ Creating a project in Eclipse
 
 Usage
 =========
-The new IDE is very simple to use all the files with a ```*.g4``` extension will be opened by the ANTLR 4 Editor. So, just open a ```*.g4``` file and play with it
+The new IDE is very simple to use all the files with a ```*.g4``` extension will be opened by the ANTLR 4 Editor. So, just open a ```*.g4``` file and play with it.  
+See grammars examples at https://github.com/antlr/grammars-v4
 
 Code Generation
 ---------
