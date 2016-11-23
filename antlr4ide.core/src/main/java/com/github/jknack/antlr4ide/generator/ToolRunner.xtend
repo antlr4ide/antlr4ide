@@ -38,9 +38,9 @@ class ToolRunner {
    * The embedded jar will be used unless options#antlrTool path is set to something else.
    */
   def run(IFile file, ToolOptions options, Console console) {
-    val ex=new Exception()
-    System::out.println("---\n--- ToolRunner run file>"+file+"<")
-    for(StackTraceElement s: ex.stackTrace) System::out.println("    "+s.toString)
+//    val ex=new Exception()
+//    System::out.println("---\n--- ToolRunner run file>"+file+"<")
+//    for(StackTraceElement s: ex.stackTrace) System::out.println("    "+s.toString)
 
 
     val startBuild = System.currentTimeMillis();
@@ -129,7 +129,7 @@ class ToolRunner {
     val distribution = Distributions.get(jar)
     val version = distribution.key
 
-    System::out.println("    ToolRunner validate file>"+jar+"< version>"+version+"<")
+//    System::out.println("    ToolRunner validate file>"+jar+"< version>"+version+"<")
 
     if (version != "") {
       console.info("ANTLR Tool v%s (%s)", version, jar)

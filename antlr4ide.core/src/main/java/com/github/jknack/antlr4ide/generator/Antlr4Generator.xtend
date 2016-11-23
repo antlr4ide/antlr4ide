@@ -52,7 +52,7 @@ class Antlr4Generator implements IGenerator {
    * @param fsa The Xtext file system access (not used).
    */
   override doGenerate(Resource resource, IFileSystemAccess fsa) {
-  if(DEBUG) System::out.println("Antlr4Generator doGenerate #0. optionsProvider.class >"+optionsProvider.getClass()+"<")
+  if(DEBUG) System::out.println("Antlr4Generator doGenerate #0. resource.class >"+resource.getClass()+"<")
   
     checkNotNull(resource)
     checkNotNull(fsa)

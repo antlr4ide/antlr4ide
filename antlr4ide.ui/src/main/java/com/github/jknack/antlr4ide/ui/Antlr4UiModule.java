@@ -144,6 +144,7 @@ public class Antlr4UiModule extends com.github.jknack.antlr4ide.ui.AbstractAntlr
 
   // FIXME: due to "Xtext based editor does not start since 2.5 without JDT installed",
   // https://bugs.eclipse.org/bugs/show_bug.cgi?id=424455
+  // TODO: Check if still needed (HS 20161118)
   public void configureIStorage2UriMapperJdtExtensions(final Binder binder) {
     binder.bind(IStorage2UriMapperJdtExtensions.class).toProvider(
         Providers.of((IStorage2UriMapperJdtExtensions) (new Storage2UriMapperJavaImpl())));
@@ -153,4 +154,13 @@ public class Antlr4UiModule extends com.github.jknack.antlr4ide.ui.AbstractAntlr
   public Class<? extends IProjectCreator> bindIProjectCreator() {
     return JdtFreeProjectCreator.class;
   }
+  
+  
+  // Override needed to control build sequence
+  // contributed by org.eclipse.xtext.generator.generator.GeneratorFragment
+  @Override
+  public Class<? extends org.eclipse.xtext.builder.IXtextBuilderParticipant> bindIXtextBuilderParticipant() {
+	return com.github.jknack.antlr4ide.ui.builder.Antlr4BuilderParticipant.class;
+  }
+  
 }
