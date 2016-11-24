@@ -44,6 +44,39 @@
           </filesets>
         </configuration>
       </plugin>
+	  
+	  <!-- copy libraries which are available in Maven repositories
+	  to ./lib sub-directory -->
+	  <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-dependency-plugin</artifactId>
+			<version>2.10</version>
+			<executions>
+				<execution>
+				<id>copy</id>
+					<phase>validate</phase>
+					<goals>
+						<goal>copy</goal>
+					</goals>
+					<configuration>
+						<artifactItems>
+							<artifactItem>
+								<groupId>org.abego.treelayout</groupId>
+								<artifactId>org.abego.treelayout.core</artifactId>
+								<version>1.0.1</version>
+								<type>jar</type>
+								<destFileName>treelayout.core-1.0.1.jar</destFileName>
+							</artifactItem>
+						</artifactItems>
+						<!-- other configurations here -->
+						<overWriteIfNewer>false</overWriteIfNewer>
+						<overWriteReleases>false</overWriteReleases>
+						<overWriteSnapshots>false</overWriteSnapshots>
+						<outputDirectory>${project.basedir}/lib</outputDirectory>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
 
       <!-- Mwe2 steps: * Compile custom fragment (bc mwe2 MUST run on generate-sources phase) * Copy 
         custom lexer file *.g * Invoke mwe2 -->
@@ -66,8 +99,6 @@
 
                 <mkdir dir="${workDir}/lib" />
                 <get src="http://www.antlr.org/download/${antlr4.jar}" dest="${workDir}/lib/${antlr4.jar}" usetimestamp="true" skipexisting="true" />
-                <get src="http://repo1.maven.org/maven2/org/abego/treelayout/org.abego.treelayout.core/1.0.1/org.abego.treelayout.core-1.0.1.jar"
-                    dest="${workDir}/lib/treelayout.core-1.0.1.jar" usetimestamp="true" skipexisting="true" />
 
                 <get src="http://download.itemis.com/${antlr-generator}" dest=".${antlr-generator}" usetimestamp="true" skipexisting="true" />
 
