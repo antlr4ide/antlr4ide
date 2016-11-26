@@ -47,4 +47,4 @@ Export-Package: com.github.jknack.antlr4ide,
  org.abego.treelayout.internal.util.java.util,
  org.abego.treelayout.util
 Bundle-Activator: com.github.jknack.antlr4ide.Activator
-Bundle-ClassPath: lib/treelayout.core-1.0.1.jar,.
+Bundle-ClassPath: lib/org.abego.treelayout.core-1.0.1.jar,.
