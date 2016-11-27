@@ -15,6 +15,9 @@ public class Antlr4SuffixDecorator implements ILightweightLabelDecorator
    // the ANTLR4 generated java files has first line indicating origin
    //    >// Generated from testissue.g4 by ANTLR 4.5.1<
    // the tokens files have no indication of origin except for the filename of course.
+	
+   static final String[] checkSuffixes={"Lexer.tokens","Parser.tokens",".tokens" };
+   static final int[]    checkSuffixesLen={checkSuffixes[0].length(),checkSuffixes[1].length(),checkSuffixes[2].length()};
 
    public void decorate(Object element, IDecoration decoration) {
 	   // Note the plugin.xml specify which types are passed to this decorator
@@ -30,18 +33,13 @@ public class Antlr4SuffixDecorator implements ILightweightLabelDecorator
 	   if(resource.getType()!=IResource.FILE) return;
 	   if(!resource.isDerived()) return;
 	   
-	   if(resourceName.endsWith("Lexer.tokens")) decoration.addSuffix(" ["+resourceName.substring(0,resourceName.length()-12)+".g4]");
-	   else 
-       if(resourceName.endsWith("Parser.tokens")) decoration.addSuffix(" ["+resourceName.substring(0,resourceName.length()-13)+".g4]");
-	   else 
-	   if(resourceName.endsWith(".tokens")) decoration.addSuffix(" ["+resourceName.substring(0,resourceName.length()-7)+".g4]");
-	   else 
 	   if(resourceName.endsWith(".java")) { // what about other target types?
 		   // read first line
 		    BufferedReader in=null;
 			try {
 				in = new BufferedReader(new InputStreamReader(((IFile)resource).getContents()));
  			    String text = in.readLine();
+ 			    in.close();
  			    if (text.startsWith("// Generated from ")) {
  				 String[] strArray = text.split(" ");
  			     decoration.addSuffix(" ["+strArray[3]+"]");  
@@ -49,15 +47,19 @@ public class Antlr4SuffixDecorator implements ILightweightLabelDecorator
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			try {
-				if(in!=null) in.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+	   }
+	   else {
+		   for (int i=0;i<checkSuffixes.length;i++) {
+			   if(resourceName.endsWith(checkSuffixes[i])) { 
+				   decoration.addSuffix(asDecoratorSuffix(resourceName,checkSuffixesLen[i],".g4"));
+				   break; // stop at first match
+			   }
+		   }
 	   }
    }
    
-   /*
+
+/*
     * invoked by eclipse when selecting decorator in preferences or by start
     */
    public void addListener(ILabelProviderListener listener) { 
@@ -82,4 +84,12 @@ public class Antlr4SuffixDecorator implements ILightweightLabelDecorator
    }
    
    
+   private String asDecoratorSuffix(String fileName) {
+	   return " ["+fileName+"]";
+   }
+
+   private String asDecoratorSuffix(String resourceName, int resourceSuffixLen, String ext) {
+	   return asDecoratorSuffix(resourceName.substring(0,resourceName.length()-resourceSuffixLen)+ext);
+   }
+
 }
