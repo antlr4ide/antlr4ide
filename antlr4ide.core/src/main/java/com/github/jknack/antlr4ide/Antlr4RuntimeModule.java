@@ -8,6 +8,8 @@ import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.linking.ILinkingDiagnosticMessageProvider;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 
+import com.github.jknack.antlr4ide.console.Console;
+import com.github.jknack.antlr4ide.console.ConsoleImpl;
 import com.github.jknack.antlr4ide.generator.Antlr4OutputConfigurationProvider;
 import com.github.jknack.antlr4ide.lang.LangFactory;
 import com.github.jknack.antlr4ide.scoping.Antlr4NameProvider;
@@ -31,6 +33,8 @@ public class Antlr4RuntimeModule extends com.github.jknack.antlr4ide.AbstractAnt
         .to(Antlr4MissingReferenceMessageProvider.class);
 
     binder.bind(ILaunchManager.class).toInstance(getLaunchManager());
+    
+    binder.bind(Console.class).toInstance(getConsole());
   }
 
   @Override
@@ -46,4 +50,8 @@ public class Antlr4RuntimeModule extends com.github.jknack.antlr4ide.AbstractAnt
     return DebugPlugin.getDefault().getLaunchManager();
   }
 
+  protected Console getConsole() {
+	  return new ConsoleImpl();
+  }
+  
 }

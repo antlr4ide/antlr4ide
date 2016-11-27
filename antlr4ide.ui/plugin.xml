@@ -199,6 +199,17 @@
             class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant">
       </participant>
    </extension>
+   
+	<!-- General options preferences (e.g. log level) -->
+	<extension point="org.eclipse.ui.preferencePages">
+		<page
+			category="com.github.jknack.antlr4ide.Antlr4"
+			class="com.github.jknack.antlr4ide.ui.preferences.GeneralPreferencePage"
+			id="com.github.jknack.antlr4ide.ui.preferences.GeneralPreferencePage"
+			name="General">
+			<keywordReference id="com.github.jknack.antlr4ide.ui.keyword_Antlr4"/>
+		</page>
+	</extension>
 
    <!-- Custom build page -->
    <extension
@@ -352,7 +363,7 @@
             project="true">
       </wizard>
    </extension>
-
+   
    <extension
        point="org.eclipse.ui.console.consoleFactories">
     <consoleFactory
@@ -361,6 +372,7 @@
           label="ANTLR Console">
     </consoleFactory>
   </extension>
+
   <extension point="org.eclipse.debug.core.launchConfigurationTypes">
     <launchConfigurationType
        id="com.github.jknack.Antlr4.tool"

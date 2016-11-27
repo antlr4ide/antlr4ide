@@ -26,9 +26,11 @@ Require-Bundle: antlr4ide.core;visibility:=reexport,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.core.variables;bundle-version="3.0.0"
 Import-Package: org.apache.log4j,
+ org.apache.log4j.spi,
  org.eclipse.xtext.xbase.lib
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: com.github.jknack.antlr4ide.ui.contentassist,
+Export-Package: com.github.jknack.antlr4ide.ui.console,
+ com.github.jknack.antlr4ide.ui.contentassist,
  com.github.jknack.antlr4ide.ui.contentassist.antlr,
  com.github.jknack.antlr4ide.ui.internal,
  com.github.jknack.antlr4ide.ui.launch,
