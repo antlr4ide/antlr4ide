@@ -446,5 +446,26 @@
             name="ANTLR 4">
       </category>
    </extension>
-
+   
+  <!-- Decorators see https://wiki.eclipse.org/Platform_Expression_Framework -->
+  <extension point="org.eclipse.ui.decorators"> 
+        <decorator
+            id="com.github.jknack.antlr4ide.ui.decorator.Antlr4SuffixDecorator" 
+            label="ANTLR4 Origin Decorator"                 
+            state="false" 
+            adaptable="true"
+            class="com.github.jknack.antlr4ide.ui.decorator.Antlr4SuffixDecorator" 
+            lightweight="true" >
+            <description>Show originating .g4 grammar file</description>
+            <enablement>
+              <and>
+                <objectClass name="org.eclipse.core.resources.IResource"/>
+                <or> <!-- see org.eclipse.ui.IResourceActionFilter for objectState --> 
+                  <objectState name="extension" value="java"/>
+                  <objectState name="extension" value="tokens"/>
+                </or>
+              </and>  
+            </enablement>
+        </decorator>
+    </extension> 
 </plugin>
