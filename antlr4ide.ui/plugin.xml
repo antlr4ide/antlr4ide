@@ -460,9 +460,9 @@
             <enablement>
               <and>
                 <objectClass name="org.eclipse.core.resources.IResource"/>
-                <or> 
-                  <objectState name="name" value="*.java"/>
-                  <objectState name="name" value="*.tokens"/>
+                <or> <!-- see org.eclipse.ui.IResourceActionFilter for objectState --> 
+                  <objectState name="extension" value="java"/>
+                  <objectState name="extension" value="tokens"/>
                 </or>
               </and>  
             </enablement>
