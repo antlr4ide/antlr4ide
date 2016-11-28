@@ -456,7 +456,7 @@
             adaptable="true"
             class="com.github.jknack.antlr4ide.ui.decorator.Antlr4SuffixDecorator" 
             lightweight="true" >
-            <description>Shows the originating ANTLR4 file for the derived files.</description>
+            <description>Show originating .g4 grammar file</description>
             <enablement>
               <and>
                 <objectClass name="org.eclipse.core.resources.IResource"/>
