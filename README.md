@@ -146,13 +146,17 @@ Building ANLTR 4 IDE
 =========
 
 1. Build with Maven 3.x
+
   1. Fork and clone the repository from github
   2. Download and install [Maven 3.x](http://maven.apache.org/)
   3. Open a shell console and type: ```cd antlr4ide```
   4. Build the project with: ```mvn clean package```
   5. It takes a while to download and configure Eclipse dependencies, so be patient
   6. Wait for a: ```BUILD SUCCESS``` message
+  7. When building for the very first time there might be some missing dependencies, so please retry ```mvn clean package``` 
+  
 2. Setup Eclipse
+
   1. Open Eclipse Luna (4.4)
   2. Install Xtext 2.7.3
   3. Copy and paste this url: http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/ in the **Work with** text field
