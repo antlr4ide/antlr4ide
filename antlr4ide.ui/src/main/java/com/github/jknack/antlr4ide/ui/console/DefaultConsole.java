@@ -11,17 +11,19 @@ import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
 
+/**
+ * Creates and prints to Eclipse ConsoleView.
+ * Unfortunately it cannot be added as an appender in a
+ * log4j.properties file.
+ * It is added programatically in
+ * com.github.jknack.antlr4ide.ui.Antlr4UiModule.configure()
+ * to the logger defined in antlr4ide.core
+ */
 public class DefaultConsole extends AppenderSkeleton  {
 	
-	public DefaultConsole() {
-		super();
-		System.out.println("DefaultConsole - constructor");
-	}
-
 	@Override
 	protected void append(LoggingEvent logEvent) {
 		final String message = logEvent.getRenderedMessage();
-		System.out.println("DefaultConsole, message='" + message + "'");
 		final Level level = logEvent.getLevel();
 		final String streamId = getStreamId(level);
 		
@@ -54,7 +56,11 @@ public class DefaultConsole extends AppenderSkeleton  {
 			display.syncExec(printTask);
 		}
 	}
-
+	
+	/**
+	 * streamId is used for selecting the color of the 
+	 * ConsoleView
+	 */
 	private String getStreamId(Level level) {
 		if (level == Level.FATAL || level == Level.ERROR
 				|| level == Level.WARN) {
@@ -65,12 +71,10 @@ public class DefaultConsole extends AppenderSkeleton  {
 
 	@Override
 	public void close() {
-		System.out.println("DefaultConsole - close");
 	}
 
 	@Override
 	public boolean requiresLayout() {
-		System.out.println("DefaultConsole - requiresLayout");
 		return false;
 	}
 

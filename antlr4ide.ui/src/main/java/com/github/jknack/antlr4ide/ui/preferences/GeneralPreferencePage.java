@@ -36,6 +36,8 @@ public class GeneralPreferencePage extends FieldEditorPreferencePage implements
 				Level.WARN, Level.INFO, Level.DEBUG, Level.TRACE };
 		final String[][] values = new String[logLevels.length][2];
 		for (int i = 0; i < logLevels.length; i++) {
+			// constructor of ComboFieldEditor expects a two-dimensional
+			// array with label-value pairs.
 			values[i][0] = logLevels[i].toString();
 			values[i][1] = logLevels[i].toString();
 		}
