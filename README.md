@@ -34,6 +34,8 @@ The main reason of complexity of the old IDE was in Dynamic Language ToolKit (DL
 
 Now, the **new** IDE was built on [XText](http://www.eclipse.org/Xtext). [XText](http://www.eclipse.org/Xtext) is great for building DSL with Eclipse IDE support, so if you are not familiar with [XText](http://www.eclipse.org/Xtext) go and see it.
 
+See [link to ANTLR tools](http://www.antlr.org/tools.html) for a comparison of ANTLR4IDE with other development tools for ANTLR.
+
 Eclipse Installation
 =========
 
