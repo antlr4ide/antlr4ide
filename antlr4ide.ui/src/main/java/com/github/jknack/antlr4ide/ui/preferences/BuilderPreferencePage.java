@@ -24,6 +24,7 @@ import org.eclipse.xtext.ui.editor.preferences.PreferenceStoreAccessImpl;
 import org.eclipse.xtext.ui.preferences.OptionsConfigurationBlock;
 import org.eclipse.xtext.ui.preferences.PropertyAndPreferencePage;
 
+import com.github.jknack.antlr4ide.console.Console;
 import com.google.common.collect.MapDifference.ValueDifference;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -35,8 +36,10 @@ import com.google.inject.name.Named;
  */
 @SuppressWarnings("restriction")
 public class BuilderPreferencePage extends PropertyAndPreferencePage {
-  private static final boolean DEBUG = false; 
   private OptionsConfigurationBlock builderConfigurationBlock;
+  
+  @Inject
+  private Console console;
 
   private EclipseOutputConfigurationProvider configurationProvider;
 
@@ -50,39 +53,40 @@ public class BuilderPreferencePage extends PropertyAndPreferencePage {
 
   @Inject
   public void setCleanerProvider(final Provider<DerivedResourceCleanerJob> cleanerProvider) {
-	  if(DEBUG) System.out.println("BuilderPreferencePage setCleanerProvider ");
+	  console.debug("BuilderPreferencePage setCleanerProvider", "");
 
     this.cleanerProvider = cleanerProvider;
   }
 
   @Inject
   public void setLanguageName(@Named(Constants.LANGUAGE_NAME) final String languageName) {
-	  if(DEBUG) System.out.println("BuilderPreferencePage setLanguageName languageName>"+languageName+"<");
+	  console.debug("BuilderPreferencePage setLanguageName", languageName);
+	  console.trace(BuilderPreferencePage.class, "setLanguageName='%s'", languageName);
     this.languageName = languageName;
   }
 
   @Inject
   public void setConfigurationProvider(
       final EclipseOutputConfigurationProvider configurationProvider) {
-	  if(DEBUG) System.out.println("BuilderPreferencePage setConfigurationProvider ");
+	  console.debug("BuilderPreferencePage setConfigurationProvider", "");
     this.configurationProvider = configurationProvider;
   }
 
   @Inject
   public void setPreferenceStoreAccessImpl(final PreferenceStoreAccessImpl preferenceStoreAccessImpl) {
-	  if(DEBUG) System.out.println("BuilderPreferencePage setPreferenceStoreAccessImpl ");
+	  console.debug("BuilderPreferencePage setPreferenceStoreAccessImpl", "");
     this.preferenceStoreAccessImpl = preferenceStoreAccessImpl;
   }
 
   @Inject
   public void setImageHelper(final IImageHelper imageHelper) {
-	  if(DEBUG) System.out.println("BuilderPreferencePage setImageHelper ");
+	  console.debug("BuilderPreferencePage setImageHelper", "");
     this.imageHelper = imageHelper;
   }
 
   @Override
   public void createControl(final Composite parent) {
-	  if(DEBUG) System.out.println("BuilderPreferencePage createControl ");
+	  console.debug("BuilderPreferencePage createControl", "");
     IWorkbenchPreferenceContainer container = (IWorkbenchPreferenceContainer) getContainer();
     IPreferenceStore preferenceStore = preferenceStoreAccessImpl
         .getWritablePreferenceStore(getProject());
@@ -96,15 +100,17 @@ public class BuilderPreferencePage extends PropertyAndPreferencePage {
   @Override
   protected Control createPreferenceContent(final Composite composite,
       final IPreferencePageContainer preferencePageContainer) {
-	  if(DEBUG) System.out.println("BuilderPreferencePage createPreferenceContent ");
+	  console.debug("BuilderPreferencePage createPreferenceContent", "");
 	  
     return builderConfigurationBlock.createContents(composite);
   }
 
   @Override
   protected boolean hasProjectSpecificOptions(final IProject project) {
-	  if(DEBUG) System.out.println("BuilderPreferencePage hasProjectSpecificOptions project>"+project.toString()+"<");
-	  if(DEBUG) System.out.println("BuilderPreferencePage          builderConfigurationBlock==null "+(builderConfigurationBlock==null));
+	  console.debug("BuilderPreferencePage hasProjectSpecificOptions", project.toString());
+	  console.debug("BuilderPreferencePage builderConfigurationBlock==null ? '%s'",
+			  builderConfigurationBlock==null);
+
 	  try {
     return builderConfigurationBlock.hasProjectSpecificOptions(project);
 	  }
@@ -117,20 +123,22 @@ public class BuilderPreferencePage extends PropertyAndPreferencePage {
 
   @Override
   protected String getPreferencePageID() {
-	  if(DEBUG) System.out.println("BuilderPreferencePage getPreferencePageID >"+languageName + ".compiler.preferencePage"+"<");
+	  console.debug("BuilderPreferencePage getPreferencePageID='%s'", languageName);
 	  
     return languageName + ".compiler.preferencePage";
   }
 
   @Override
   protected String getPropertyPageID() {
-	  if(DEBUG) System.out.println("BuilderPreferencePage getPropertyPageID >"+languageName + ".compiler.propertyPage"+"<");
+	  console.debug("BuilderPreferencePage getPropertyPageID='%s'", languageName);
+
     return languageName + ".compiler.propertyPage";
   }
 
   @Override
   public void dispose() {
-	  if(DEBUG) System.out.println("BuilderPreferencePage dispose builderConfigurationBlock != null >"+(builderConfigurationBlock != null)+"<");
+	  console.debug("BuilderPreferencePage dispose builderConfigurationBlock != null ? '%s'",
+			  (builderConfigurationBlock != null));
 	  
     if (builderConfigurationBlock != null) {
       builderConfigurationBlock.dispose();
@@ -140,7 +148,8 @@ public class BuilderPreferencePage extends PropertyAndPreferencePage {
 
   @Override
   protected void enableProjectSpecificSettings(final boolean useProjectSpecificSettings) {
-	  if(DEBUG) System.out.println("BuilderPreferencePage enableProjectSpecificSettings useProjectSpecificSettings>"+(useProjectSpecificSettings)+"<");
+	  console.debug("BuilderPreferencePage enableProjectSpecificSettings useProjectSpecificSettings='%s'",
+			  (useProjectSpecificSettings));
 	  
     super.enableProjectSpecificSettings(useProjectSpecificSettings);
     if (builderConfigurationBlock != null) {
@@ -150,8 +159,7 @@ public class BuilderPreferencePage extends PropertyAndPreferencePage {
 
   @Override
   protected void performDefaults() {
-	  if(DEBUG) System.out.println("BuilderPreferencePage performDefaults");
-	  
+	  console.debug("BuilderPreferencePage performDefaults");	  
     super.performDefaults();
     if (builderConfigurationBlock != null) {
       builderConfigurationBlock.performDefaults();
@@ -160,7 +168,7 @@ public class BuilderPreferencePage extends PropertyAndPreferencePage {
 
   @Override
   public boolean performOk() {
-	  if(DEBUG) System.out.println("BuilderPreferencePage performOk");
+	  console.debug("BuilderPreferencePage performOk");	  
 	  
     if (builderConfigurationBlock != null) {
       scheduleCleanerJobIfNecessary(getContainer());
@@ -173,7 +181,7 @@ public class BuilderPreferencePage extends PropertyAndPreferencePage {
 
   @Override
   public void performApply() {
-	  if(DEBUG) System.out.println("BuilderPreferencePage performApply");
+	  console.debug("BuilderPreferencePage performApply");	  
 	  
     if (builderConfigurationBlock != null) {
       scheduleCleanerJobIfNecessary(null);
@@ -183,14 +191,14 @@ public class BuilderPreferencePage extends PropertyAndPreferencePage {
 
   @Override
   public void setElement(final IAdaptable element) {
-	  if(DEBUG) System.out.println("BuilderPreferencePage setElement");
+	  console.debug("BuilderPreferencePage setElement");	  
 	  
     super.setElement(element);
     setDescription(null); // no description for property page
   }
 
   private void scheduleCleanerJobIfNecessary(final IPreferencePageContainer preferencePageContainer) {
-	  if(DEBUG) System.out.println("BuilderPreferencePage scheduleCleanerJobIfNecessary");
+	  console.debug("BuilderPreferencePage scheduleCleanerJobIfNecessary");	  
 	  
     Map<String, ValueDifference<String>> changes = builderConfigurationBlock.getPreferenceChanges();
     for (String key : changes.keySet()) {
@@ -204,7 +212,7 @@ public class BuilderPreferencePage extends PropertyAndPreferencePage {
 
   private void scheduleCleanerJob(final IPreferencePageContainer preferencePageContainer,
       final String folderNameToClean) {
-	  if(DEBUG) System.out.println("BuilderPreferencePage scheduleCleanerJob");
+	  console.debug("BuilderPreferencePage scheduleCleanerJob");	  
 	  
     DerivedResourceCleanerJob derivedResourceCleanerJob = cleanerProvider.get();
     derivedResourceCleanerJob.setUser(true);

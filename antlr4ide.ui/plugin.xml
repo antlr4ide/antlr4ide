@@ -58,6 +58,7 @@
             </and>
         </definition>
     </extension>
+	
     <extension
             point="org.eclipse.ui.preferencePages">
         <page
@@ -199,6 +200,17 @@
             class="com.github.jknack.antlr4ide.ui.Antlr4ExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant">
       </participant>
    </extension>
+   
+   <!-- General options preferences (e.g. log level) -->
+	<extension point="org.eclipse.ui.preferencePages">
+		<page
+			category="com.github.jknack.antlr4ide.Antlr4"
+			class="com.github.jknack.antlr4ide.ui.preferences.GeneralPreferencePage"
+			id="com.github.jknack.antlr4ide.ui.preferences.GeneralPreferencePage"
+			name="General">
+			<keywordReference id="com.github.jknack.antlr4ide.ui.keyword_Antlr4"/>
+		</page>
+	</extension>
 
    <!-- Custom build page -->
    <extension
