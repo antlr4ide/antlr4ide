@@ -1,6 +1,8 @@
 package com.github.jknack.antlr4ide.ui.preferences;
 
 import com.github.jknack.antlr4ide.console.ConsoleImpl;
+
+import org.apache.log4j.Level;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -8,7 +10,6 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
-import org.eclipse.xtend.expression.LoggingNullEvaluationHandler.Level;
 
 /**
  * GeneralPreferencePage
@@ -31,7 +32,8 @@ public class GeneralPreferencePage extends FieldEditorPreferencePage implements
 
 	@Override
 	public void createFieldEditors() {
-		final Level[] logLevels = Level.values();
+		final Level[] logLevels = new Level[] { Level.OFF, Level.ERROR, 
+				Level.WARN, Level.INFO, Level.DEBUG, Level.TRACE };
 		final String[][] values = new String[logLevels.length][2];
 		for (int i = 0; i < logLevels.length; i++) {
 			values[i][0] = logLevels[i].toString();
