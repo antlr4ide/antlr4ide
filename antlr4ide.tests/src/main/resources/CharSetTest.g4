@@ -1,0 +1,5 @@
+grammar CharSetTest;
+
+r:;
+
+CharSet: ["];
