@@ -45,6 +45,7 @@ Export-Package: com.github.jknack.antlr4ide,
  org.abego.treelayout.internal.util.java.lang,
  org.abego.treelayout.internal.util.java.lang.string,
  org.abego.treelayout.internal.util.java.util,
- org.abego.treelayout.util
+ org.abego.treelayout.util,
+ org.apache.log4j
 Bundle-Activator: com.github.jknack.antlr4ide.Activator
-Bundle-ClassPath: lib/org.abego.treelayout.core-1.0.1.jar,.
+Bundle-ClassPath: lib/org.abego.treelayout.core-1.0.1.jar,lib/log4j-1.2.17.jar,.

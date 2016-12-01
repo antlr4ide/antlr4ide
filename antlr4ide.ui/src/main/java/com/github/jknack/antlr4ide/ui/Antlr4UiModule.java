@@ -23,12 +23,12 @@ import org.eclipse.xtext.ui.resource.IStorage2UriMapperJdtExtensions;
 import org.eclipse.xtext.ui.resource.SimpleResourceSetProvider;
 import org.eclipse.xtext.ui.wizard.IProjectCreator;
 
-import com.github.jknack.antlr4ide.console.Console;
+import com.github.jknack.antlr4ide.ui.console.AntlrConsoleFactory;
+import com.github.jknack.antlr4ide.ui.console.DefaultConsole;
+import com.github.jknack.antlr4ide.console.ConsoleImpl;
 import com.github.jknack.antlr4ide.generator.CodeGeneratorListener;
 import com.github.jknack.antlr4ide.generator.ToolOptionsProvider;
 import com.github.jknack.antlr4ide.services.GrammarResource;
-import com.github.jknack.antlr4ide.ui.console.AntlrConsoleFactory;
-import com.github.jknack.antlr4ide.ui.console.DefaultConsole;
 import com.github.jknack.antlr4ide.ui.editor.Antlr4NatureCallback;
 import com.github.jknack.antlr4ide.ui.folding.Antlr4FoldingPreferenceStoreInitializer;
 import com.github.jknack.antlr4ide.ui.folding.Antlr4FoldingRegionProvider;
@@ -71,7 +71,6 @@ public class Antlr4UiModule extends com.github.jknack.antlr4ide.ui.AbstractAntlr
 
     binder.requestStaticInjection(AntlrConsoleFactory.class);
     binder.requestStaticInjection(AntlrHighlightingConfiguration.class);
-    binder.bind(Console.class).to(DefaultConsole.class);
     binder.bind(GrammarResource.class).to(DefaultGrammarResource.class);
 
     binder.bind(ToolOptionsProvider.class).to(DefaultToolOptionsProvider.class);
@@ -92,6 +91,7 @@ public class Antlr4UiModule extends com.github.jknack.antlr4ide.ui.AbstractAntlr
     binder.bind(RefreshProjectProcessor.class);
 
     binder.bind(IPath.class).annotatedWith(Names.named("stateLocation")).toInstance(stateLocation);
+    ConsoleImpl.getLogger().addAppender(new DefaultConsole());
   }
 
   @Provides

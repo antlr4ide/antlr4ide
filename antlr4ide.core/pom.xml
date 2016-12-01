@@ -66,6 +66,12 @@
 								<version>1.0.1</version>
 								<type>jar</type>
 							</artifactItem>
+							<artifactItem>
+								<groupId>log4j</groupId>
+								<artifactId>log4j</artifactId>
+								<version>${log4j-version}</version>
+								<type>jar</type>
+							</artifactItem>
 						</artifactItems>
 						<!-- other configurations here -->
 						<overWriteIfNewer>false</overWriteIfNewer>

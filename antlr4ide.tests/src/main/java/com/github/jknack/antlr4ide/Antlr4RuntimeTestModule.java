@@ -33,8 +33,6 @@ public class Antlr4RuntimeTestModule extends Antlr4RuntimeModule {
 
     binder.bind(ToolOptionsProvider.class).toInstance(optionsProvider);
 
-    binder.bind(Console.class).toInstance(console);
-
     binder.bind(GrammarResource.class).toInstance(grammarResource);
   }
 
