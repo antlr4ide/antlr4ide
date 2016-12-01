@@ -1,7 +1,6 @@
 package com.github.jknack.antlr4ide.launch;
 
 import com.github.jknack.antlr4ide.ui.launch.VariableButtonListener;
-import com.github.jknack.antlr4ide.Antlr4TestInjectorProvider;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.IValueVariable;
