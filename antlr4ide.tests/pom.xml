@@ -105,6 +105,12 @@
                   <version>${log4j-version}</version>
                   <type>jar</type>
                 </artifactItem>
+				<artifactItem>
+					<groupId>commons-io</groupId>
+					<artifactId>commons-io</artifactId>
+					<version>${commons-version}</version>
+					<type>jar</type>
+				</artifactItem>
               </artifactItems>
               <outputDirectory>${project.basedir}/lib</outputDirectory>
               <overWriteReleases>false</overWriteReleases>
@@ -114,10 +120,6 @@
         </executions>
       </plugin>
 
-      <plugin>
-        <groupId>org.eclipse.xtend</groupId>
-        <artifactId>xtend-maven-plugin</artifactId>
-      </plugin>
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-surefire-plugin</artifactId>

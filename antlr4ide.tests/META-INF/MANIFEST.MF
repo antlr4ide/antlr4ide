@@ -37,6 +37,7 @@ Bundle-ClassPath: .,lib/junit-4.11.jar,
  lib/powermock-module-junit4-common-1.6.5.jar,
  lib/powermock-reflect-1.6.5.jar,
  lib/javassist-3.22.0-CR1.jar,
- lib/log4j-1.2.17.jar
+ lib/log4j-1.2.17.jar,
+ lib/commons-io-2.5.jar
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: com.github.jknack.antlr4ide

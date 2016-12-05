@@ -1,0 +1,5 @@
+grammar G;
+
+options {}
+
+r:;

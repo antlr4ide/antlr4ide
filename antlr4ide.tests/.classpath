@@ -4,7 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src/main/java/"/>
 	<classpathentry kind="src" path="src/generated/java/"/>
-	<classpathentry kind="src" path="src/generated/xtend/"/>
 	<classpathentry exported="true" kind="lib" path="lib/junit-4.11.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/easymock-3.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hamcrest-core-1.3.jar"/>
@@ -18,5 +17,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/powermock-reflect-1.6.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/javassist-3.22.0-CR1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/log4j-1.2.17.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-io-2.5.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
