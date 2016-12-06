@@ -10,7 +10,7 @@ ANTLR 4 IDE
 Features
 =========
 
-* ANTLR 4.x
+* ANTLR 4.x (see also [official ANTLR website](http://www.antlr.org/) or [ANTLR source code](https://github.com/antlr/antlr4))
 * Advanced Syntax Highlighting ([even for target language](https://raw.github.com/jknack/antlr4ide/master/updates/screenshots/target-language-highlighting.png))
 * Automatic Code Generation (on save)
 * Manual Code Generation (through External Tools menu)
