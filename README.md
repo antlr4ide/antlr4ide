@@ -144,7 +144,7 @@ Eclipse Example
     	}
 ```
 
-Building ANLTR 4 IDE
+Building ANTLR 4 IDE
 =========
 
 1. Build with Maven 3.x
