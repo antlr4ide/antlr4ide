@@ -1,3 +1,6 @@
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-no-red.svg)](https://bitbucket.org/lbesson/ansi-colors)
+This project has not seen commits/updates for several years now. It is no longer maintained.
+
 [![Build Status](https://travis-ci.org/antlr4ide/antlr4ide.png?branch=master)](https://travis-ci.org/antlr4ide/antlr4ide)
 [ ![Download](https://api.bintray.com/packages/jknack/antlr4ide/antlr4ide/images/download.png) ](https://bintray.com/jknack/antlr4ide/antlr4ide/_latestVersion)
 
